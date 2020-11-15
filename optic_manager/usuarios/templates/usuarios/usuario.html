@@ -11,7 +11,13 @@
     <ul>
         <li>Usuario: {{ request.user.username }}</li>
         <li>Email: {{ request.user.email }}</li>
+        <li>Grupo: {{ request.auth_user_groups.group_id }}</li>
+        <!-- <li>ASDF: {{ request.group.id }}</li> -->
     </ul>
+
+    <!-- {% if request.user.username == "ventas.trinitas" %}
+        <a href="{% url 'ejemplo.html' %}">Generar pedido para paciente</a>
+    {% endif %} -->
 
     <a href="{% url 'logout' %}">Desconectarse</a>
 {% endblock %}
