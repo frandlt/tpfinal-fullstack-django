@@ -1,0 +1,17 @@
+{% extends "./layout.html" %}
+
+{% block body %}
+
+    {% if request.user.first_name == "Robert" %}
+        <h1 class="heading">Bienvenido, profesor {{ request.user.first_name }}</h1>
+    {% else %}
+        <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
+    {% endif %}
+
+    <ul>
+        <li>Usuario: {{ request.user.username }}</li>
+        <li>Email: {{ request.user.email }}</li>
+    </ul>
+
+    <a href="{% url 'logout' %}">Desconectarse</a>
+{% endblock %}
