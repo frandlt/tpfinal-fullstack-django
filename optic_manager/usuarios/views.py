@@ -34,11 +34,11 @@ def logout_view(request):
         "mensaje": "Desconectado."
     })
 
-def ejemplo_view(request):
-    return HttpResponse()
+#def ejemplo_view(request):
+#    return HttpResponse()
 
-def is_ventas(user):
-        return user.groups.filter(name='Ventas').exists()
+#ef is_ventas(user):
+#        return user.groups.filter(name='Ventas').exists()
 
         #for e in user.groups.values_list():
             #    print("e2 :" + str(e))
