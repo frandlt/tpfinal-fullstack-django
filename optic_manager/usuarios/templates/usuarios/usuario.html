@@ -17,7 +17,7 @@
     </ul>
 
     {% if grupo == "Ventas" %}
-        <a href="{% url 'generar_pedido.html' %}">Generar pedido para paciente</a>
+        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a>
     {% endif %}
 
     <a href="{% url 'logout' %}">Desconectarse</a>
