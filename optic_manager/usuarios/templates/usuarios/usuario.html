@@ -16,9 +16,9 @@
 
     </ul>
 
-    <!-- {% if request.user.username == "ventas.trinitas" %}
-        <a href="{% url 'ejemplo.html' %}">Generar pedido para paciente</a>
-    {% endif %} -->
+    {% if grupo == "Ventas" %}
+        <a href="{% url 'generar_pedido.html' %}">Generar pedido para paciente</a>
+    {% endif %}
 
     <a href="{% url 'logout' %}">Desconectarse</a>
 {% endblock %}
