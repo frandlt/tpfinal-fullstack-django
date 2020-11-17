@@ -8,7 +8,7 @@
 <form action="{% url 'login' %}" method="post" id="login-form">
     {% csrf_token %}
 
-  <!-- <div class="form-group">
+ <div class="form-group">
     <h4 class="mb-3">Pedido de venta a paciente</h4>
 
     <label for="inputUsuario">Seleccionar paciente</label>
@@ -66,12 +66,12 @@
 
     <div class="form-group col-md-4">
             <button type="submit" class="btn btn-primary" value="Login">Login</button>
-    </div> -->
+    </div>
 
     </form>
 
     <a href="{% url 'index' %}">Volver atrás</a>
 
-    <!-- <script type="text/javascript" src=" url './generar_pedido.html' "></script> -->
+    <script type="text/javascript" src=" {% url './generar_pedido.js' %}"></script>
 
 {% endblock %}
