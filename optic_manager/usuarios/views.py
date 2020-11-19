@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
+from sistema.models import Paciente
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -9,8 +10,8 @@ def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
     if 'grupo' not in request.session:
-        request.session['grupo'] = grupo
-        print("REQUEST.SESSION = " + request.session['grupo'])
+        grupo = request.session['grupo'] 
+        print("REQUEST.SESSION = " + grupo)
         return render(request, "usuarios/usuario.html", {
             'grupo': request.session['grupo']
         })
@@ -65,7 +66,10 @@ def generar_turno_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Secretaria':
             print("render generar turno")
-            return render(request, 'usuarios/generar_turno.html', {})
+            return render(request, 'usuarios/generar_turno.html', {
+                'medicos': User.objects.filter(groups__name='Profesional médico'),
+                'pacientes': Paciente.objects.all()
+            })
         else:
             return HttpResponseRedirect(reverse("usuario"))
     else:
