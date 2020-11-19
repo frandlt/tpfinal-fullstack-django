@@ -18,6 +18,13 @@
 
     {% if grupo == "Ventas" %}
         <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a>
+        </br>
+    {% endif %}
+
+
+    {% if grupo == "Secretaria" %}
+        <a href="{% url 'generar_turno' %}">Generar turno para paciente</a>
+        </br>
     {% endif %}
 
     <a href="{% url 'logout' %}">Desconectarse</a>

@@ -59,6 +59,18 @@ def generar_pedido_view(request):
     else:
         return HttpResponseRedirect(reverse("usuario"))
 
+def generar_turno_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Secretaria':
+            print("render generar turno")
+            return render(request, 'usuarios/generar_turno.html', {})
+        else:
+            return HttpResponseRedirect(reverse("usuario"))
+    else:
+        return HttpResponseRedirect(reverse("usuario"))
+
 #def ejemplo_view(request):
 #    return HttpResponse()
 

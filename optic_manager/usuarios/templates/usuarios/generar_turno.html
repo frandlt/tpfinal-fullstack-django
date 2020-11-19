@@ -1,0 +1,63 @@
+{% extends "./layout.html" %}
+
+{% block body %}
+
+{% load static %}
+
+<h4 class="mb-3 heading">Pedido de turno para paciente</h4>
+
+<form action="{% url 'generar_turno' %}" method="post" id="turno-form" class="needs-validation" novalidate>
+  {% csrf_token %}
+
+
+
+    <div class="form-group col-md-4">
+      
+
+      <div class="form-check">
+        <label for="inputPaciente" class="mb-2">Seleccionar paciente</label>
+        <select class="form-control" id="inputPaciente">
+          <option value="1">Robert Shiller</option>
+          <option value="2">Eugene Page</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputMedico" class="mb-2">Seleccionar médico</label>
+        <select class="form-control" id="inputMedico">
+          <option value="1">Anthony Fauci</option>
+          <option value="2">Harvey Alter</option>
+          <option value="3">Michael Houghton</option>
+          <option value="3">Charles Rice</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label class="form-check-label mb-2" for="inputDate">
+          Seleccionar fecha
+        </label>
+        <input class="form-control" type="datetime-local" value="" id="inputDate" required></input>
+        <div class="invalid-feedback">
+          Por favor, seleccione una fecha válida.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <button type="submit" class="btn btn-primary" value="Registrar">Registrar Turno</button>
+      </div>
+    </div>
+  
+  </form>
+
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
+
+{% endblock %}

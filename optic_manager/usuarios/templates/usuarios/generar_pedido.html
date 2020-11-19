@@ -4,14 +4,12 @@
 
 {% load static %}
 
-<h4>holis</h4>
+<h4 class="mb-3 heading">Pedido de venta a paciente</h4>
 
 <form action="{% url 'login' %}" method="post" id="login-form">
   {% csrf_token %}
 
   <div class="form-group">
-    <h4 class="mb-3">Pedido de venta a paciente</h4>
-
     <label for="inputUsuario">Seleccionar paciente</label>
     <select class="form-control" id="inputUsuario">
       <option value="1">Robert Shiller</option>
