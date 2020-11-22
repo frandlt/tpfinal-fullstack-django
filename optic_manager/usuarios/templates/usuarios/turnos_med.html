@@ -1,0 +1,51 @@
+{% extends "./layout.html" %}
+
+{% block body %}
+
+{% load static %}
+
+<h4 class="mb-3 heading">Turnos del Profesional Médico para el día de hoy (<span id="today"></span>)</h4>
+<h5 class="mb-5">Profesional Médico: <span id="nombreMedico">Anthony Fauci</span></h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Horario</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>15:00 hs</td>
+        </tr>
+        <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>16:00 hs</td>
+        </tr>
+        <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird</td>
+            <td>17:00 hs</td>
+        </tr>
+    </tbody>
+</table>
+
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript">
+    var today = new Date();
+    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+
+    document.getElementById('today').innerHTML = date;
+</script>
+
+{% endblock %}

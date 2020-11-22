@@ -32,5 +32,10 @@
         </br>
     {% endif %}
 
+        {% if grupo == "Profesional medico" %}
+        <a href="{% url 'turnos_med' %}">Ver turnos de hoy</a>
+        </br>
+    {% endif %}
+
     <a href="{% url 'logout' %}">Desconectarse</a>
 {% endblock %}

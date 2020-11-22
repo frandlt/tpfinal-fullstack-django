@@ -1,6 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import Group, User
-from sistema.models import Paciente
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -87,7 +86,17 @@ def editar_paciente_view(request):
     else:
         return HttpResponseRedirect(reverse("usuario"))
 
-
+def turnos_med_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Profesional medico':
+            print("render turnos_med")
+            return render(request, 'usuarios/turnos_med.html', {})
+        else:
+            return HttpResponseRedirect(reverse("usuario"))
+    else:
+        return HttpResponseRedirect(reverse("usuario"))
 
 #def ejemplo_view(request):
 #    return HttpResponse()
