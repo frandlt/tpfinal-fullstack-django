@@ -16,12 +16,6 @@
 
       <div class="form-check">
         <label for="inputPaciente" class="mb-2">Seleccionar paciente</label>
-        
-        <!--<select class="form-control" id="inputPaciente">
-          <option value="1">Robert Shiller</option>
-          <option value="2">Eugene Page</option>
-        </select>-->
-
         <input list="pacientes" class="form-control" id="inputPaciente">
         <datalist id="pacientes">
           {% for paciente in pacientes%}
@@ -37,10 +31,6 @@
       <div class="form-check">
         <label for="inputMedico" class="mb-2">Seleccionar médico</label>
         <select class="form-control" id="inputMedico">
-          <!--<option value="1">Anthony Fauci</option>
-          <option value="2">Harvey Alter</option>
-          <option value="3">Michael Houghton</option>
-          <option value="3">Charles Rice</option>-->
           {% for med in medicos %}
             {%i=0%}
             <option value="{{i+=1}}">{{med.first_name}} {{med.last_name}}</option>

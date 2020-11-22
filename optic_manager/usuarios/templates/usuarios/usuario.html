@@ -27,5 +27,10 @@
         </br>
     {% endif %}
 
+    {% if grupo == "Paciente" %}
+        <a href="{% url 'editar_paciente' %}">Editar información de contacto</a>
+        </br>
+    {% endif %}
+
     <a href="{% url 'logout' %}">Desconectarse</a>
 {% endblock %}
