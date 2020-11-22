@@ -4,12 +4,12 @@
 
 {% load static %}
 
-<h4 class="mb-3 heading">Actualización de Datos de Paciente</h4>
+
 
 <form action="{% url 'editar_paciente' %}" method="post" id="editar-paciente-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
-
+    <h4 class="mb-3 heading">Actualización de Datos de Paciente</h4>
 
      <div class="form-group col-md-4">
       <h4 class="mb-3">Pedido de turno para paciente</h4>
