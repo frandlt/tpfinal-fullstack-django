@@ -6,15 +6,15 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 1. Un sistema con un login de usuario con los siguientes roles:
 
-    1. Secretaría
+    a. Secretaría
 
-    2. Profesional medico
+    b. Profesional medico
 
-    3. Ventas
+    c. Ventas
 
-    4. Taller
+    d. Taller
 
-    5. Gerencia
+    e. Gerencia
 
 2. El sistema gestionará tres Modelos esenciales:
 
@@ -28,31 +28,31 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 4. Cada Paciente tiene su historial médico (solo el Profesional médico puede agregar que quiere adquirir, el precio (pueden ser más de un producto), un subtotal, tipo de pago (tarjeta de crédito, debido, billetera virtual o efectivo).
 
-  1. El producto tiene nombre, si está clasificado como Lente tendrá la opción de Lejos/Cerca, Izquierda/Derecha, si incluye Armazón o no. Observaciones al historial médico).
-
-  2. Una vez que se genera el pedido queda en estado “Pendiente”.
-
-  3. Luego el rol de Ventas puede cambiar el estado a “Pedido” o mandarlo a “Taller”.
-
 5. Cada Profesional médico puede ver el listado de Pacientes filtrando por día, mes o año. 
   
 6. El Profesional médico solo puede ver los Pacientes asignados a él. 
   
-7. El rol de Ventas puede generar un pedido para el Paciente, donde detalla el Producto  
+7. El rol de Ventas puede generar un pedido para el Paciente, donde detalla el Producto
+
+  a. El producto tiene nombre, si está clasificado como Lente tendrá la opción de Lejos/Cerca, Izquierda/Derecha, si incluye Armazón o no. Observaciones al historial médico).
+
+  b. Una vez que se genera el pedido queda en estado “Pendiente”.
+
+  c. Luego el rol de Ventas puede cambiar el estado a “Pedido” o mandarlo a “Taller”.
 
 8. El rol de Taller solo visualiza la lista de pedidos (con todos los detalles del producto sin los precios). El Taller puede confirmar cambiando el estado del pedido a “Finalizado”.
 
 9. Gerencia puede visualizar todos los datos y necesita los siguientes reportes:
 
-  1. Pacientes que asistieron a los turnos en la semana/mes.
+  a. Pacientes que asistieron a los turnos en la semana/mes.
 
-  2. Pacientes que no asistieron a los turnos en la semana/mes.
+  b. Pacientes que no asistieron a los turnos en la semana/mes.
 
-  3. Pacientes que hicieron por lo menos un Pedido en la semana/mes.
+  c. Pacientes que hicieron por lo menos un Pedido en la semana/mes.
 
-  4. Productos más vendidos en el mes.
+  d. Productos más vendidos en el mes.
 
-  5. Ventas totales por mes clasificadas por Vendedores.
+  e. Ventas totales por mes clasificadas por Vendedores.
 
 
 ## Requisitos Obligatorios
@@ -71,11 +71,11 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 7. Se debe publicar un video de YouTube que demuestre el funcionamiento de todo el sistema.
 
-  1. El video debe tener en el titulo el nombre del curso completo.
+  a. El video debe tener en el titulo el nombre del curso completo.
 
-  2. En la descripción del video debe estar el nombre del curso, el nombre de la persona que presenta y su número de documento con el que se registró al curso.
+  b. En la descripción del video debe estar el nombre del curso, el nombre de la persona que presenta y su número de documento con el que se registró al curso.
 
-  3. En la descripción del video tiene que estar anotado el tiempo (minuto y segundo) de cada uno de los (9) puntos resueltos en el enunciado, mostrando su funcionalidad y la cumplimentación de los requerido.
+  c. En la descripción del video tiene que estar anotado el tiempo (minuto y segundo) de cada uno de los (9) puntos resueltos en el enunciado, mostrando su funcionalidad y la cumplimentación de los requerido.
 
 8. Se debe publicar un enlace con el código fuente publicado en GitHub con el usuario de la persona registrada en el curso.
 
@@ -83,6 +83,3 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 Cualquier falla en cumplimentar uno de los requisitos o puntos del enunciado derivará en la desaprobación del Trabajo Final sin posibilidad a recuperación. Es condición necesaria para la certificación de Desarrollador Full Stack con Python y JavaScript la aprobación del presente trabajo.
 
-### Enlace del Formulario de Presentación
-
-Todos los inscriptos, sin distinción, deberán presentar el Trabajo Final 2020 por medio del siguiente formulario https://forms.gle/yaBkU1RtDTzCpS1u8
