@@ -9,14 +9,13 @@
 <form action="{% url 'editar_paciente' %}" method="post" id="editar-paciente-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
-    <h4 class="mb-3 heading">Actualización de Datos de Paciente</h4>
+    <h4 class="mb-3 heading">Actualización de Datos de {{ request.user.first_name}} {{ request.user.last_name}} {{ request.usuarios_paciente.id}}</h4>
 
      <div class="form-group col-md-4">
-      <h4 class="mb-3">Pedido de turno para paciente</h4>
 
       <div class="form-check">
         <label for="inputDni" class="mb-2">Inserte DNI</label>
-        <input type="number" class="form-control" id="inputDni" placeholder="DNI" required>
+        <input type="number" class="form-control" id="inputDni" placeholder="DNI" required>{{ request.usuarios_paciente.dni}}
       </div>
     </div>
 
