@@ -71,11 +71,11 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 7. Se debe publicar un video de YouTube que demuestre el funcionamiento de todo el sistema.
 
-  a. El video debe tener en el titulo el nombre del curso completo.
+    a. El video debe tener en el titulo el nombre del curso completo.
 
-  b. En la descripción del video debe estar el nombre del curso, el nombre de la persona que presenta y su número de documento con el que se registró al curso.
+    b. En la descripción del video debe estar el nombre del curso, el nombre de la persona que presenta y su número de documento con el que se registró al curso.
 
-  c. En la descripción del video tiene que estar anotado el tiempo (minuto y segundo) de cada uno de los (9) puntos resueltos en el enunciado, mostrando su funcionalidad y la cumplimentación de los requerido.
+    c. En la descripción del video tiene que estar anotado el tiempo (minuto y segundo) de cada uno de los (9) puntos resueltos en el enunciado, mostrando su funcionalidad y la cumplimentación de los requerido.
 
 8. Se debe publicar un enlace con el código fuente publicado en GitHub con el usuario de la persona registrada en el curso.
 
