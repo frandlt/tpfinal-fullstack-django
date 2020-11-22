@@ -6,15 +6,15 @@ Una clínica de Optometría necesita un sistema web en Django que le permita ges
 
 1. Un sistema con un login de usuario con los siguientes roles:
 
-  1. Secretaría
+    1. Secretaría
 
-  2. Profesional medico
+    2. Profesional medico
 
-  3. Ventas
+    3. Ventas
 
-  4. Taller
+    4. Taller
 
-  5. Gerencia
+    5. Gerencia
 
 2. El sistema gestionará tres Modelos esenciales:
 
