@@ -1,0 +1,120 @@
+{% extends "./layout.html" %}
+
+{% block body %}
+
+{% load static %}
+
+<h4 class="mb-3 heading">Pedido de venta a paciente</h4>
+
+<form action="{% url 'login' %}" method="post" id="login-form">
+  {% csrf_token %}
+
+  <!-- Selecciona Paciente y trae último id de pedido + 1 -->
+  <div class="form-group">
+    <h4 class="mb-3">Pedido de venta a paciente</h4>
+    <h5 class="mb-3">N° <span id="pedido">15237</span></h5>
+
+    <label for="inputPaciente">Paciente</label>
+    <select class="form-control" id="inputPaciente">
+      <option value="1">Robert Shiller</option>
+      <option value="2">Eugene Page</option>
+    </select>
+  </div>
+
+  <!-- Selecciona tipo de producto, entre Otro Producto o Lente. En función de esto, trae otros campos en caso de ser Lente. -->
+  <div class="form-group">
+    <label for="opcionesLente">Tipo de Producto</label>
+    <select class="form-control" id="opcionesLente" onchange="run()">
+      <option value="producto">Otro producto</option>
+      <option value="lente">Lente</option>
+    </select>
+  </div>
+
+  <!-- Campos mostrados en caso de ser Otro Producto (sólo pide seleccionar producto) -->
+  <div class="form-group" id="inputsOtroProducto">
+    <label for="inputProducto">Producto</label>
+    <select class="form-control" id="inputProducto">
+      <option value="1">Cadena para lentes</option>
+      <option value="2">Estuche</option>
+    </select>
+  </div>
+
+  <!-- Campos mostrados en caso de ser Lente ( pide seleccionar Lejos/Cerca, Izquierda/Derecha o Con/Sin Armazón) -->
+  <div class="form-group" id="inputsLente">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="inputFarClose">Lejos o Cerca?</label>
+        <select id="inputFarClose" onchange="run()" class="form-control">
+          <option selected>Lejos</option>
+          <option>Cerca</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputLeftRight">Izquierda o Derecha?</label>
+        <select id="inputLeftRight" onchange="run()" class="form-control">
+          <option selected>Izquierda</option>
+          <option>Derecha</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="inputArmazon">Con o sin Armazón?</label>
+        <select id="inputArmazon" onchange="run()" class="form-control">
+          <option selected>Con Armazón</option>
+          <option>Sin Armazón</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Campos de Cantidad, Precio, Subtotal y Medio de Pago. Precio viene del modelo de Productos, que se va a reconocer según el id de producto seleccionado anteriormente. -->
+  <div class="form-group">
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label for="inputCantidad">Cantidad</label>
+        <input type="number" class="form-control" id="inputCantidad" name="cantidad" onchange="calculo_subtotal()">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputPrecio">Precio</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" class="form-control" id="inputPrecio" name="precio" onchange="calculo_subtotal()">
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputSubtotal">Subtotal</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="text" class="form-control" id="inputSubtotal" name="subtotal" readonly value="0">
+        </div>
+      </div>
+      <div class="form-group col-md-4 offset-md-2">
+        <label for="inputMedioDePago">Medio de Pago</label>
+        <select class="form-control" id="inputMedioDePago">
+          <option value="1">Tarjeta de Crédito</option>
+          <option value="2">Tarjeta de Débito</option>
+          <option value="3">Billetera Virtual</option>
+          <option value="4">Efectivo</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <h5 id="texto"></h5>
+
+  <div class="form-group">
+    <div class="form mt-2">
+      <button type="submit" class="btn btn-primary" value="Registrar">Generar Pedido</button>
+    </div>
+  </div>
+
+</form>
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
+
+{% endblock %}
