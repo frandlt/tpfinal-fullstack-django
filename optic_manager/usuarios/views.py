@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from .models import Paciente
+
 # Create your views here.
 def index(request):
     if not request.user.is_authenticated:
@@ -69,6 +71,28 @@ def generar_turno_view(request):
                 #'medicos': User.objects.filter(groups__name='Profesional médico'),
                 #'pacientes': Paciente.objects.all()
             })
+        else:
+            return HttpResponseRedirect(reverse("usuario"))
+    else:
+        return HttpResponseRedirect(reverse("usuario"))
+
+def agregar_paciente_view(request):
+    if request.POST:
+        paciente = Paciente()
+        paciente.first_name = request.POST["first_name"]
+        paciente.last_name  = request.POST["last_name"]
+        paciente.dni = request.POST["dni"]
+        paciente.fecha_nacimiento = request.POST["fecha_nacimiento"]
+        paciente.email = request.POST["email"]
+        paciente.telefono = request.POST["telefono"]
+        paciente.save()
+    
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Secretaria':
+            print("render agregar paciente")
+            return render(request, 'usuarios/agregar_paciente.html', {})
         else:
             return HttpResponseRedirect(reverse("usuario"))
     else:

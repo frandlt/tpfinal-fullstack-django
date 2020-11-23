@@ -1,0 +1,73 @@
+{% extends "./layout.html" %}
+
+{% block body %}
+
+{% load static %}
+
+<h4 class="mb-3 heading">Agregar nuevo paciente</h4>
+
+<form action="{% url 'agregar_paciente' %}" method="post" id="agregar-paciente-form" class="needs-validation" novalidate>
+  {% csrf_token %}
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputNombre" class="mb-2">Nombre</label>
+        <input type="text" class="form-control" id="inputNombre" placeholder="Nombre" required name="first_name">
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputApellido" class="mb-2">Apellido</label>
+        <input type="text" class="form-control" id="inputApellido" placeholder="Apellido" required name="last_name">
+      </div>
+    </div>
+
+     <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputDni" class="mb-2">DNI</label>
+        <input type="number" class="form-control" id="inputDni" placeholder="DNI" required name="dni">
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputEmail">Dirección de Email</label>
+        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Email" required name="email">
+        <small id="emailHelp" class="form-text text-muted">No vamos a compartir su email con servicios externos.</small>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label class="form-check-label mb-2" for="inputNacimiento">
+          Fecha de nacimiento
+        </label>
+        <input class="form-control" type="date" value="" id="inputNacimiento" required name="fecha_nacimiento"></input>
+        <div class="invalid-feedback">
+          Por favor, seleccione una fecha válida.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputTelefono" class="mb-2">Teléfono</label>
+        <input type="number" class="form-control" id="inputTelefono" placeholder="Teléfono" required name="telefono">
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <button type="submit" class="btn btn-primary" value="Agregar_Paciente">Agregar Paciente</button>
+      </div>
+    </div>
+  
+  </form>
+
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
+
+{% endblock %}

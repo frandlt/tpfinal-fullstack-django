@@ -23,16 +23,15 @@
 
 
     {% if grupo == "Secretaria" %}
+        <a href="{% url 'agregar_paciente' %}">Agregar información de contacto</a>
+        </br>
+        <a href="{% url 'editar_paciente' %}">Editar información de contacto</a>
+        </br>
         <a href="{% url 'generar_turno' %}">Generar turno para paciente</a>
         </br>
     {% endif %}
 
-    {% if grupo == "Paciente" %}
-        <a href="{% url 'editar_paciente' %}">Editar información de contacto</a>
-        </br>
-    {% endif %}
-
-        {% if grupo == "Profesional medico" %}
+    {% if grupo == "Profesional medico" %}
         <a href="{% url 'turnos_med' %}">Ver turnos de hoy</a>
         </br>
     {% endif %}
