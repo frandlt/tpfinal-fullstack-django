@@ -13,10 +13,8 @@
 
 
     <div class="form-group col-md-4">
-      
-
       <div class="form-check">
-        <label for="inputPaciente" class="mb-2">Seleccionar paciente</label>
+        <label for="inputPaciente" class="mb-2">Paciente</label>
         <select class="form-control" id="inputPaciente" name="paciente">
           {% for paciente in pacientes %}
             <option value="{{paciente.dni}}">{{paciente.nombre}} {{paciente.apellido}}</option>
@@ -28,7 +26,7 @@
 
     <div class="form-group col-md-4">
       <div class="form-check">
-        <label for="inputMedico" class="mb-2">Seleccionar médico</label>
+        <label for="inputMedico" class="mb-2">Médico</label>
         <select class="form-control" id="inputMedico" name="medico">
           {% for med in medicos %}
             <option value="{{med.id}}">{{med.first_name}} {{med.last_name}}</option>
@@ -40,7 +38,7 @@
     <div class="form-group col-md-4">
       <div class="form-check">
         <label class="form-check-label mb-2" for="inputDate">
-          Seleccionar fecha
+          Fecha
         </label>
         <input class="form-control" type="date" value="" id="inputDate" name="fecha" required></input>
         <div class="invalid-feedback">
@@ -49,10 +47,24 @@
       </div>
     </div>
 
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label class="form-check-label mb-2" for="inputHour">
+          Horario
+        </label>
+        <input class="form-control" type="time" value="" id="inputHour" name="horario" required></input>
+        <div class="invalid-feedback">
+          Por favor, seleccione un horario válido.
+        </div>
+      </div>
+    </div>
+
+    <!--
     <div class="horario">
       <label class="horario" for="inputHour">Seleccionar horario</label>
       <input class="form-control" type="time" value="" id="inputTime" name="horario" required></input>
     </div>
+    -->
 
     <div class="form-group col-md-4">
       <div class="form-check">
