@@ -1,31 +1,42 @@
 from django.db import models
+from django.conf import settings
+from django.db import models
+from django.core.validators import MaxValueValidator
+from django.contrib.auth.models import User
 
-# Create your models here.
-class Paciente(models.Model):
-    paciente_id = models.AutoField(primary_key=True)
+
+class Paciente (models.Model):
     nombre = models.CharField(max_length=64)
     apellido = models.CharField(max_length=64)
-    fecha_nacimiento = models.DateField()
-    dni = models.IntegerField()
+    dni = models.PositiveIntegerField(validators=[MaxValueValidator(99999999)])
+    fecha_nacimiento= models.DateField()
+    email = models.EmailField()
+    telefono = models.CharField(max_length=15)
 
- #   def __str__(self):
- #       return f"{self.nombre} {self.apellido}"
+class Turno (models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    fecha = models.DateField()
+    horario= models.TimeField()
+    medico = models.ForeignKey(settings.AUTH_USER_MODEL, db_column="medico_id", on_delete=models.CASCADE)
+    asistencia = models.CharField(max_length=2, blank=True)
 
-class Medico(models.Model):
-    medico_id = models.AutoField(primary_key=True)
+class Producto(models.Model):
     nombre = models.CharField(max_length=64)
-    apellido = models.CharField(max_length=64)
-    fecha_nacimiento = models.DateField()
-    dni = models.IntegerField()
-#    pacientes_asignados = models.ManyToManyField(Paciente, blank=True, related_name="paciente_id")
+    descripcion = models.TextField(blank=True)
+    precio_actual = models.DecimalField(max_digits=8, decimal_places=2)
 
- #   def __str__(self):
- #       return f"{self.nombre} {self.apellido}"
+class Pedido (models.Model):
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
+    vendedor = models.ForeignKey(settings.AUTH_USER_MODEL, db_column="vendedor_id", on_delete=models.CASCADE)
+    fecha_hora = models.DateTimeField()
+    precio = models.DecimalField(max_digits=8, decimal_places=2)
+    cantidad= models.IntegerField()
+    #subtotal = models.DecimalField(max_digits=8, decimal_places=2)
+    medio_pago = models.CharField(max_length=20)
+    estado = models.CharField(max_length=30)
 
-#class Historial(models.Model):
-#    paciente_id = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name="paciente_id")
-#    medico_asignado = models.ForeignKey(Paciente, on_delete=models.CASCADE, related_name="medico_asignado")
-#    observaciones = models.CharField(max_length=1024)
-#
-#    def __str__(self):
-#        return f"{self.paciente_id} {self.medico_asignado}"
+class Diagnostico(models.Model):
+    turno=models.OneToOneField(Turno, on_delete=models.CASCADE)
+    diagnostico= models.TextField()
+    observacion= models.TextField()

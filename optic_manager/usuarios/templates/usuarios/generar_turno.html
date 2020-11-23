@@ -1,11 +1,12 @@
 {% extends "./layout.html" %}
-
-{% block body %}
-
 {% load static %}
 
-<h4 class="mb-3 heading">Pedido de turno para paciente</h4>
+<script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
+{% block body %}
 
+
+<h4 class="mb-3 heading">Pedido de turno para paciente</h4>
+<p style="color: green; font-size:14px">{{mensaje_exito}}</p>
 <form action="{% url 'generar_turno' %}" method="post" id="turno-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
@@ -16,21 +17,22 @@
 
       <div class="form-check">
         <label for="inputPaciente" class="mb-2">Seleccionar paciente</label>
-        <select class="form-control" id="inputPaciente">
-          <option value="1">Robert Shiller</option>
-          <option value="2">Eugene Page</option>
+        <select class="form-control" id="inputPaciente" name="paciente">
+          {% for paciente in pacientes %}
+            <option value="{{paciente.dni}}">{{paciente.nombre}} {{paciente.apellido}}</option>
+          {% endfor %}
         </select>
+
       </div>
     </div>
 
     <div class="form-group col-md-4">
       <div class="form-check">
         <label for="inputMedico" class="mb-2">Seleccionar médico</label>
-        <select class="form-control" id="inputMedico">
-          <option value="1">Anthony Fauci</option>
-          <option value="2">Harvey Alter</option>
-          <option value="3">Michael Houghton</option>
-          <option value="3">Charles Rice</option>
+        <select class="form-control" id="inputMedico" name="medico">
+          {% for med in medicos %}
+            <option value="{{med.id}}">{{med.first_name}} {{med.last_name}}</option>
+          {% endfor %}
         </select>
       </div>
     </div>
@@ -40,11 +42,16 @@
         <label class="form-check-label mb-2" for="inputDate">
           Seleccionar fecha
         </label>
-        <input class="form-control" type="datetime-local" value="" id="inputDate" required></input>
+        <input class="form-control" type="date" value="" id="inputDate" name="fecha" required></input>
         <div class="invalid-feedback">
           Por favor, seleccione una fecha válida.
         </div>
       </div>
+    </div>
+
+    <div class="horario">
+      <label class="horario" for="inputHour">Seleccionar horario</label>
+      <input class="form-control" type="time" value="" id="inputTime" name="horario" required></input>
     </div>
 
     <div class="form-group col-md-4">
@@ -58,6 +65,5 @@
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
-<script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
 
 {% endblock %}

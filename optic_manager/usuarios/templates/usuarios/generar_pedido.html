@@ -1,100 +1,135 @@
 {% extends "./layout.html" %}
+{% load static %}
 
 {% block body %}
 
-{% load static %}
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
+
+<h1>{{hola}}</h1>
 
 <h4 class="mb-3 heading">Pedido de venta a paciente</h4>
+<p style="color: red; font-size: 20px">{{mensaje_error}}<p>
 
-<form action="{% url 'login' %}" method="post" id="login-form">
+<form action="{% url 'generar_pedido' %}" method="post" id="login-form">
   {% csrf_token %}
 
+  <!-- Selecciona Paciente y trae último id de pedido + 1 -->
   <div class="form-group">
-    <label for="inputUsuario">Seleccionar paciente</label>
-    <select class="form-control" id="inputUsuario">
-      <option value="1">Robert Shiller</option>
-      <option value="2">Eugene Page</option>
+    <h4 class="mb-3">Pedido de venta a paciente</h4>
+    <h5 class="mb-3">N° <span id="pedido">{{nuevo_id}}</span></h5>
+
+    <label for="inputPaciente">Paciente</label>
+    <select class="form-control" id="inputPaciente" name="paciente">
+      {% for paciente in pacientes %}
+        <option value="{{paciente.dni}}">{{paciente.nombre}} {{paciente.apellido}}</option>
+      {% endfor %}
     </select>
   </div>
 
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="inputRadio" id="inputRadio1" value="option1" checked>
-    <label class="form-check-label" for="inputRadio1">
-      Lente
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="radio" name="inputRadio" id="inputRadio1" value="option2">
-    <label class="form-check-label" for="inputRadio1">
-      Otro producto
-    </label>
-  </div>
-
-  <div class="form-group col-md-6">
-    <label for="inputPrecio">Precio</label>
-    <input type="text" class="form-control" id="inputPrecio" name="precio">
-  </div>
-
-  <div class="form-group col-md-6">
-    <label for="InputPassword">Contraseña</label>
-    <input type="password" class="form-control" id="InputPassword" name="password">
-  </div>
-
+  <!-- Selecciona tipo de producto, entre Otro Producto o Lente. En función de esto, trae otros campos en caso de ser Lente. -->
   <div class="form-group">
-    <label for="seeAnotherFieldGroup">Do You Want To See Another Group of Fields?</label>
-    <select class="form-control" id="seeAnotherFieldGroup">
-      <option value="no">Otro producto</option>
-      <option value="yes">Lente</option>
+    <label for="opcionesLente">Tipo de Producto</label>
+    <select class="form-control" id="opcionesLente" onchange="run()" name="tipo">
+      <option value="producto">Otro producto</option>
+      <option value="lente">Lente</option>
     </select>
   </div>
 
-  <div class="form-group" id="otherFieldGroupDiv">
-    <div class="row">
-      <div class="col-6">
-        <label for="otherField1">Group: Heres One!</label>
-        <input type="text" class="form-control w-100" id="otherField1">
-      </div>
-      <div class="col-6">
-        <label for="otherField2">Group: Another One!</label>
-        <input type="text" class="form-control w-100" id="otherField2">
-      </div>
-    </div>
+  <!-- Campos mostrados en caso de ser Otro Producto (sólo pide seleccionar producto) -->
+  <div class="form-group" id="inputsOtroProducto">
+    <label for="inputProducto">Producto</label>
+    <select class="form-control" id="inputProducto" name="id-otro">
+      {% for prod in otros_productos %}
+        <option value="{{prod.id}}">{{prod.nombre}} ({{prod.descripcion}})</option>
+      {% endfor %}
+    </select>
   </div>
 
-  <div class="form-group" id="otherFieldGroupDiv2">
+  <!-- Campos mostrados en caso de ser Lente ( pide seleccionar Lejos/Cerca, Izquierda/Derecha o Con/Sin Armazón) -->
+  <div class="form-group" id="inputsLente">
     <div class="row">
       <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <select id="inputState" class="form-control">
+        <label for="inputFarClose">Lejos o Cerca?</label>
+        <select id="inputFarClose" onchange="run()" class="form-control">
           <option selected>Lejos</option>
           <option>Cerca</option>
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <select id="inputState" class="form-control">
+        <label for="inputLeftRight">Izquierda o Derecha?</label>
+        <select id="inputLeftRight" onchange="run()" class="form-control">
           <option selected>Izquierda</option>
           <option>Derecha</option>
         </select>
       </div>
       <div class="form-group col-md-4">
-        <label for="inputState">State</label>
-        <select id="inputState" class="form-control">
+        <label for="inputArmazon">Con o sin Armazón?</label>
+        <select id="inputArmazon" onchange="run()" class="form-control">
           <option selected>Con Armazón</option>
           <option>Sin Armazón</option>
         </select>
       </div>
     </div>
   </div>
+<button type="button" id="buscar" onclick="buscar()">BUSCAR</button>
 
-  <div class="form-group col-md-4">
-    <button type="submit" class="btn btn-primary" value="Login">Login</button>
+
+  <!-- Campos de Cantidad, Precio, Subtotal y Medio de Pago. Precio viene del modelo de Productos, que se va a reconocer según el id de producto seleccionado anteriormente. -->
+  <div class="form-group">
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label for="inputCantidad">Cantidad</label>
+        <input type="number" class="form-control" id="inputCantidad" name="cantidad" onchange="calculo_subtotal()" required>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputPrecio">Precio</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="number" class="form-control" id="inputPrecio" name="precio" onchange="calculo_subtotal()" readonly/>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputSubtotal">Subtotal</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+          </div>
+          <input type="text" class="form-control" id="inputSubtotal" name="subtotal" readonly value="0">
+        </div>
+      </div>
+      <div class="form-group col-md-4 offset-md-2">
+        <label for="inputMedioDePago">Medio de Pago</label>
+        <select class="form-control" id="inputMedioDePago" name="medio_pago">
+          <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+          <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+          <option value="Billetera Virtual">Billetera Virtual</option>
+          <option value="Efectivo">Efectivo</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="estado">
+    <select name="estado">
+      <option value="Pedido">Pedido</option>
+      <option value="Taller">Mandar a Taller</option>
+    </select>
+  </div>
+  <h5 id="texto" ></h5>
+  <input type="hidden" name="id-lente" id="hidden-input-id"/>
+
+  <div class="form-group">
+    <div class="form mt-2">
+      <button type="submit" class="btn btn-primary" value="Registrar">Generar Pedido</button>
+    </div>
   </div>
 
 </form>
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
-<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
 
 {% endblock %}

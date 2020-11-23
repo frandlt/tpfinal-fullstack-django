@@ -1,0 +1,89 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+   
+{% block body %}
+
+<script type="text/javascript">
+    var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
+    console.log(turnos_hoy)
+
+    document.addEventListener("DOMContentLoaded", function(){
+        //location.reload();
+        var tbody = document.querySelector('tbody');
+        var trs = tbody.getElementsByTagName('tr');
+        var x = 0;
+        for (tr of trs){
+            var select = tr.querySelector("select");
+            console.log(select);
+            var id_turno = tr.getElementsByClassName("id-turno").value;
+            //var id_turno = tr.getElementsByClassName("id-turno").value;
+            console.log(id_turno);
+            var turno = turnos_hoy[x];
+            x++;
+            console.log(turno);
+            console.log(turno["fields"]["asistencia"]);
+            if (turno["fields"]["asistencia"]){
+                if (turno["fields"]["asistencia"]=== "SI"){
+                    select.querySelector('.si').selected = 'selected';
+                }else{
+                    select.querySelector('.no').selected = 'selected';
+                }
+            }
+        };
+    })
+
+    document.addEventListener("DOMContentLoaded", function alert(callback){
+        document.querySelector(".submit").onclick = function(){
+           callback();
+    }})
+    alert(function(){
+       location.reload();
+   })
+   
+        
+</script>
+
+<script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>
+
+    <h1>Turnos de hoy</h1>
+    <h2 id="today"></h2>
+    <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Horario</th>
+            <th scope="col">Profesional Medico</th>
+            <th scope="col">Asistencia</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for turno in turnos_hoy %}
+            <tr class="row_body">
+                <th scope="row" class="num"></th>
+                <td>{{turno.paciente.nombre}}</td>
+                <td>{{turno.paciente.apellido}}</td>
+                <td>{{turno.horario}}</td>
+                <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
+                <td><form action="{% url 'turnos_hoy' %}" method="POST">
+                    {% csrf_token %}
+                    <select>
+                        <option class="no" value="NO">NO</option>
+                        <option class="si" value="SI">SI</option>
+                    </select>
+                    <input type="hidden" class="id-turno" value="{{turno.id}}"/>
+                    
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+
+<input type="submit" class="submit" value="Guardar cambios" ></form><br>
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+{% endblock %}
