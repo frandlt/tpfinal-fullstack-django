@@ -23,7 +23,17 @@
 
 
     {% if grupo == "Secretaria" %}
+        <h2>Turnos</h2>
         <a href="{% url 'generar_turno' %}">Generar turno para paciente</a>
+        </br>
+        <a href="{% url 'turnos_hoy' %}">Turnos de hoy</a>
+        </br>
+        <!--<a href="{% url 'editar_turnos' %}">Editar Turnos</a>
+        </br>
+        <h2>Pacientes</h2>
+        <a href="{% url 'editar_paciente' %}">Editar paciente existente</a>
+        </br>
+        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>-->
         </br>
     {% endif %}
 

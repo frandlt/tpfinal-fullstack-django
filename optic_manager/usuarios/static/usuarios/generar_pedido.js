@@ -1,3 +1,5 @@
+var productos_serializados = JSON.parse('{{turnos_serializados | safe}}');
+
 /* $("#seeAnotherFieldGroup").change(function() {
     if ($(this).val() == "yes") {
       $('#otherFieldGroupDiv').show();
@@ -14,7 +16,7 @@
     }
   });
   $("#seeAnotherFieldGroup").trigger("change"); */
-
+var calculo_id = 0;
   $("#opcionesLente").click(function () {
     if ($("#radio_button").is(":checked")) {
       alert("it's checked");
@@ -87,7 +89,7 @@
   
     var str1 = "Resultado: ";
     var mid = " - ";
-    var calculo_id = 0;
+    
   
     if (e.value == "lente") {
       console.log("ES LENTE");
@@ -133,6 +135,9 @@
         calculo_id,
         ")"
       );
+
+      document.getElementById("hidden-input-id").value = calculo_id;
+
     } else {
       document.getElementById("texto").innerHTML = str1.concat(e_text);
     }
@@ -142,6 +147,20 @@
     var valor = valor.replace("ó", "o");
     console.log("Valor: " + valor);
   }
+
+var precio=0
+
+  function buscar(){
+    if (calculo_id<=8){
+      var producto = productos.get(id=calculo_id);
+      }else {
+        var x = document.querySelector('#inputProducto').value;
+        var producto = productos.get(id=x);
+      }
+      precio = parseFloat(producto.precio_actual);
+      document.querySelector('#inputPrecio').value = precio;
+  }
+
   
   function calculo_subtotal() {
     var cantidad = document.getElementById("inputCantidad").value;
@@ -169,4 +188,5 @@
       document.getElementById("inputSubtotal").value = "0";
     }
   }
+
   

@@ -1,0 +1,24 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1>Agregar paciente nuevo<h1>
+<p style="color: green; font-size: 14px">{{mensaje_exito}}</p>
+<p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
+<!--Aca podría agregar un cheqeo de que no pertenezca ya a mis pacientes-->
+<h2>Ingrese sus datos</h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="text" name="nombre" placeholder="Nombre" required/>
+    <input type="text" name="apellido" placeholder="Apellido" required/>
+    <input type="number" name="dni" placeholder="D.N.I." required/>
+    <input type="date" name="fec_nac" placeholder="Fecha de nacimiento" required/>
+    <input type="email" name="mail" placeholder="Correo electronico" required/>
+    <input type="text" name="telefono" placeholder="Numero de telefono" required/>
+    <input type="submit" value="CREAR"/>
+
+</form>
+
+<h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2>
+
+{% endblock %}
