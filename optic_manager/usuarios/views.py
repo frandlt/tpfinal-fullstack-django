@@ -205,8 +205,11 @@ def turnos_hoy_view(request):
         if grupo == 'Secretaria':
             print("render turnos hoy")
             turnos_hoy = Turno.objects.filter(fecha=datetime.date.today())
+            #turnos_jane = Turno.objects.filter(paciente_id="2")
+            #print("turnos_jane = " + str(turnos_jane))
             if request.method == "POST":
                 for i in range(1,len(turnos_hoy)+1):
+                    print("i = " + str(i))
                     turno = Turno.objects.get(id=request.POST["id-"+str(i)])
                     turno.asistencia = request.POST["asist-"+str(i)]
                     turno.save()

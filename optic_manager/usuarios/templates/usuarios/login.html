@@ -5,11 +5,11 @@
 <h1 class="heading">Log In</h1>
 
 {% if mensaje == "Desconectado." %}
-    <div class="alert alert-success" role="alert">
+    <div class="alert alert-success col-md-6" role="alert">
         {{ mensaje }}
     </div>
 {% elif mensaje == "Credenciales no validas." %}
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger col-md-6" role="alert">
         {{ mensaje }}
     </div>
 {% endif %}

@@ -33,6 +33,25 @@
         };
     })
 
+    //Lo que esto hace es directamente leer los cambios
+    /*
+    function guardar_cambios(){
+        location.reload();
+        
+    }
+    */
+/*
+    
+
+    document.addEventListener("DOMContentLoaded", function alert(callback){
+        document.querySelector(".submit").onclick = function(){
+           callback();
+    }})
+    alert(function(){
+       location.reload();
+   })*/
+
+    /*
     document.addEventListener("DOMContentLoaded", function alert(callback){
         document.querySelector(".submit").onclick = function(){
            callback();
@@ -40,11 +59,12 @@
     alert(function(){
        location.reload();
    })
+   */
    
         
 </script>
 
-<script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>
+<<script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>
 
     <h1>Turnos de hoy</h1>
     <h2 id="today"></h2>
@@ -82,7 +102,7 @@
     </tbody>
 </table>
 
-<input type="submit" class="submit" value="Guardar cambios" ></form><br>
+<input type="submit" class="submit" value="Guardar cambios" onclick="guardar_cambios"></form><br>
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
