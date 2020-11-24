@@ -4,37 +4,51 @@
 
 {% load static %}
 
-<h4 class="mb-3 heading">Turnos del Profesional Médico para el día de hoy (<span id="today"></span>)</h4>
-<h5 class="mb-5">Profesional Médico: <span id="nombreMedico">Anthony Fauci</span></h5>
+<!--<h4 class="mb-3 heading">Turnos del Profesional Médico para el día de hoy (<span id="today"></span>)</h4>-->
+<h4 class="mb-3 heading">Ver Turnos</h4>
+<h5 class="mb-5">Profesional Médico: <span id="nombreMedico">{{medico.last_name}}, {{medico.first_name}}.</span></h5>
+<button type="button" id="boton_hoy">VER PACIENTES DE HOY</button>
+<h6 id="periodo">Filtrar pacientes por:</h6>
+<div id="filtros">
 
+    <form id="periodo">
+        <select id="opciones_filtros">
+            <option value="dia">Día</option>
+            <option value="mes">Mes</option>
+            <option value="ano">Año</option>
+        </select>
+        <button type="button" id="boton_select">Seleccionar</button>
+    </form>
+    <br>
+    <form id="dia" style="display: none" class="fecha">
+        <input type="date" id="dia_buscado"></input>
+        <button type="button" class="buscar" id="buscar_dia">BUSCAR</button>
+    </form>
+    <br>
+    <form id="mes" style="display: none" class="fecha">
+        <input type="month" id="mes_buscado"></input>
+        <button type="button" class="buscar" id="buscar_mes">BUSCAR</button>
+    </form>
+    <br>
+    <form id="ano" style="display: none" class="fecha">
+        <input type="number" id="ano_buscado"></input>
+        <button type="button" class="buscar" id="buscar_ano">BUSCAR</button>
+    </form>
+
+</div>
+
+<h5 class="mb-5">Listado de turnos</h5>
 <table class="table">
     <thead>
         <tr>
             <th scope="col">#</th>
             <th scope="col">Nombre</th>
             <th scope="col">Apellido</th>
+            <th scope="col">Fecha</th>
             <th scope="col">Horario</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>15:00 hs</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>16:00 hs</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>17:00 hs</td>
-        </tr>
+    <tbody id="tbody">
     </tbody>
 </table>
 
@@ -42,10 +56,127 @@
 <a href="{% url 'index' %}">Volver atrás</a>
 
 <script type="text/javascript">
-    var today = new Date();
-    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    var turnos = JSON.parse('{{turnos_serializ | safe}}');
+    console.log(turnos);
+    var pacientes = JSON.parse('{{pacientes_serializ | safe}}');
+    console.log(pacientes);
+    var users = JSON.parse('{{users | safe}}');
+    console.log(users);
 
-    document.getElementById('today').innerHTML = date;
+    document.getElementById("boton_select").addEventListener("click", function(){
+        document.getElementById("tbody").innerHTML = "";
+        var filtro = document.getElementById("opciones_filtros").value;
+        document.querySelectorAll(".fecha").forEach(form =>{
+            form.style.display = "none";
+            });
+        document.getElementById(`${filtro}`).style.display = "block";
+        document.getElementById(`buscar_${filtro}`).addEventListener("click", function(){
+            var turnos_mostrar = []
+            var fecha = document.getElementById(`${filtro}_buscado`).value;
+            console.log(fecha);
+            document.getElementById("tbody").innerHTML = "";
+            if (filtro=="dia"){
+                for (i=0;i<turnos.length;i++){
+                    console.log(turnos[i]["fields"]["fecha"])
+                    if(turnos[i]["fields"]["fecha"] == fecha){
+                        turnos_mostrar.push(turnos[i]);
+                    }
+                }
+            }
+            if (filtro=="mes"){
+                for (i=0;i<turnos.length;i++){
+                    var fec = turnos[i]["fields"]["fecha"];
+                    var [yy,mm,dd] = fec.split(/\s*\-\s*/g);
+                    var fec2 = yy + "-" + mm;
+                    if(fec2 == fecha){
+                        turnos_mostrar.push(turnos[i]);
+                    }
+                }
+            }
+            if (filtro=="ano"){
+                for (i=0;i<turnos.length;i++){
+                    var fec = turnos[i]["fields"]["fecha"];
+                    var [yy,mm,dd] = fec.split(/\s*\-\s*/g);
+                    if(yy == fecha){
+                        turnos_mostrar.push(turnos[i]);
+                    }
+                }
+            }
+
+            console.log(turnos_mostrar)
+            var tbody = document.getElementById("tbody");
+            var x= 0;
+            for (turno of turnos_mostrar){
+                var id_paciente = turno["fields"]["paciente"]
+                var paciente = pacientes[id_paciente]
+                x++;
+                
+                var tr = document.createElement("tr");
+                tbody.appendChild(tr);
+                var th = document.createElement("th");
+                th.innerHTML = `${x}`;
+                tr.appendChild(th);
+                var td_1 = document.createElement("td");
+                td_1.innerHTML = `${paciente["fields"]["nombre"]}`;
+                var td_2 = document.createElement("td");
+                td_2.innerHTML = `${paciente["fields"]["apellido"]}`;
+                var td_3 = document.createElement("td");
+                td_3.innerHTML = `${turno["fields"]["fecha"]}`;
+                var td_4 = document.createElement("td");
+                td_4.innerHTML = `${turno["fields"]["horario"]}`;
+                tr.appendChild(td_1);
+                tr.appendChild(td_2);
+                tr.appendChild(td_3);
+                tr.appendChild(td_4);
+
+
+            }
+            
+        })
+    })
+document.getElementById("boton_hoy").addEventListener("click", function(){
+    var tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+    var date = new Date();
+    var fecha_hoy = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    console.log(fecha_hoy);
+    var turnos_mostrar = [];
+    console.log(turnos.length);
+    for (i=0; i< turnos.length ;i++){
+        console.log(turnos[i]["fields"]["fecha"]);
+        if (turnos[i]["fields"]["fecha"] == fecha_hoy){
+            turnos_mostrar.push(turnos[i]);
+        }
+    }
+    console.log(turnos_mostrar);
+    var x= 0;
+    for (turno of turnos_mostrar){
+        var id_paciente = turno["fields"]["paciente"];
+        var paciente = pacientes[id_paciente];
+        x++;
+          
+        var tr = document.createElement("tr");
+        tbody.appendChild(tr);
+        var th = document.createElement("th");
+        th.innerHTML = `${x}`;
+        tr.appendChild(th);
+        var td_1 = document.createElement("td");
+        td_1.innerHTML = `${paciente["fields"]["nombre"]}`;
+        var td_2 = document.createElement("td");
+        td_2.innerHTML = `${paciente["fields"]["apellido"]}`;
+        var td_3 = document.createElement("td");
+        td_3.innerHTML = `${turno["fields"]["fecha"]}`;
+        var td_4 = document.createElement("td");
+        td_4.innerHTML = `${turno["fields"]["horario"]}`;
+        tr.appendChild(td_1);
+        tr.appendChild(td_2);
+        tr.appendChild(td_3);
+        tr.appendChild(td_4);
+
+
+    }
+})
+
 </script>
 
 {% endblock %}

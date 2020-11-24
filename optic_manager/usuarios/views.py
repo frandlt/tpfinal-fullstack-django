@@ -180,7 +180,17 @@ def turnos_med_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Profesional medico':
             print("render turnos_med")
-            return render(request, 'usuarios/turnos_med.html', {})
+            id_medico = request.session['_auth_user_id']
+            medico = User.objects.get(id=id_medico)
+            turnos_med = Turno.objects.filter(medico=id_medico)
+            return render(request, 'usuarios/turnos_med.html', {
+                "medico": medico,
+                "turnos": turnos_med,
+                "turnos_serializ": serializers.serialize("json", turnos_med),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                "users": serializers.serialize("json", User.objects.all()),
+            })
+
         else:
             return HttpResponseRedirect(reverse("usuario"))
     else:
