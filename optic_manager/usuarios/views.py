@@ -214,6 +214,7 @@ def turnos_hoy_view(request):
                     turno.asistencia = request.POST["asist-"+str(i)]
                     turno.save()
                     i+=1
+                turnos_hoy = Turno.objects.filter(fecha=datetime.date.today())
 
             return render(request, "usuarios/turnos_hoy.html", {
                 "turnos_hoy": turnos_hoy,

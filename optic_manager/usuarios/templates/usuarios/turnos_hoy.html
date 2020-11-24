@@ -8,6 +8,7 @@
     var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
     console.log(turnos_hoy)
 
+    
     document.addEventListener("DOMContentLoaded", function(){
         //location.reload();
         var tbody = document.querySelector('tbody');
@@ -32,6 +33,7 @@
             }
         };
     })
+    
 
     //Lo que esto hace es directamente leer los cambios, para que no sale alerta por el DOMContentLoaded.
     
