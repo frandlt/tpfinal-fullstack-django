@@ -14,7 +14,7 @@
   {% csrf_token %}
   <input type="text" id="nombre" placeholder="Nombre"></input>
   <input type="text" id="apellido" placeholder="Apellido"></input>
-  <button type="button" value="Buscar" id="buscar-1">
+  <button type="button" value="Buscar" id="buscar-1">BUSCAR</button>
 </form>
 </div><br>
 
@@ -23,7 +23,7 @@
 <form>
   {% csrf_token %}
   <input type="text" id="dni" placeholder="DNI"></input>
-  <button type="button" value="Buscar" id="buscar-2">
+  <button type="button" value="Buscar" id="buscar-2">BUSCAR</button>
 </form>
 </div><br>
 
@@ -35,7 +35,7 @@
   <input type="radio" name="list_pac" class ="radio" value="{{paciente.id}}">
   <label for="{{paciente.id}}">{{paciente.apellido}}, {{paciente.nombre}} (DNI: {{paciente.dni}})</label><br>
   {% endfor %}
-  <button type="button" value="Buscar" id="buscar-3">
+  <button type="button" value="Buscar" id="buscar-3">BUSCAR</button>
   </form>
 </div><br>
 
@@ -141,7 +141,7 @@ document.getElementById("btn1").addEventListener("click", function(){
     var apellido = document.getElementById("apellido").value;
     console.log(apellido);
     console.log(pacientes[0]["fields"]["apellido"]);
-    for (i=0; i<= pacientes.length; i++){
+    for (i=0; i< pacientes.length; i++){
       if (pacientes[i]["fields"]["apellido"] == apellido){
         if (pacientes[i]["fields"]["nombre"] == nombre){
           console.log("se encontro paciente");
@@ -163,7 +163,7 @@ document.getElementById("btn2").addEventListener("click", function(){
     console.log("se cliqueo el boton de busqueda 2");
     var dni = document.getElementById("dni").value;
     console.log(dni)
-    for (i=0; i<= pacientes.length; i++){
+    for (i=0; i< pacientes.length; i++){
       if (pacientes[i]["fields"]["dni"] == dni){
         console.log("se encontro paciente");
         document.getElementById("paciente_a_editar").innerHTML = `Actualización de datos de: ${pacientes[i]["fields"]["apellido"]}, ${pacientes[i]["fields"]["nombre"]}`;

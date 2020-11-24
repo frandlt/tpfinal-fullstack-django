@@ -1,0 +1,304 @@
+ {% extends "./layout.html" %}
+
+{% block body %}
+
+{% load static %}
+
+
+<h1>Editar Turno</h1>
+<h2>Seleccionar turno a editar</h2>
+
+<button id="btn1" data-busqueda="busq_1" class="boton_busq">Buscar por paciente</button><br>
+<div id="busq_1" class="div1">
+<form>
+  {% csrf_token %}
+  <input type="number" id="dni" placeholder="DNI"></input>
+  <button type="button" value="Buscar" id="buscar-1">BUSCAR</button><br>
+</form><br>
+<div id="lista_turnos_pac">
+    <h4 id="nombre_paciente"></h4>
+    <form id="form-1">
+        {% csrf_token %}
+        <!--ACA TRNDRIA QUE AGREGARSE UN RADIO DE CLASS radio-1 POR TURNO ENCONTRADO-->
+    </form>
+<br><p id="msj" style="color: red; font-size:14px"></p>
+</div>
+</div><br>
+
+<button id="btn3" data-busqueda="busq_3" class="boton_busq">Ver turnos en un período</button><br>
+<div id="busq_3" class="div1">
+    <div id="periodo_turnos">
+    <form>
+        <input type="radio" name="periodo" class ="radio" value="sem">
+        <label for="sem">Próximos 7 días</label><br> 
+        <input type="radio" name="periodo" class ="radio" value="mes">
+        <label for="mes">Próximos 30 días</label><br> 
+        <input type="radio" name="periodo" class ="radio" value="ano">
+        <label for="ano">Próximo año</label><br>
+        <button type="button" id="buscar_periodo" value="buscar" >BUSCAR</button> 
+    </form>
+    </div>
+
+    <div id="turnos_sem" class="div2">
+    <form>
+    {% csrf_token %}
+    {% for turno in turnos_futuros_sem %}
+    <input type="radio" name="turnos_sem" class ="radio-sem" value="{{turno.id}}">
+    <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
+    {% endfor %}
+    <button type="button" class="selec-3" value="seleccionar" id="selec-sem">Seleccionar</button>
+    </form>
+    </div>
+
+    <div id="turnos_mes" class="div2">
+    <form>
+    {% csrf_token %}
+    {% for turno in turnos_futuros_mes %}
+    <input type="radio" name="turnos_mes" class ="radio-mes" value="{{turno.id}}">
+    <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
+    {% endfor %}
+    <button type="button" class="selec-3" value="seleccionar" id="selec-mes">Seleccionar</button>
+    </form>
+    </div>
+
+    <div id="turnos_ano" class="div2">
+    <form>
+    {% csrf_token %}
+    {% for turno in turnos_futuros_ano %}
+    <input type="radio" name="turnos_ano" class ="radio-ano" value="{{turno.id}}">
+    <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
+    {% endfor %}
+    <button type="button" class="selec-3" value="seleccionar" id="selec-ano">Seleccionar</button>
+    </form>
+    </div>
+
+</div><br>
+
+
+
+<form action="{% url 'editar_turnos' %}" method="post" id="editar-turno-form" class="needs-validation" novalidate>
+  {% csrf_token %}
+
+    <h4 class="mb-3 heading" id="turno_a_editar">Actualización de datos de turno que se seleccione</h4>
+    <label for="id_turno_elegido">ID TURNO ELEGIDO</label>
+    <input type="number" id="id_turno_elegido" name="id_turno" readonly></input>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputMedico" class="mb-2">Médico</label>
+        <select class="form-control" id="inputMedico" name="medico">
+          {% for med in medicos %}
+            <option id="opcion_{{med.id}}" value="{{med.id}}">{{med.first_name}} {{med.last_name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+      <div class="form-group col-md-4">
+      <div class="form-check">
+        <label class="form-check-label mb-2" for="inputDate">
+          Fecha
+        </label>
+        <input class="form-control" type="date" value="" id="inputDate" name="fecha" required></input>
+        <div class="invalid-feedback">
+          Por favor, seleccione una fecha válida.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label class="form-check-label mb-2" for="inputHour">
+          Horario
+        </label>
+        <input class="form-control" type="time" value="" id="inputHour" name="horario" required></input>
+        <div class="invalid-feedback">
+          Por favor, seleccione un horario válido.
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <button type="submit" class="btn btn-primary" value="Editar">Registrar nuevos datos</button>
+      </div>
+    </div>
+  
+  </form>
+
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
+
+<script type="text/javascript">
+var turnos = JSON.parse('{{turnos_serializados | safe}}');
+console.log(turnos);
+var pacientes = JSON.parse('{{pacientes_serializ | safe}}');
+console.log(pacientes);
+var users = JSON.parse('{{users | safe}}');
+console.log(users);
+var turnos_futuros = JSON.parse('{{turnos_futuros_serializ | safe}}');
+console.log(turnos_futuros);
+
+
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.div1').forEach(div=>{
+        div.style.display = 'none';
+    });
+  })
+  function mostrarBusqueda(busqueda){
+    document.querySelectorAll('.div1').forEach(div=>{
+        div.style.display = 'none';
+    });
+
+    document.querySelector(`#${busqueda}`).style.display = 'block';
+  }
+
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.boton_busq').forEach(button =>{
+        button.onclick = function(){
+            mostrarBusqueda(this.dataset.busqueda);
+        }
+    })
+});
+
+document.getElementById("btn1").addEventListener("click", function(){
+  document.getElementById("buscar-1").onclick= function(){
+    console.log("se cliqueo el boton de busqueda 1");
+    var dni = document.getElementById("dni").value;
+    console.log(dni)
+    var pac = "";
+    console.log(pacientes);
+    console.log(pacientes.length);
+    var existe = "no";
+    for (i=0; i< pacientes.length; i++){
+        var dni_pcte = pacientes[i]["fields"]["dni"];
+        if (dni_pcte == dni){
+            console.log("se encontro paciente");
+            existe = "si";
+            pac = pacientes[i];
+            var id_pac = pac["pk"];
+            turnos_pac = [];
+
+            document.getElementById("nombre_paciente").innerHTML = `Nombre: ${pac["fields"]["nombre"]} - Apellido: ${pac["fields"]["apellido"]}`
+
+            for (z=0; z< turnos_futuros.length; z++){
+                console.log(z);
+                console.log(turnos_futuros[z]["fields"]["paciente"]);
+                if (turnos_futuros[z]["fields"]["paciente"] == id_pac){
+                    turnos_pac.push(turnos_futuros[z]);
+                }
+            }
+            console.log(turnos_pac);
+            if (turnos_pac.length == 0){
+            //Mensaje de que el paciente seleccionado no tiene turnos proximos
+                document.getElementById("msj").innerHTML = "El paciente seleccionado no tiene turnos proximos";
+            }else{
+                var form = document.getElementById(`form-1`);
+                console.log(form);
+                for (turno of turnos_pac){
+                    var id_med = turno["fields"]["medico"];
+                    var med = users [id_med - 2];
+                    var input = document.createElement("input");
+                    input.setAttribute("type", "radio");
+                    input.setAttribute("name", "lista_turnos");
+                    input.setAttribute("value", `${turno["pk"]}`);
+                    input.setAttribute("class", "radio-1");
+                    form.appendChild(input);
+                    var label = document.createElement("label");
+                    label.setAttribute("for", `${turno["pk"]}`);
+                    label.innerHTML = `Fecha: ${turno["fields"]["fecha"]} (${turno["fields"]["horario"]}) - Médico: ${med["fields"]["last_name"]}, ${med["fields"]["first_name"]}`;
+                    form.appendChild(label);
+                    form.appendChild(document.createElement("br"));
+
+                }
+                var buscar_button = document.createElement("button");
+                buscar_button.setAttribute("type", "button");
+                buscar_button.setAttribute("id", "selec-turno-1");
+                buscar_button.setAttribute("value", "seleccionar");
+                buscar_button.innerHTML = "Seleccionar";
+                form.appendChild(buscar_button);
+        
+                var radios = form.getElementsByClassName(`radio-1`);
+                var select = document.getElementById(`selec-turno-1`);
+                select.onclick= function(){
+                    var checked_radio = "";
+                    for (radio of radios){
+                        if (radio.checked){
+                        checked_radio = radio;
+                        }}
+                    var id = checked_radio.value;
+                    var turno = turnos[id-1];
+                    var id_pac = turno["fields"]["paciente"];
+                    var pac = pacientes[id_pac - 1];
+                    var id_med = turno["fields"]["medico"];
+                    var med = users [id_med - 2];
+                    console.log("se encontro turno");
+
+                    document.getElementById("id_turno_elegido").value = id;
+                    document.getElementById("turno_a_editar").innerHTML = `Editar turno de: ${pac["fields"]["apellido"]}, ${pac["fields"]["nombre"]}`; 
+                    document.getElementById(`opcion_${med["pk"]}`).selected = "selected";
+                    document.getElementById("inputHour").value = turno["fields"]["horario"];
+                    document.getElementById("inputDate").value = turno["fields"]["fecha"];
+                }
+    }}}
+    if(existe == "no"){
+        //PAciente no encontrado
+        document.getElementById("msj").innerHTML = "Paciente no encontrado";
+    }
+
+}})
+
+document.getElementById("btn3").addEventListener("click", function(){
+    document.querySelectorAll('.div2').forEach(div=>{
+        div.style.display = 'none';
+    })
+    var radios = document.getElementById("periodo_turnos").getElementsByClassName("radio");
+    document.getElementById("buscar_periodo").onclick = function(){
+        var checked_radio = ""
+        console.log(radios)
+        for (radio of radios){
+        if (radio.checked){
+            checked_radio = radio;
+        }
+        }
+        var tiempo = checked_radio.value;
+        console.log(tiempo);
+
+        document.querySelectorAll('.div2').forEach(div=>{
+            div.style.display = 'none';
+        })
+        document.querySelector(`#turnos_${tiempo}`).style.display = 'block';
+
+        var radios2 = document.getElementById(`turnos_${tiempo}`).getElementsByClassName(`radio-${tiempo}`);
+        var select = document.getElementById(`selec-${tiempo}`);
+        console.log(select)
+        select.onclick= function(){
+            var checked_radio2 = ""
+            console.log(radios2)
+            for (radio2 of radios2){
+            if (radio2.checked){
+                checked_radio2 = radio2;
+            }}
+            var id = checked_radio2.value;
+            console.log(id)
+            var turno = turnos[id-1];
+            console.log(turno)
+            var id_pac = turno["fields"]["paciente"]
+            var pac = pacientes[id_pac - 1]
+            var id_med = turno["fields"]["medico"]
+            var med = users [id_med - 2]
+            console.log("se encontro turno")
+            document.getElementById("id_turno_elegido").value = id;
+            document.getElementById("turno_a_editar").innerHTML = `Editar turno de: ${pac["fields"]["apellido"]}, ${pac["fields"]["nombre"]}`; 
+            document.getElementById(`opcion_${med["pk"]}`).selected = "selected";
+            document.getElementById("inputHour").value = turno["fields"]["horario"];
+            document.getElementById("inputDate").value = turno["fields"]["fecha"];
+        }
+    }})
+
+
+</script>
+
+{% endblock %}
