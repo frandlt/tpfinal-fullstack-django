@@ -33,23 +33,16 @@
                         <p class="card-text">Para generar turnos, o visualizar los de hoy.</p>
                         <a href="{% url 'generar_turno' %}" class="btn btn-primary">Generar turno</a>
                         <a href="{% url 'turnos_hoy' %}" class="btn btn-info">Turnos de Hoy</a>
+                        <a href="{% url 'editar_turnos' %}">Editar Turnos</a>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-        <!-- <a href="{% url 'generar_turno' %}">Generar turno para paciente</a>
-        </br>
-        <a href="{% url 'turnos_hoy' %}">Turnos de hoy</a>
-        </br> -->
-        <!--<a href="{% url 'editar_turnos' %}">Editar Turnos</a>
-        </br>
-        <h2>Pacientes</h2>
+        <h5>Gestión de Pacientes</h5>
         <a href="{% url 'editar_paciente' %}">Editar paciente existente</a>
         </br>
-        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>-->
+        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>
         </br>
     {% endif %}
 

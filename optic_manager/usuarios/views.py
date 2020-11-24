@@ -145,7 +145,25 @@ def editar_paciente_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Secretaria':
             print("render editar paciente")
-            return render(request, 'usuarios/editar_paciente.html', {})
+            if request.method == "POST":
+                paciente_a_editar = Paciente.objects.get(id=request.POST['id_paciente'])
+                paciente_a_editar.nombre = request.POST['nuevo_nombre']
+                paciente_a_editar.apellido = request.POST['nuevo_apellido']
+                paciente_a_editar.dni = request.POST['nuevo_dni']
+                paciente_a_editar.telefono = request.POST['nuevo_telefono']
+                paciente_a_editar.email = request.POST['nuevo_mail']
+                paciente_a_editar.fecha_nacimiento = request.POST['nueva_fecha']
+                paciente_a_editar.save()
+                
+                return render(request, 'usuarios/editar_paciente.html', {
+                "pacientes": Paciente.objects.all(),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()), 
+            })
+
+            return render(request, 'usuarios/editar_paciente.html', {
+                "pacientes": Paciente.objects.all(),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()), 
+            })
         else:
             return HttpResponseRedirect(reverse("usuario"))
     else:
