@@ -5,25 +5,81 @@
 {% load static %}
 
 
+<h1>Editar paciente</h1>
+<h2>Seleccionar paciente a editar</h2>
+
+<button id="btn1" data-busqueda="busq_1" class="boton_busq">Buscar por nombre y apellido</button><br>
+<div id="busq_1" class="div1">
+<form>
+  {% csrf_token %}
+  <input type="text" id="nombre" placeholder="Nombre"></input>
+  <input type="text" id="apellido" placeholder="Apellido"></input>
+  <button type="button" value="Buscar" id="buscar-1">BUSCAR</button>
+</form>
+</div><br>
+
+<button id="btn2" data-busqueda="busq_2" class="boton_busq">Buscar por DNI</button><br>
+<div id="busq_2" class="div1">
+<form>
+  {% csrf_token %}
+  <input type="text" id="dni" placeholder="DNI"></input>
+  <button type="button" value="Buscar" id="buscar-2">BUSCAR</button>
+</form>
+</div><br>
+
+<button id="btn3" data-busqueda="busq_3" class="boton_busq">Buscar en lista de todos los pacientes</button><br>
+<div id="busq_3" class="div1">
+  <form>
+  {% csrf_token %}
+  {% for paciente in pacientes %}
+  <input type="radio" name="list_pac" class ="radio" value="{{paciente.id}}">
+  <label for="{{paciente.id}}">{{paciente.apellido}}, {{paciente.nombre}} (DNI: {{paciente.dni}})</label><br>
+  {% endfor %}
+  <button type="button" value="Buscar" id="buscar-3">BUSCAR</button>
+  </form>
+</div><br>
+
+
 
 <form action="{% url 'editar_paciente' %}" method="post" id="editar-paciente-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
-    <h4 class="mb-3 heading">Actualización de Datos de {{ request.user.first_name}} {{ request.user.last_name}} {{ request.usuarios_paciente.id}}</h4>
+    <h4 class="mb-3 heading" id="paciente_a_editar">Actualización de datos de paciente que se seleccione</h4>
+    <label for="id_pc_elegido">ID PACIENTE ELEGIDO</label>
+    <input type="number" id="id_pc_elegido" name="id_paciente" readonly></input>
 
      <div class="form-group col-md-4">
 
+      <div>
+        <label for="inputName">Nombre</label>
+        <input type="text" id="inputName" name="nuevo_nombre" required>
+      </div>
+    </div>
+
+    <div >
+        <label for="inputLastName">Apellido</label>
+        <input type="text" id="inputLastName" name="nuevo_apellido" required>
+      </div>
+    </div>
+
       <div class="form-check">
-        <label for="inputDni" class="mb-2">Inserte DNI</label>
-        <input type="number" class="form-control" id="inputDni" placeholder="DNI" required>{{ request.usuarios_paciente.dni}}
+        <label for="inputDni" class="mb-2">DNI</label>
+        <input type="number" class="form-control" id="inputDni" name="nuevo_dni" required>
       </div>
     </div>
 
     <div class="form-group col-md-4">
       <div class="form-check">
-        <label for="inputEmail">Email address</label>
-        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Email" required>
+        <label for="inputEmail">Dirección de correo electrónico</label>
+        <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" name="nuevo_mail" required>
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+      </div>
+    </div>
+
+    <div class="form-group col-md-4">
+      <div class="form-check">
+        <label for="inputPhone">Número de Teléfono</label>
+        <input type="text" class="form-control" id="inputPhone" name="nuevo_telefono" required>
       </div>
     </div>
 
@@ -32,7 +88,7 @@
         <label class="form-check-label mb-2" for="inputBirthDate">
           Seleccionar fecha de nacimiento
         </label>
-        <input class="form-control" type="datetime-local" value="" id="inputBirthDate" required></input>
+        <input class="form-control" type="date" id="inputBirthDate" name="nueva_fecha" required></input>
         <div class="invalid-feedback">
           Por favor, seleccione una fecha válida.
         </div>
@@ -41,7 +97,7 @@
 
     <div class="form-group col-md-4">
       <div class="form-check">
-        <button type="submit" class="btn btn-primary" value="Registrar">Registrar Turno</button>
+        <button type="submit" class="btn btn-primary" value="Editar">Actualizar datos</button>
       </div>
     </div>
   
@@ -51,5 +107,101 @@
 <a href="{% url 'index' %}">Volver atrás</a>
 
 <script type="text/javascript" src="{%  static 'usuarios/generar_turno.js' %}"></script>
+
+<script type="text/javascript">
+var pacientes = JSON.parse('{{pacientes_serializ | safe}}');
+console.log(pacientes);
+
+  document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.div1').forEach(div=>{
+        div.style.display = 'none';
+    });
+  })
+  function mostrarBusqueda(busqueda){
+    document.querySelectorAll('.div1').forEach(div=>{
+        div.style.display = 'none';
+    });
+
+    document.querySelector(`#${busqueda}`).style.display = 'block';
+  }
+
+document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('.boton_busq').forEach(button =>{
+        button.onclick = function(){
+            mostrarBusqueda(this.dataset.busqueda);
+        }
+    })
+});
+
+document.getElementById("btn1").addEventListener("click", function(){
+  document.getElementById("buscar-1").onclick= function(){
+    console.log("se cliqueo el boton de busqueda 1");
+    var nombre = document.getElementById("nombre").value;
+    console.log(nombre)
+    var apellido = document.getElementById("apellido").value;
+    console.log(apellido);
+    console.log(pacientes[0]["fields"]["apellido"]);
+    for (i=0; i< pacientes.length; i++){
+      if (pacientes[i]["fields"]["apellido"] == apellido){
+        if (pacientes[i]["fields"]["nombre"] == nombre){
+          console.log("se encontro paciente");
+          document.getElementById("paciente_a_editar").innerHTML = `Actualización de datos de: ${pacientes[i]["fields"]["apellido"]}, ${pacientes[i]["fields"]["nombre"]}`;
+          document.getElementById("id_pc_elegido").value = pacientes[i]["pk"];
+          document.getElementById("inputName").value = pacientes[i]["fields"]["nombre"];
+          document.getElementById("inputLastName").value = pacientes[i]["fields"]["apellido"];
+          document.getElementById("inputDni").value = pacientes[i]["fields"]["dni"];
+          document.getElementById("inputEmail").value = pacientes[i]["fields"]["email"];
+          document.getElementById("inputPhone").value = pacientes[i]["fields"]["telefono"];
+          document.getElementById("inputBirthDate").value = pacientes[i]["fields"]["fecha_nacimiento"];
+       
+        }
+        }
+}}})
+
+document.getElementById("btn2").addEventListener("click", function(){
+  document.getElementById("buscar-2").onclick= function(){
+    console.log("se cliqueo el boton de busqueda 2");
+    var dni = document.getElementById("dni").value;
+    console.log(dni)
+    for (i=0; i< pacientes.length; i++){
+      if (pacientes[i]["fields"]["dni"] == dni){
+        console.log("se encontro paciente");
+        document.getElementById("paciente_a_editar").innerHTML = `Actualización de datos de: ${pacientes[i]["fields"]["apellido"]}, ${pacientes[i]["fields"]["nombre"]}`;
+        document.getElementById("id_pc_elegido").value = pacientes[i]["pk"];
+        document.getElementById("inputName").value = pacientes[i]["fields"]["nombre"];
+        document.getElementById("inputLastName").value = pacientes[i]["fields"]["apellido"];
+        document.getElementById("inputDni").value = pacientes[i]["fields"]["dni"];
+        document.getElementById("inputEmail").value = pacientes[i]["fields"]["email"];
+        document.getElementById("inputPhone").value = pacientes[i]["fields"]["telefono"];
+        document.getElementById("inputBirthDate").value = pacientes[i]["fields"]["fecha_nacimiento"];     
+      }
+}}})
+
+document.getElementById("btn3").addEventListener("click", function(){
+  document.getElementById("buscar-3").onclick= function(){
+    console.log("se cliqueo el boton de busqueda 3");
+    var radios = document.getElementsByClassName("radio");
+    var checked_radio = ""
+    console.log(radios)
+    for (radio of radios){
+      if (radio.checked){
+        checked_radio = radio;
+      }
+    }
+    var id = checked_radio.value;
+    console.log(id);
+    var i = id-1
+    console.log("se encontro paciente");
+    document.getElementById("paciente_a_editar").innerHTML = `Actualización de datos de: ${pacientes[i]["fields"]["apellido"]}, ${pacientes[i]["fields"]["nombre"]}`;
+    document.getElementById("id_pc_elegido").value = id;
+    document.getElementById("inputName").value = pacientes[i]["fields"]["nombre"];
+    document.getElementById("inputLastName").value = pacientes[i]["fields"]["apellido"];
+    document.getElementById("inputDni").value = pacientes[i]["fields"]["dni"];
+    document.getElementById("inputEmail").value = pacientes[i]["fields"]["email"];
+    document.getElementById("inputPhone").value = pacientes[i]["fields"]["telefono"];
+    document.getElementById("inputBirthDate").value = pacientes[i]["fields"]["fecha_nacimiento"]; 
+}})
+
+</script>
 
 {% endblock %}

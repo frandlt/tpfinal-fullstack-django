@@ -8,6 +8,11 @@ import datetime
 from django.core import serializers
 
 # Create your views here.
+
+def welcome_page(request):
+    return render (request, "usuarios/welcome.html")
+
+
 def index(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse("login"))
@@ -145,7 +150,25 @@ def editar_paciente_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Secretaria':
             print("render editar paciente")
-            return render(request, 'usuarios/editar_paciente.html', {})
+            if request.method == "POST":
+                paciente_a_editar = Paciente.objects.get(id=request.POST['id_paciente'])
+                paciente_a_editar.nombre = request.POST['nuevo_nombre']
+                paciente_a_editar.apellido = request.POST['nuevo_apellido']
+                paciente_a_editar.dni = request.POST['nuevo_dni']
+                paciente_a_editar.telefono = request.POST['nuevo_telefono']
+                paciente_a_editar.email = request.POST['nuevo_mail']
+                paciente_a_editar.fecha_nacimiento = request.POST['nueva_fecha']
+                paciente_a_editar.save()
+                
+                return render(request, 'usuarios/editar_paciente.html', {
+                "pacientes": Paciente.objects.all(),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()), 
+            })
+
+            return render(request, 'usuarios/editar_paciente.html', {
+                "pacientes": Paciente.objects.all(),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()), 
+            })
         else:
             return HttpResponseRedirect(reverse("usuario"))
     else:
@@ -227,6 +250,44 @@ def editar_turnos_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Secretaria':
             print("editar turnos")
-            return render(request, "usuarios/editar_turnos.html", {})
+
+            turnos = Turno.objects.all()
+            hoy = datetime.date.today()
+            semana = datetime.timedelta(days=7)
+            mes = datetime.timedelta(days=30)
+            año = datetime.timedelta(days=365)
+            años = datetime.timedelta(days=3650)
+
+            if request.method == "POST":
+                turno_a_editar = Turno.objects.get(id=request.POST["id_turno"])
+                turno_a_editar.medico = User.objects.get(id=request.POST["medico"])
+                turno_a_editar.fecha = request.POST["fecha"]
+                turno_a_editar.horario = request.POST["horario"]
+                turno_a_editar.asistencia = ""
+                turno_a_editar.save()
+                
+                return render(request, "usuarios/editar_turnos.html", {
+                "turnos": turnos,
+                "turnos_serializados": serializers.serialize("json", turnos),
+                "turnos_futuros_sem": turnos.filter(fecha__range=[hoy, hoy + semana]),
+                "turnos_futuros_mes": turnos.filter(fecha__range=[hoy, hoy + mes]),
+                "turnos_futuros_ano": turnos.filter(fecha__range=[hoy, hoy + año]),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                "medicos": User.objects.filter(groups__name='Profesional medico'),
+                "users": serializers.serialize("json", User.objects.all()),
+                "turnos_futuros_serializ": serializers.serialize("json", turnos.filter(fecha__range=[hoy, hoy + años]))
+            })
+
+            return render(request, "usuarios/editar_turnos.html", {
+                "turnos": turnos,
+                "turnos_serializados": serializers.serialize("json", turnos),
+                "turnos_futuros_sem": turnos.filter(fecha__range=[hoy, hoy + semana]),
+                "turnos_futuros_mes": turnos.filter(fecha__range=[hoy, hoy + mes]),
+                "turnos_futuros_ano": turnos.filter(fecha__range=[hoy, hoy + año]),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                "medicos": User.objects.filter(groups__name='Profesional medico'),
+                "users": serializers.serialize("json", User.objects.all()),
+                "turnos_futuros_serializ": serializers.serialize("json", turnos.filter(fecha__range=[hoy, hoy + años]))
+            })
 
             

@@ -2,11 +2,21 @@
 
 {% block body %}
 
-    {% if request.user.first_name == "Robert" %}
+    <!--{% if request.user.first_name == "Robert" %}
         <h1 class="heading">Bienvenido, profesor {{ request.user.first_name }}</h1>
     {% else %}
         <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
-    {% endif %}
+    {% endif %}-->
+
+    
+
+{% if request.user.is_superuser %}
+    <h1>Bienvenido, SUPERUSER</h1>
+    <p style="font-size: 22px">Para acceder a sus funciones, cambie la url a "/admin"</p>
+    </br>
+{% else %}
+
+<h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
 
     <ul>
         <li>Usuario: {{ request.user.username }}</li>
@@ -33,23 +43,16 @@
                         <p class="card-text">Para generar turnos, o visualizar los de hoy.</p>
                         <a href="{% url 'generar_turno' %}" class="btn btn-primary">Generar turno</a>
                         <a href="{% url 'turnos_hoy' %}" class="btn btn-info">Turnos de Hoy</a>
+                        <a href="{% url 'editar_turnos' %}">Editar Turnos</a>
                     </div>
                 </div>
             </div>
         </div>
 
-
-
-        <!-- <a href="{% url 'generar_turno' %}">Generar turno para paciente</a>
-        </br>
-        <a href="{% url 'turnos_hoy' %}">Turnos de hoy</a>
-        </br> -->
-        <!--<a href="{% url 'editar_turnos' %}">Editar Turnos</a>
-        </br>
-        <h2>Pacientes</h2>
+        <h5>Gestión de Pacientes</h5>
         <a href="{% url 'editar_paciente' %}">Editar paciente existente</a>
         </br>
-        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>-->
+        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>
         </br>
     {% endif %}
 
@@ -63,5 +66,8 @@
         </br>
     {% endif %}
 
-    <a href="{% url 'logout' %}">Desconectarse</a>
+{% endif %}
+
+<a href="{% url 'logout' %}">Desconectarse</a>
+
 {% endblock %}
