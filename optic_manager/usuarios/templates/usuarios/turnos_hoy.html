@@ -4,6 +4,46 @@
    
 {% block body %}
 
+<h1>Turnos de hoy</h1>
+<h2 id="today"></h2>
+<table class="table">
+    <thead>
+        <tr> 
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Horario</th>
+            <th scope="col">Profesional Medico</th>
+            <th scope="col">Asistencia</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for turno in turnos_hoy %}
+            <tr class="row_body">
+                <th scope="row" class="num"></th>
+                <td>{{turno.paciente.nombre}}</td>
+                <td>{{turno.paciente.apellido}}</td>
+                <td>{{turno.horario}}</td>
+                <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
+                <td><form action="{% url 'turnos_hoy' %}" method="POST">
+                    {% csrf_token %}
+                    <select>
+                        <option class="no" value="NO">NO</option>
+                        <option class="si" value="SI">SI</option>
+                    </select>
+                    <input type="hidden" class="id-turno" value="{{turno.id}}"/>
+                    
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+
+<input type="submit" class="submit" value="Guardar cambios" onclick="guardar_cambios"></form><br>
+
+<a href="{% url 'index' %}">Volver atrás</a>
+
 <script type="text/javascript">
     var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
     console.log(turnos_hoy)
@@ -41,71 +81,10 @@
         location.reload();
         
     }
-    
-/*
-    
 
-    document.addEventListener("DOMContentLoaded", function alert(callback){
-        document.querySelector(".submit").onclick = function(){
-           callback();
-    }})
-    alert(function(){
-       location.reload();
-   })*/
-
-    /*
-    document.addEventListener("DOMContentLoaded", function alert(callback){
-        document.querySelector(".submit").onclick = function(){
-           callback();
-    }})
-    alert(function(){
-       location.reload();
-   })
-   */
-   
-        
 </script>
 
-<<script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>
+<script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>
 
-    <h1>Turnos de hoy</h1>
-    <h2 id="today"></h2>
-    <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Horario</th>
-            <th scope="col">Profesional Medico</th>
-            <th scope="col">Asistencia</th>
-
-        </tr>
-    </thead>
-    <tbody>
-        {% for turno in turnos_hoy %}
-            <tr class="row_body">
-                <th scope="row" class="num"></th>
-                <td>{{turno.paciente.nombre}}</td>
-                <td>{{turno.paciente.apellido}}</td>
-                <td>{{turno.horario}}</td>
-                <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
-                <td><form action="{% url 'turnos_hoy' %}" method="POST">
-                    {% csrf_token %}
-                    <select>
-                        <option class="no" value="NO">NO</option>
-                        <option class="si" value="SI">SI</option>
-                    </select>
-                    <input type="hidden" class="id-turno" value="{{turno.id}}"/>
-                    
-            </tr>
-        {% endfor %}
-        
-    </tbody>
-</table>
-
-<input type="submit" class="submit" value="Guardar cambios" onclick="guardar_cambios"></form><br>
-
-<a href="{% url 'index' %}">Volver atrás</a>
 
 {% endblock %}
