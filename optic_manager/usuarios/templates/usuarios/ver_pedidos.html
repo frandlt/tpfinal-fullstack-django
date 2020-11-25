@@ -1,0 +1,312 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+   
+{% block body %}
+
+<h1>PEDIDOS</h1>
+<h2>Filtrar por: </h2>
+
+<label for="filtro_fecha" style="text-decoration: underline">Fecha: </label>
+<div id="filtro_fecha">
+    <label for="filtro_desde">Desde: </label>
+    <input type="date" id="filtro_desde" value="{{hoy}}" class="select_fecha"></input>
+    <label for="filtro_desde">Hasta: </label>
+    <input type="date" id="filtro_hasta" value="{{hoy}}"class="select_fecha"></input>
+</div><br>
+
+<label for="filtro_estado" style="text-decoration: underline">Estado: </label>
+<select id="filtro_estado" class="select_filtros">
+    <option value="Todos" selected>Todos</option>
+    <option value="Pendiente">Pendientes</option>
+    <option value="Pedido">Pedidos</option>
+    <option value="Taller">En taller</option>
+    <option value="Finalizado">Finalizados</option>
+    <option value="Cancelado">Cancelados</option>
+</select>
+
+<label for="filtro_vendedor" style="text-decoration: underline">Vendedor: </label>
+<select id="filtro_vendedor" class="select_filtros">
+    <option selected>Todos</option>
+    {% for vendedor in vendedores %}
+    <option value={{vendedor.id}}>{{vendedor.last_name}}, {{vendedor.first_name}}</option>
+    {% endfor %}
+</select>
+
+<label for="filtro_paciente" style="text-decoration: underline">Paciente: </label>
+<select id="filtro_paciente" class="select_filtros">
+    <option selected>Todos</option>
+    {% for paciente in pacientes %}
+    <option value={{paciente.id}}>{{paciente.apellido}}, {{paciente.nombre}}</option>
+    {% endfor %}
+</select><br>
+
+
+<table class="table">
+    <thead>
+        <tr> 
+            <th scope="col">N°</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Vendedor</th>
+            <th scope="col">Fecha encargue</th>
+            <th scope="col">Precio unitario</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Medio de pago</th>
+            <th scope="col">Estado</th>
+
+        </tr>
+    </thead>
+    <tbody id="tbody">
+        
+    </tbody>
+</table>
+
+
+<script type="text/javascript">
+var pedidos_todos = JSON.parse('{{pedidos_serializ | safe}}');
+console.log(pedidos_todos)
+var productos_todos = JSON.parse('{{productos_serializ | safe}}');
+console.log(productos_todos)
+var pacientes_todos = JSON.parse('{{pacientes_serializ | safe}}');
+console.log(pacientes_todos)
+var vendedores_todos = JSON.parse('{{vendedores_serializ | safe}}');
+console.log(vendedores_todos)
+
+var pedidos_filtrados="";
+var fecha_desde = "";
+var fecha_hasta = "";
+var estado = "";
+var vendedor = "";
+var paciente ="";
+
+//Define variables ni bien se carga la pagina
+document.addEventListener("DOMContentLoaded", function(){
+    fecha_desde = document.getElementById("filtro_desde").value;
+    console.log(fecha_desde);
+    fecha_hasta = document.getElementById("filtro_hasta").value;
+    console.log(fecha_hasta);
+    estado = document.getElementById("filtro_estado").value;
+    if (estado =="Todos"){
+        estado = []
+        for(m=0; m<pedidos_todos.length;m++){
+            estado.push(pedidos_todos[m])
+        }
+    }
+    console.log(estado);
+    vendedor = document.getElementById("filtro_vendedor").value;
+    if (vendedor =="Todos"){
+        vendedor = []
+        for(m=0; m<vendedores_todos.length;m++){
+            vendedor.push(vendedores_todos[m])
+        }
+    }
+    console.log(vendedor);
+    paciente = document.getElementById("filtro_paciente").value;
+    if (paciente =="Todos"){
+        paciente = []
+        for(m=0; m<pacientes_todos.length;m++){
+            paciente.push(pacientes_todos[m])
+        }
+    }
+    console.log(paciente);
+})
+
+//Cada funcion cambia valor variable cuando se cambia el input
+
+document.getElementById("filtro_desde").addEventListener("input", function(){
+    fecha_desde = document.getElementById("filtro_desde").value;
+    console.log(fecha_desde);
+})
+document.getElementById("filtro_hasta").addEventListener("input", function(){
+    fecha_hasta = document.getElementById("filtro_hasta").value;
+    console.log(fecha_hasta);
+})
+document.getElementById("filtro_estado").addEventListener("input", function(){
+    estado = document.getElementById("filtro_estado").value;
+    if (estado =="Todos"){
+        estado = []
+        for(m=0; m<pedidos_todos.length;m++){
+            estado.push(pedidos_todos[m])
+        }
+    }
+})
+document.getElementById("filtro_vendedor").addEventListener("input", function(){
+    vendedor = document.getElementById("filtro_vendedor").value;
+    if (vendedor =="Todos"){
+        vendedor = []
+        for(m=0; m<vendedores_todos.length;m++){
+            vendedor.push(vendedores_todos[m])
+        }
+    }
+    console.log(vendedor);
+})
+document.getElementById("filtro_paciente").addEventListener("input", function(){
+    paciente = document.getElementById("filtro_paciente").value;
+    if (paciente =="Todos"){
+        paciente = []
+        for(m=0; m<pacientes_todos.length;m++){
+            paciente.push(pacientes_todos[m])
+        }
+    }
+    console.log(paciente);
+})
+
+//Filtra los pedidos en funcion del valor de las variables de filtros
+function filtrar_pedidos(){
+    for(i=0; i<pedidos_todos.length;i++){
+        var fecha_pedido = pedidos_todos[i]["fields"]["fecha_hora"].substring(0,10);
+        fecha_desde = fecha_desde;
+        while (fecha_desde <= fecha_hasta){
+            if (fecha_desde == fecha_pedido){
+                if (estado.includes(pedidos_todos[i]["fields"]["estado"])){
+                    if (vendedor.includes(pedidos_todos[i]["fields"]["vendedor"])){
+                        if (paciente.includes(pedidos_todos[i]["fields"]["paciente"] == paciente)){
+                            pedidos_filtrados.push(pedidos_todos[i])            
+                        }
+                    
+                    }
+                }
+                fecha_desde = fecha_desde.addDays(1)
+            }
+        }  
+    }
+    console.log(pedido_filtrados);
+}
+
+function guardar_cambios(){
+    location.reload();    
+}
+
+function armar_tabla(){
+    filtrar_pedidos();
+    var tbody = document.getElementById("tbody");
+    for (pedido of pedidos_filtrados){
+        var id_pedido = pedido["pk"];
+        var id_producto = pedido["fields"]["producto"];
+        var prod = "";
+        for (z=0; z<productos_todos.length; z++){
+            if (productos_todos[z]["pk"] == id_producto){
+                prod = productos_todos[z]
+            }
+        } 
+        var id_pac = pedido["fields"]["paciente"];
+        var pac = "";
+        for (z=0; z<pacientes_todos.length; z++){
+            if (pacientes_todos[z]["pk"] == id_pac){
+                pac = pacientes_todos[z]
+            }
+        } 
+        var id_vendedor = pedido["fields"]["vendedor"];
+        var vend = ""
+        for (z=0; z<vendedores_todos.length; z++){
+            if (vendedores_todos[z]["pk"] == id_vendedor){
+                vend = vendedores_todos[z]
+            }
+        } 
+
+        var tr = document.createElement("tr");
+        tr.class = "row_body";
+        tbody.appendChild(tr);
+        var th = document.createElement("th");
+        th.scope = "row_body";
+        th.id = "id_pedido";
+        th.innerHTML = `${id_pedido}`;
+        tr.appendChild(th);
+        var td_1 = document.createElement("td");
+        td_1.innerHTML = `${prod["fields"]["nombre"]} (${prod["fields"]["descripcion"]})`;
+        var td_2 = document.createElement("td");
+        td_2.innerHTML = `${pac["fields"]["apellido"]}, ${pac["fields"]["nombre"]} (DNI: ${pac["fields"]["dni"]})`;
+        var td_3 = document.createElement("td");
+        td_3.innerHTML = `${vend["fields"]["last_name"]}, ${vend["fields"]["first_name"]} (ID: ${vend["pk"]})`;
+        var td_4 = document.createElement("td");
+        td_4.innerHTML = `${pedido["fields"]["fecha_hora"].substring(0,10)} (${pedido["fields"]["fecha_hora"].substring(11,19)})`;
+        var td_5 = document.createElement("td");
+        td_5.innerHTML = `${pedido["fields"]["precio"]}`;
+        var td_6 = document.createElement("td");
+        td_6.innerHTML = `${pedido["fields"]["cantidad"]}`;
+        var td_7 = document.createElement("td");
+        var subtotal = pedido["fields"]["cantidad"]*pedido["fields"]["precio"];
+        td_7.innerHTML = `${subtotal}`;
+        var td_8 = document.createElement("td");
+        td_8.innerHTML = `${pedido["fields"]["medio_pago"]}`;
+        var td_9 = document.createElement("td");
+        var form_estado = document.createElement("form");
+        form_estado.action="";
+        form_estado.method = "POST";
+        form_estado += "{% csrf_token %}";
+        td_9.appendChild(form_estado);
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.value = `${id_pedido}`;
+        input.name = "ped_id"
+        form_estado.appendChild(input)
+        var dropdown = document.createElement("select");
+        dropdown.name = "ped_est"
+        form_estado.appendChild(dropdown)
+
+        var opt_1 = document.createElement("option")
+        opt_1.innerHTML = "Pendiente";
+        var opt_2 = document.createElement("option")
+        opt_2.innerHTML = "Pedido";
+        var opt_3 = document.createElement("option")
+        opt_3.innerHTML = "Taller";
+        var opt_4 = document.createElement("option")
+        opt_4.innerHTML = "Finalizado";
+        var opt_5 = document.createElement("option")
+        opt_5.innerHTML = "Cancelado";
+        dropdown.appendChild(opt_1);
+        dropdown.appendChild(opt_2);
+        dropdown.appendChild(opt_3);
+        dropdown.appendChild(opt_4);
+        dropdown.appendChild(opt_5);
+
+        var submit = document.createElement("input")
+        submit.type = "submit";
+        submit.value = Guardar;
+        submit.onclick = guardar_cambios();
+        form_estado.appendChild(submit)
+
+        tr.appendChild(td_1);
+        tr.appendChild(td_2);
+        tr.appendChild(td_3);
+        tr.appendChild(td_4);
+        tr.appendChild(td_5);
+        tr.appendChild(td_6);
+        tr.appendChild(td_7);
+        tr.appendChild(td_8);
+        tr.appendChild(td_9);
+
+        if (pedido["fields"]["estado"] == "Pendiente"){
+            dropdown.opt_1.selected = "selected"
+        }
+        if (pedido["fields"]["estado"] == "Pedido"){
+            dropdown.opt_2.selected = "selected"
+        }
+        if (pedido["fields"]["estado"] == "Taller"){
+            dropdown.opt_3.selected = "selected"
+        }
+        if (pedido["fields"]["estado"] == "Finalizado"){
+            dropdown.opt_4.selected = "selected"
+        }
+        if (pedido["fields"]["estado"] == "Cancelado"){
+            dropdown.opt_5.selected = "selected"
+        }
+       
+    }
+}  
+
+document.querySelectorAll(".select_filtros").forEach(select => {
+    select.addEventListener("input", armar_tabla())
+})
+
+document.querySelectorAll(".select_fecha").forEach(input => {
+    input.addEventListener("input", armar_tabla())
+})
+
+//document.addEventListener("DOMContentLoaded", armar_tabla())
+
+</script>
+
+{% endblock %}

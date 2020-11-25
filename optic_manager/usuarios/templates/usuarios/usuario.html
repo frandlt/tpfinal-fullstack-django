@@ -27,7 +27,8 @@
     </ul>
 
     {% if grupo == "Ventas" %}
-        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a>
+        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
+        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
         </br>
     {% endif %}
 

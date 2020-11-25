@@ -4,10 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Paciente, Pedido, Producto, Turno, Diagnostico
-import datetime
+import datetime, time
 from django.core import serializers
 
 # Create your views here.
+# pylint: disable=E1101
 
 def welcome_page(request):
     return render (request, "usuarios/welcome.html")
@@ -361,5 +362,41 @@ def pacientes_med_view(request):
                 "turnos_serializ": serializers.serialize("json", Turno.objects.all()),
             })
 
+def ver_pedidos_view (request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Ventas':
+            print("render ver_pedidos")
+            if request.method == "POST":
+                pedido = Pedido.objects.get(id=request.POST["ped_id"])
+                pedido.estado = request.POST["ped_est"]
+                pedido.save()
 
-            
+                return render(request, "usuarios/ver_pedidos.html",{
+                "hoy": time.strftime('%Y-%m-%d'),
+                "vendedores": User.objects.filter(groups__name='Ventas'),
+                "pacientes": Paciente.objects.all(),
+                "pedidos": Pedido.objects.all(),
+                "productos": Producto.objects.all(),
+                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
+                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
+                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                })
+
+
+            return render(request, "usuarios/ver_pedidos.html",{
+                "hoy": time.strftime('%Y-%m-%d'),
+                "vendedores": User.objects.filter(groups__name='Ventas'),
+                "pacientes": Paciente.objects.all(),
+                "pedidos": Pedido.objects.all(),
+                "productos": Producto.objects.all(),
+                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
+                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
+                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+            })
+
+# pylint: enable=E1101    
+    
