@@ -33,7 +33,7 @@
 
 
     {% if grupo == "Secretaria" %}
-        <h4>Funciones habilitadas</h4>
+        <h4 class="mb-3">Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6">
@@ -47,13 +47,18 @@
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Pacientes</h5>
+                        <p class="card-text">Para agregar nuevos pacientes, o editar existentes.</p>
+                        <a href="{% url 'agregar_paciente' %}"  class="btn btn-primary">Agregar nuevo paciente</a>
+                        <a href="{% url 'editar_paciente' %}"  class="btn btn-secondary">Editar paciente existente</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <h5>Gestión de Pacientes</h5>
-        <a href="{% url 'editar_paciente' %}">Editar paciente existente</a>
-        </br>
-        <a href="{% url 'agregar_paciente' %}">Agregar nuevo paciente</a>
-        </br>
     {% endif %}
 
     {% if grupo == "Paciente" %}
@@ -68,6 +73,6 @@
 
 {% endif %}
 
-<a href="{% url 'logout' %}">Desconectarse</a>
+<a href="{% url 'logout' %}" class="btn btn-danger mt-4">Desconectarse</a>
 
 {% endblock %}
