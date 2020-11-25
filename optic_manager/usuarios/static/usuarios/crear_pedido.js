@@ -32,10 +32,10 @@ $(document).ready(function() {
     $("#opcionesLente").trigger("change");  //Cuando cambia el estado, se ejecuta el evento change().
 });
 
-function run() {
+function run_1() {
 
     var e = document.getElementById("opcionesLente");
-    //var e_text = e.options[e.selectedIndex].text;
+    var e_text = e.options[e.selectedIndex].text;
 
     console.log("Opción elegida:" + e.value);
 
@@ -44,7 +44,7 @@ function run() {
     var calculo_id = 0;
 
     //En caso del tipo ser "lente", calcula el id en función de las opciones seleccionadas.
-    if (e.value == "Lente") {
+    if (e.value == "lente") {
         console.log("ES LENTE");
 
         var e1 = document.getElementById("inputFarClose");
@@ -79,8 +79,12 @@ function run() {
         document.getElementById("texto").innerHTML = str1.concat(
             e_text," ",e1_text,mid,e2_text,mid,e3_text,"(id = ",calculo_id,")"
         );
+        document.getElementById("id_producto").value = `${calculo_id}`;
     } else {
-        document.getElementById("texto").innerHTML = str1.concat(e_text);
+        var id_otro = document.getElementById("inputProducto").value;
+        //var tipo_otro = document.getElementById("inputProducto").selected.innerHTML;
+        document.getElementById("texto").innerHTML = str1.concat(e_text, " (id= ",id_otro, ")");
+        document.getElementById("id_producto").value = `${id_otro}`;
     }
 
     var valor = document.getElementById("texto").innerHTML;

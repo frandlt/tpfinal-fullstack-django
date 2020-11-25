@@ -62,7 +62,6 @@ def generar_pedido_view(request):
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
         if grupo == 'Ventas':
-            
             lentes = []
             for i in range (1,9):
                 lentes.append(Producto.objects.get(id=i))
@@ -75,23 +74,10 @@ def generar_pedido_view(request):
                     fecha_hora= datetime.datetime.now(),
                     cantidad= request.POST['cantidad'],
                     medio_pago=request.POST['medio_pago'],
-                    estado=request.POST['estado'],
+                    estado="Pendiente",
+                    producto= Producto.objects.get(id=request.POST['id_producto']),
+                    precio= request.POST['precio'],
                 )
-                if request.POST['tipo']=="producto":
-                    id_prod=request.POST['id-otro']
-                elif request.POST['tipo']=="lente":
-                    id_prod=request.POST['id-lente']
-                else: 
-                    #mensaje="ERROR: No puede obtenerse el ID del producto"
-                    return render(request, 'usuarios/generar_pedido.html', {
-                    "nuevo_id": int(Pedido.objects.last().id) + 1,
-                    "pacientes": Paciente.objects.all(),
-                    "otros_productos":otros_productos,
-                    "productos": Producto.objects.all(),
-                    "productos_serializados": serializers.serialize("json", Producto.objects.all())
-                })
-                nuevo_pedido.producto=(Producto.objects.get(id=id_prod))
-                nuevo_pedido.precio=(Producto.objects.get(id=id_prod).precio_actual)
                 nuevo_pedido.save()
 
                 return render(request, 'usuarios/generar_pedido.html', {

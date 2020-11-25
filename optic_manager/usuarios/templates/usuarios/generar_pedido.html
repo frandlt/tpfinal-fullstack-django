@@ -28,14 +28,14 @@
     <label for="opcionesLente">Tipo de Producto</label>
     <select class="form-control" id="opcionesLente" onchange="run()" name="tipo">
       <option value="producto">Otro producto</option>
-      <option value="lente">Lente</option>
+      <option value="lente" selected>Lente</option>
     </select>
   </div>
 
   <!-- Campos mostrados en caso de ser Otro Producto (sólo pide seleccionar producto) -->
   <div class="form-group" id="inputsOtroProducto">
     <label for="inputProducto">Producto</label>
-    <select class="form-control" id="inputProducto" name="id-otro">
+    <select class="form-control" id="inputProducto" onchange="run()" name="id-otro">
       {% for prod in otros_productos %}
         <option value="{{prod.id}}">{{prod.nombre}} ({{prod.descripcion}})</option>
       {% endfor %}
@@ -69,12 +69,15 @@
     </div>
   </div>
 
+  <label for="id_producto">ID producto</label>
+  <input id="id_producto" name="id_producto" readonly></input>
+
   <!-- Campos de Cantidad, Precio, Subtotal y Medio de Pago. Precio viene del modelo de Productos, que se va a reconocer según el id de producto seleccionado anteriormente. -->
   <div class="form-group">
     <div class="row">
       <div class="form-group col-md-2">
         <label for="inputCantidad">Cantidad</label>
-        <input type="number" class="form-control" id="inputCantidad" name="cantidad" onchange="calculo_subtotal()" required>
+        <input type="number" value="1" class="form-control" id="inputCantidad" name="cantidad" onchange="calculo_subtotal()" required>
       </div>
       <div class="form-group col-md-2">
         <label for="inputPrecio">Precio</label>
@@ -126,7 +129,9 @@
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
-<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
+<script type="text/javascript" src="{%  static 'usuarios/crear_pedido.js' %}"></script>
+
+
 
 <script type="text/javascript">
   var productos = JSON.parse('{{productos_serializados | safe}}');
@@ -134,6 +139,7 @@
 
   function set_precio(){
       var id_prod = document.getElementById("id_producto").value;
+      console.log(id_prod);
       var precio_prod = "";
       for(i=0; i<productos.length; i++){
         if(productos[i]["pk"]==id_prod){
@@ -143,14 +149,14 @@
       }
   }
 
-  document.addEventListener("DOMContentLoaded", set_precio())
+  function run(){
+    run_1();
+    set_precio();
+  }
 
-  document.querySelectorAll("select").forEach(select => {
-    select.addEventListener("input", set_precio())})
-
+  document.addEventListener("DOMContentLoaded", run())
+  document.addEventListener("DOMContentLoaded", calculo_subtotal())
   
 </script>
-
-
 
 {% endblock %}
