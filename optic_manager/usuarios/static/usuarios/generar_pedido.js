@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 function run() {
 
-    var e = document.getElementById("seeAnotherFieldGroup");
+    var e = document.getElementById("opcionesLente");
     //var e_text = e.options[e.selectedIndex].text;
 
     console.log("Opción elegida:" + e.value);
@@ -44,7 +44,7 @@ function run() {
     var calculo_id = 0;
 
     //En caso del tipo ser "lente", calcula el id en función de las opciones seleccionadas.
-    if (e.value == "lente") {
+    if (e.value == "Lente") {
         console.log("ES LENTE");
 
         var e1 = document.getElementById("inputFarClose");
@@ -77,16 +77,7 @@ function run() {
         calculo_id += 1;
 
         document.getElementById("texto").innerHTML = str1.concat(
-            e_text,
-            " ",
-            e1_text,
-            mid,
-            e2_text,
-            mid,
-            e3_text,
-            "(id = ",
-            calculo_id,
-            ")"
+            e_text," ",e1_text,mid,e2_text,mid,e3_text,"(id = ",calculo_id,")"
         );
     } else {
         document.getElementById("texto").innerHTML = str1.concat(e_text);

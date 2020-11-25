@@ -3,156 +3,8 @@
 
 {% block body %}
 
-<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
 
-<script type="text/javascript">
-  var productos_serializados = JSON.parse('{{productos_serializados | safe}}');
-  console.log(productos_serializados)
-
-
-  var calculo_id = 0;
-  /*
-  $("#opcionesLente").click(function () {
-    if ($("#radio_button").is(":checked")) {
-      alert("it's checked");
-    }
-  });
-  
-  $("#opcionesLente").change(function () {
-    if ($(this).val() == "lente") {
-      $("#inputsLente").show();
-      $("#inputsOtroProducto").hide();
-      $("#inputProducto").removeAttr("required");
-      $("#inputProducto").removeAttr("data-error");
-      $("#inputFarClose").attr("required", "");
-      $("#inputFarClose").attr("data-error", "This field is required.");
-      $("#inputLeftRight").attr("required", "");
-      $("#inputLeftRight").attr("data-error", "This field is required.");
-      $("#inputArmazon").attr("required", "");
-      $("#inputArmazon").attr("data-error", "This field is required.");
-
-    } else {
-      $("#inputsLente").hide();
-      $("#inputsOtroProducto").show();
-      $("#inputFarClose").removeAttr("required");
-      $("#inputFarClose").removeAttr("data-error");
-      $("#inputLeftRight").removeAttr("required");
-      $("#inputLeftRight").removeAttr("data-error");
-      $("#inputArmazon").removeAttr("required");
-      $("#inputArmazon").removeAttr("data-error");
-      $("#inputProducto").attr("required", "");
-      $("#inputProducto").attr("data-error", "This field is required.");
-    }
-  });
-  $("#opcionesLente").trigger("change");
-  */
-
-  
-  //addEventListener("DOMContentLoaded", function run() {
-  //  console.log("La función run() está ejecutándose");
-  /*  var e = document.getElementById("seeAnotherFieldGroup");
-    var e_text = e.options[e.selectedIndex].text;
-    console.log("Opción elegida:" + e.value);
-  
-    var str1 = "Resultado: ";
-    var mid = " - ";
-      
-    if (e.value == "lente") {
-      console.log("ES LENTE");
-      var e1 = document.getElementById("inputFarClose");
-      var e1_text = e1.options[e1.selectedIndex].text.toLowerCase();
-      console.log("e1_text:" + e1_text);
-      if (e1_text == "cerca") {
-        calculo_id += 4;
-      } else {
-        calculo_id += 0;
-      }
-  
-      var e2 = document.getElementById("inputLeftRight");
-      var e2_text = e2.options[e2.selectedIndex].text.toLowerCase();
-      console.log("e2_text:" + e2_text);
-      if (e2_text == "derecha") {
-        calculo_id += 2;
-      } else {
-        calculo_id += 0;
-      }
-  
-      var e3 = document.getElementById("inputArmazon");
-      var e3_text = e3.options[e3.selectedIndex].text.toLowerCase();
-      console.log("e3_text:" + e3_text);
-      if (e3_text == "sin armazón") {
-        calculo_id += 1;
-      } else {
-        calculo_id += 0;
-      }
-  
-      calculo_id += 1;
-  
-      document.getElementById("texto").innerHTML = str1.concat(
-        e_text,
-        " ",
-        e1_text,
-        mid,
-        e2_text,
-        mid,
-        e3_text,
-        "(id = ",
-        calculo_id,
-        ")"
-      );
-
-      document.getElementById("hidden-input-id").value = calculo_id;
-
-    } else {
-      document.getElementById("texto").innerHTML = str1.concat(e_text);
-    }
-  
-    var valor = document.getElementById("texto").innerHTML;
-    var valor = valor.replace("Resultado: ", "");
-    var valor = valor.replace("ó", "o");
-    console.log("Valor: " + valor);
-  })
-  */
-
-  var precio=0
-  function buscar(){
-    if (document.getElementById("opcionesLente").value === "lente"){
-      var x = calculo_id -1;
-      var producto = productos_serializados[x];
-      }else {
-        var x = document.querySelector('#inputProducto').value - 1;
-        var producto = productos_serializados[x];
-      }
-      precio = producto["fields"]["precio_actual"];
-      document.querySelector('#inputPrecio').value = precio;
-  }
-
-  /*
-  function calculo_subtotal() {
-    var cantidad = document.getElementById("inputCantidad").value;
-    var precio = document.getElementById("inputPrecio").value;
-  
-    console.log("Cantidad: " + cantidad);
-    console.log("Precio: " + precio);
-  
-    var subtotal = 0;
-    var inicio_subtotal = "$ 0";
-  
-    if (cantidad > 0 && precio > 0) {
-      var subtotal = (cantidad * precio).toFixed(2);
-      console.log("SUBTOTAL = " + subtotal);
-  
-      document.getElementById("inputSubtotal").value = subtotal.toString();
-      } else {
-     document.getElementById("inputSubtotal").value = "0";
-    }
-  }
-  */
-</script>
-
-<h1>{{hola}}</h1>
-
-<h4 class="mb-3 heading">Pedido de venta a paciente</h4>
+<!--<h4 class="mb-3 heading">Pedido de venta a paciente</h4>-->
 <p style="color: red; font-size: 20px">{{mensaje_error}}<p>
 
 <form action="{% url 'generar_pedido' %}" method="post" id="login-form">
@@ -216,8 +68,6 @@
       </div>
     </div>
   </div>
-<button type="button" id="buscar" onclick="buscar()">BUSCAR</button>
-
 
   <!-- Campos de Cantidad, Precio, Subtotal y Medio de Pago. Precio viene del modelo de Productos, que se va a reconocer según el id de producto seleccionado anteriormente. -->
   <div class="form-group">
@@ -256,12 +106,13 @@
     </div>
   </div>
 
-  <div class="estado">
+  <!--<div class="estado">
     <select name="estado">
       <option value="Pedido">Pedido</option>
       <option value="Taller">Mandar a Taller</option>
     </select>
-  </div>
+  </div>-->
+
   <h5 id="texto" ></h5>
   <input type="hidden" name="id-lente" id="hidden-input-id"/>
 
@@ -274,6 +125,32 @@
 </form>
 
 <a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript" src="{%  static 'usuarios/generar_pedido.js' %}"></script>
+
+<script type="text/javascript">
+  var productos = JSON.parse('{{productos_serializados | safe}}');
+  console.log(productos)
+
+  function set_precio(){
+      var id_prod = document.getElementById("id_producto").value;
+      var precio_prod = "";
+      for(i=0; i<productos.length; i++){
+        if(productos[i]["pk"]==id_prod){
+          precio_prod = productos[i]["fields"]["precio_actual"];
+          document.getElementById("inputPrecio").value = precio_prod;
+        }
+      }
+  }
+
+  document.addEventListener("DOMContentLoaded", set_precio())
+
+  document.querySelectorAll("select").forEach(select => {
+    select.addEventListener("input", set_precio())})
+
+  
+</script>
+
 
 
 {% endblock %}
