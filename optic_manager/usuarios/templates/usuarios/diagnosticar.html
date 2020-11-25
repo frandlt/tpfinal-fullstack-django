@@ -1,0 +1,46 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h1>Agregar diagnóstico a turnos de hoy</h1>
+<p>Médico: {{medico.last_name}}, {{medico.first_name}} - Fecha: {{hoy.day}}/{{hoy.month}}/{{hoy.year}}</p>
+
+<div id="form-select-turno">
+<h2>Seleccione un turno de hoy</h2>
+<p style="color: red">{{mensaje_existe}}</p>
+<form id="form1">
+    {% csrf_token %}
+    {% for turno in turnos %}
+        <input type="radio" name="lista_turnos" class ="radio" value="{{turno.id}}">
+        <label id="label-{{turno.id}}" for="{{turno.id}}">Hora: {{turno.horario}} - Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}})</label><br>
+    {% endfor %}
+    <button type="button" value="seleccionar" id="boton-select">Seleccionar</button>
+</form>
+</div>
+
+<div id="form-diag" style="display: none">
+<h2>Ingrese datos</h2>
+<p id="datos_paciente"></p>
+<button type="button" id="boton-cambiar">Cambiar turno</button><br><br>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <label for="id_turno">ID turno: </label>
+    <input id="id_turno" name="id_turno" readonly></input><br><br> 
+    <label for="inputDiag">Diagnostico:</label><br>
+    <textarea rows="10" cols="40" name="diagnostico" id="inputDiag" required></textarea><br><br>
+    <label for="inputObs">Observaciones:</label><br>
+    <textarea id="inputObs" rows="10" cols="40" name="observaciones"></textarea><br><br>
+    <input type="submit" value="CREAR"/>
+
+</form>
+</div>
+
+
+<h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2>
+
+
+<script type="text/javascript" src="{%  static 'usuarios/diagnosticar.js' %}"></script>
+
+{% endblock %}

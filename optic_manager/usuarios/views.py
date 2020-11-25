@@ -81,7 +81,7 @@ def generar_pedido_view(request):
                 elif request.POST['tipo']=="lente":
                     id_prod=request.POST['id-lente']
                 else: 
-                    mensaje="ERROR: No puede obtenerse el ID del producto"
+                    #mensaje="ERROR: No puede obtenerse el ID del producto"
                     return render(request, 'usuarios/generar_pedido.html', {
                     "nuevo_id": int(Pedido.objects.last().id) + 1,
                     "pacientes": Paciente.objects.all(),
@@ -299,5 +299,67 @@ def editar_turnos_view(request):
                 "users": serializers.serialize("json", User.objects.all()),
                 "turnos_futuros_serializ": serializers.serialize("json", turnos.filter(fecha__range=[hoy, hoy + años]))
             })
+
+def diagnosticar_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Profesional medico':
+            print("render diagnosticar")
+            id_medico = request.session['_auth_user_id']
+            medico = User.objects.get(id=id_medico)
+            hoy = datetime.date.today()
+            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy)
+            if request.method == "POST":
+                if Diagnostico.objects.get(turno=request.POST['id_turno']) in Diagnostico.objects.all():
+                    return render(request, 'usuarios/diagnosticar.html', {
+                        "medico": medico,
+                        "hoy": hoy,
+                        "turnos": turnos_med_hoy,
+                        "mensaje_existe": "El turno seleccionado ya tiene un diagnóstico, puede verlo en el historial del paciente. Por favor seleccione otro turno",
+                    })
+                else:
+                    nuevo_diag = Diagnostico(
+                        turno= Turno.objects.get(id=request.POST['id_turno']),
+                        diagnostico=request.POST['diagnostico'],
+                        observacion = request.POST['observaciones']
+                    )
+                    nuevo_diag.save()
+
+                    return render(request, 'usuarios/diagnosticar.html', {
+                        "medico": medico,
+                        "hoy": hoy,
+                        "turnos": turnos_med_hoy,
+                    })
+                
+            return render(request, 'usuarios/diagnosticar.html', {
+                "medico": medico,
+                "hoy": hoy,
+                "turnos": turnos_med_hoy,
+            })
+
+def pacientes_med_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Profesional medico':
+            print("render pacientes_med")
+            medico = User.objects.get(id=request.session['_auth_user_id'])
+            turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id'])
+            pacientes_med=[]
+            for turno in turnos_med:
+                if turno.paciente not in pacientes_med:
+                    pacientes_med.append(turno.paciente)
+
+            return render(request, 'usuarios/pacientes_med.html',{
+                "medico": medico,
+                "pacientes": pacientes_med,
+                "pacientes_serializ": serializers.serialize("json", pacientes_med),
+                "diagnosticos": Diagnostico.objects.all(),
+                "diag_serializ": serializers.serialize("json", Diagnostico.objects.all()),
+                "turnos": Turno.objects.all(),
+                "turnos_serializ": serializers.serialize("json", Turno.objects.all()),
+            })
+
 
             

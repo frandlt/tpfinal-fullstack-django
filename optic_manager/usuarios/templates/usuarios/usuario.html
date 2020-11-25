@@ -67,7 +67,9 @@
     {% endif %}
 
         {% if grupo == "Profesional medico" %}
-        <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a>
+        <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a><br>
+        <a href="{% url 'diagnosticar' %}">Diagnosticar</a><br>
+        <a href="{% url 'pacientes_med' %}">Historial paciente</a>
         </br>
     {% endif %}
 
