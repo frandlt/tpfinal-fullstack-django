@@ -27,7 +27,8 @@
     </ul>
 
     {% if grupo == "Ventas" %}
-        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a>
+        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
+        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
         </br>
     {% endif %}
 
@@ -61,13 +62,20 @@
 
     {% endif %}
 
-    {% if grupo == "Paciente" %}
-        <a href="{% url 'editar_paciente' %}">Editar información de contacto</a>
+    {% if grupo == "Profesional medico" %}
+        <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a><br>
+        <a href="{% url 'diagnosticar' %}">Diagnosticar</a><br>
+        <a href="{% url 'pacientes_med' %}">Historial paciente</a>
         </br>
     {% endif %}
 
-        {% if grupo == "Profesional medico" %}
-        <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a>
+    {% if grupo == "Gerencia" %}
+        <a href="{% url 'gerencia' %}">Acceder a reportes</a><br>
+        </br>
+    {% endif %}
+
+    {% if grupo == "Taller" %}
+        <a href="{% url 'taller' %}">Ver pedidos</a><br>
         </br>
     {% endif %}
 

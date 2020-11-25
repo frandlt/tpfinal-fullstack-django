@@ -4,10 +4,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import Paciente, Pedido, Producto, Turno, Diagnostico
-import datetime
+import datetime, time
 from django.core import serializers
 
 # Create your views here.
+# pylint: disable=E1101
 
 def welcome_page(request):
     return render (request, "usuarios/welcome.html")
@@ -61,7 +62,6 @@ def generar_pedido_view(request):
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
         if grupo == 'Ventas':
-            
             lentes = []
             for i in range (1,9):
                 lentes.append(Producto.objects.get(id=i))
@@ -74,23 +74,10 @@ def generar_pedido_view(request):
                     fecha_hora= datetime.datetime.now(),
                     cantidad= request.POST['cantidad'],
                     medio_pago=request.POST['medio_pago'],
-                    estado=request.POST['estado'],
+                    estado="Pendiente",
+                    producto= Producto.objects.get(id=request.POST['id_producto']),
+                    precio= request.POST['precio'],
                 )
-                if request.POST['tipo']=="producto":
-                    id_prod=request.POST['id-otro']
-                elif request.POST['tipo']=="lente":
-                    id_prod=request.POST['id-lente']
-                else: 
-                    mensaje="ERROR: No puede obtenerse el ID del producto"
-                    return render(request, 'usuarios/generar_pedido.html', {
-                    "nuevo_id": int(Pedido.objects.last().id) + 1,
-                    "pacientes": Paciente.objects.all(),
-                    "otros_productos":otros_productos,
-                    "productos": Producto.objects.all(),
-                    "productos_serializados": serializers.serialize("json", Producto.objects.all())
-                })
-                nuevo_pedido.producto=(Producto.objects.get(id=id_prod))
-                nuevo_pedido.precio=(Producto.objects.get(id=id_prod).precio_actual)
                 nuevo_pedido.save()
 
                 return render(request, 'usuarios/generar_pedido.html', {
@@ -300,4 +287,118 @@ def editar_turnos_view(request):
                 "turnos_futuros_serializ": serializers.serialize("json", turnos.filter(fecha__range=[hoy, hoy + años]))
             })
 
-            
+def diagnosticar_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Profesional medico':
+            print("render diagnosticar")
+            id_medico = request.session['_auth_user_id']
+            medico = User.objects.get(id=id_medico)
+            hoy = datetime.date.today()
+            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy)
+            if request.method == "POST":
+                if Diagnostico.objects.get(turno=request.POST['id_turno']) in Diagnostico.objects.all():
+                    return render(request, 'usuarios/diagnosticar.html', {
+                        "medico": medico,
+                        "hoy": hoy,
+                        "turnos": turnos_med_hoy,
+                        "mensaje_existe": "El turno seleccionado ya tiene un diagnóstico, puede verlo en el historial del paciente. Por favor seleccione otro turno",
+                    })
+                else:
+                    nuevo_diag = Diagnostico(
+                        turno= Turno.objects.get(id=request.POST['id_turno']),
+                        diagnostico=request.POST['diagnostico'],
+                        observacion = request.POST['observaciones']
+                    )
+                    nuevo_diag.save()
+
+                    return render(request, 'usuarios/diagnosticar.html', {
+                        "medico": medico,
+                        "hoy": hoy,
+                        "turnos": turnos_med_hoy,
+                    })
+                
+            return render(request, 'usuarios/diagnosticar.html', {
+                "medico": medico,
+                "hoy": hoy,
+                "turnos": turnos_med_hoy,
+            })
+
+def pacientes_med_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Profesional medico':
+            print("render pacientes_med")
+            medico = User.objects.get(id=request.session['_auth_user_id'])
+            turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id'])
+            pacientes_med=[]
+            for turno in turnos_med:
+                if turno.paciente not in pacientes_med:
+                    pacientes_med.append(turno.paciente)
+
+            return render(request, 'usuarios/pacientes_med.html',{
+                "medico": medico,
+                "pacientes": pacientes_med,
+                "pacientes_serializ": serializers.serialize("json", pacientes_med),
+                "diagnosticos": Diagnostico.objects.all(),
+                "diag_serializ": serializers.serialize("json", Diagnostico.objects.all()),
+                "turnos": Turno.objects.all(),
+                "turnos_serializ": serializers.serialize("json", Turno.objects.all()),
+            })
+
+def ver_pedidos_view (request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Ventas':
+            print("render ver_pedidos")
+            if request.method == "POST":
+                pedido = Pedido.objects.get(id=request.POST["ped_id"])
+                pedido.estado = request.POST["ped_est"]
+                pedido.save()
+
+                return render(request, "usuarios/ver_pedidos.html",{
+                "hoy": time.strftime('%Y-%m-%d'),
+                "vendedores": User.objects.filter(groups__name='Ventas'),
+                "pacientes": Paciente.objects.all(),
+                "pedidos": Pedido.objects.all(),
+                "productos": Producto.objects.all(),
+                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
+                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
+                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                })
+
+
+            return render(request, "usuarios/ver_pedidos.html",{
+                "hoy": time.strftime('%Y-%m-%d'),
+                "vendedores": User.objects.filter(groups__name='Ventas'),
+                "pacientes": Paciente.objects.all(),
+                "pedidos": Pedido.objects.all(),
+                "productos": Producto.objects.all(),
+                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
+                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
+                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
+                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+            })
+
+def gerencia_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render gerencia.html")
+            return render(request, "usuarios/gerencia.html",{})
+
+def taller_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Taller':
+            print("render taller.html")
+            return render(request, "usuarios/taller.html",{})
+
+# pylint: enable=E1101    
+    
