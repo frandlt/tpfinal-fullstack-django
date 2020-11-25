@@ -48,7 +48,7 @@
 var pacientes = JSON.parse('{{pacientes_serializ | safe}}');
 console.log(pacientes);
 var turnos = JSON.parse('{{turnos_serializ | safe}}');
-console.log(pacientes);
+console.log(turnos);
 var diagnosticos = JSON.parse('{{diag_serializ | safe}}');
 console.log(diagnosticos);
 
@@ -58,8 +58,10 @@ for(i=0; i< pacientes.length; i++){
     var tbody = document.getElementById(`tbody-${id_pcte}`);
 
     for(z=0; z<turnos.length;z++){
+        console.log(turnos[z])
         if (turnos[z]["fields"]["paciente"] == id_pcte){
-            var id_turno = turnos[z]["fields"]["id"];
+            var id_turno = turnos[z]["pk"];
+            console.log(id_turno)
             var diag = "";
             for(m=0; m<diagnosticos.length;m++){
                 if (diagnosticos[m]["fields"]["turno"] == id_turno){
@@ -77,9 +79,15 @@ for(i=0; i< pacientes.length; i++){
             var td_2 = document.createElement("td");
             td_2.innerHTML = `${turnos[z]["fields"]["asistencia"]}`;
             var td_3 = document.createElement("td");
-            td_3.innerHTML = diag["fields"]["diagnostico"] ;
             var td_4 = document.createElement("td");
-            td_4.innerHTML = diag["fields"]["observacion"];
+            if (diag == ""){
+                td_3.innerHTML = "No existe diagnostico" ;
+                td_4.innerHTML == "No existe observacion";
+
+            }else{
+                td_3.innerHTML = diag["fields"]["diagnostico"];       
+                td_4.innerHTML = diag["fields"]["observacion"];
+            }
             tr.appendChild(td_1);
             tr.appendChild(td_2);
             tr.appendChild(td_3);

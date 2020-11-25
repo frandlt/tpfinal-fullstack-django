@@ -398,5 +398,21 @@ def ver_pedidos_view (request):
                 "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
             })
 
+def gerencia_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render gerencia.html")
+            return render(request, "usuarios/gerencia.html",{})
+
+def taller_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Taller':
+            print("render taller.html")
+            return render(request, "usuarios/taller.html",{})
+
 # pylint: enable=E1101    
     
