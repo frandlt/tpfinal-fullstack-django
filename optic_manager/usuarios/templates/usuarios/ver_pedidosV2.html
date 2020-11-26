@@ -1,0 +1,128 @@
+{% extends "./layout.html" %}
+{% load static %}
+{% load mathfilters %}
+
+   
+{% block body %}
+
+<h1>PEDIDOS</h1>
+<h2>Filtrar por: </h2>
+
+<form action="" method="POST">
+{% csrf_token %}
+
+<label for="filtro_fecha" style="text-decoration: underline">Fecha: </label>
+<div id="filtro_fecha">
+    <label for="filtro_desde">Desde: </label>
+    <input type="date" name="desde" id="filtro_desde" value="{{fecha_desde}}" class="select_fecha"></input>
+    <label for="filtro_hasta">Hasta: </label>
+    <input type="date" name="hasta" id="filtro_hasta" value="{{fecha_hasta}}"class="select_fecha"></input>
+</div><br>
+
+<label for="filtro_estado" style="text-decoration: underline">Estado: </label>
+<select id="filtro_estado" class="select_filtros" name="filtro_est">
+    <option value="Todos">Todos</option>
+    <option value="Pendiente">Pendientes</option>
+    <option value="Pedido">Pedidos</option>
+    <option value="Taller">En taller</option>
+    <option value="Finalizado">Finalizados</option>
+    <option value="Cancelado">Cancelados</option>
+</select>
+
+<label for="filtro_vendedor" style="text-decoration: underline">Vendedor: </label>
+<select id="filtro_vendedor" name="filtro_vend" class="select_filtros">
+    <option>Todos</option>
+    {% for vendedor in vendedores %}
+    <option value={{vendedor.id}}>{{vendedor.last_name}}, {{vendedor.first_name}}</option>
+    {% endfor %}
+</select>
+
+<label for="filtro_paciente" style="text-decoration: underline">Paciente: </label>
+<select id="filtro_paciente" name="filtro_pac" class="select_filtros">
+    <option>Todos</option>
+    {% for paciente in pacientes %}
+    <option value={{paciente.id}}>{{paciente.apellido}}, {{paciente.nombre}}</option>
+    {% endfor %}
+</select><br>
+
+<input type="submit" name="submit" value="Filtrar"></input>
+
+
+
+<table class="table">
+    <thead>
+        <tr> 
+            <th scope="col">ID</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Vendedor</th>
+            <th scope="col">Fecha encargue</th>
+            <th scope="col">Precio unitario</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Subtotal</th>
+            <th scope="col">Medio de pago</th>
+            <th scope="col">Estado</th>
+
+        </tr>
+    </thead>
+    <tbody id="tbody">
+        {% for pedido in pedidos_filtrados %}
+            <tr class="row_body">
+                <th scope="row" id="id_pedido">{{pedido.id}}</th>
+                <td>{{pedido.producto.nombre}} ({{pedido.producto.descripcion}})</td>
+                <td>{{pedido.paciente.apellido}}, {{pedido.paciente.nombre}} ({{pedido.paciente.dni}})</td>
+                <td>{{pedido.vendedor.last_name}}, {{pedido.vendedor.first_name}}.</td>
+                <td>{{pedido.fecha_hora}}</td>
+                <td>{{pedido.precio}}</td>
+                <td>{{pedido.cantidad}}</td>
+                <td>{{pedido.cantidad|mul:pedido.precio}}</td>
+                <td>{{pedido.medio_pago}}</td>
+                <td><select class="drop_estado" name="ped_est{{pedido.id}}" id="est_{{pedido.id}}">
+                        <option>Pendiente</option>
+                        <option>Pedido</option>
+                        <option>Taller</option>
+                        <option>Finalizado</option>
+                        <option>Cancelado</option>
+                    </select>
+                    <input type="hidden" name="ped_id{{pedido.id}}" value="{{pedido.id}}"/>
+                    
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+
+<input type="submit" name="submit" value="Guardar cambios" onclick="guardar_cambios"></form><br>
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript">
+var pedidos_filtrados = JSON.parse('{{pedidos_serializ | safe}}');
+var filtro_estado = `{{filtro_estado}}`;
+var filtro_vendedor = `{{filtro_vendedor}}`;
+var filtro_paciente = `{{filtro_paciente}}`;
+
+console.log(pedidos_filtrados)
+console.log(filtro_estado)
+
+document.getElementById("filtro_estado").value = filtro_estado;
+document.getElementById("filtro_vendedor").value = filtro_vendedor;
+document.getElementById("filtro_paciente").value = filtro_paciente;
+
+//document.querySelectorAll(".drop_estado").forEach(select => select.selected = )
+
+document.addEventListener("DOMContentLoaded", function(){
+    for(i=0; i<pedidos_filtrados.length;i++){
+        document.getElementById(`est_${pedidos_filtrados[i]["pk"]}`).value = pedidos_filtrados[i]["fields"]["estado"];
+    }
+})
+
+function guardar_cambios(){
+        location.reload();    
+}
+
+console.log(document.getElementById("filtro_hasta").value)
+
+</script>
+
+
+{% endblock %}

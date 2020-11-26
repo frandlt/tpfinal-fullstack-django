@@ -355,33 +355,84 @@ def ver_pedidos_view (request):
         if grupo == 'Ventas':
             print("render ver_pedidos")
             if request.method == "POST":
-                pedido = Pedido.objects.get(id=request.POST["ped_id"])
-                pedido.estado = request.POST["ped_est"]
-                pedido.save()
+                fecha_desde = datetime.datetime.strptime(request.POST["desde"], '%Y-%m-%d')
+                fecha_hasta = datetime.datetime.strptime(request.POST["hasta"], '%Y-%m-%d') 
+                estado = request.POST["filtro_est"]
+                vendedor = request.POST["filtro_vend"]
+                paciente = request.POST["filtro_pac"]
 
-                return render(request, "usuarios/ver_pedidos.html",{
-                "hoy": time.strftime('%Y-%m-%d'),
-                "vendedores": User.objects.filter(groups__name='Ventas'),
-                "pacientes": Paciente.objects.all(),
-                "pedidos": Pedido.objects.all(),
-                "productos": Producto.objects.all(),
-                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
-                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
-                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
-                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                pedidos_fecha = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
+
+                if estado == "Todos":
+                    pedidos_estado = Pedido.objects.all()
+                else:
+                    pedidos_estado = Pedido.objects.filter(estado=estado)
+           
+                filtro1 = list(set(pedidos_fecha).intersection(pedidos_estado))
+                    
+                if vendedor == "Todos":
+                    pedidos_vendedor = Pedido.objects.all()
+                else:
+                    pedidos_vendedor = Pedido.objects.filter(vendedor_id=vendedor)
+                    
+                if paciente == "Todos":
+                    pedidos_paciente = Pedido.objects.all()
+                else:
+                    pedidos_paciente = Pedido.objects.filter(paciente_id=paciente)
+                    
+                filtro2 = list(set(pedidos_vendedor).intersection(pedidos_paciente))
+                pedidos_filtrados= list(set(filtro1).intersection(filtro2))
+                 
+                if request.POST["submit"] == "Guardar cambios":
+                    for pedido in pedidos_filtrados:
+                        pedido = Pedido.objects.get(id=request.POST["ped_id"+str(pedido.id)])
+                        pedido.estado = request.POST["ped_est"+str(pedido.id)]
+                        pedido.save()
+                
+                pedidos_fecha = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
+                if estado == "Todos":
+                    pedidos_estado = Pedido.objects.all()
+                else:
+                    pedidos_estado = Pedido.objects.filter(estado=estado)
+                filtro1 = list(set(pedidos_fecha).intersection(pedidos_estado))
+                if vendedor == "Todos":
+                    pedidos_vendedor = Pedido.objects.all()
+                else:
+                    pedidos_vendedor = Pedido.objects.filter(vendedor_id=vendedor)
+                if paciente == "Todos":
+                    pedidos_paciente = Pedido.objects.all()
+                else:
+                    pedidos_paciente = Pedido.objects.filter(paciente_id=paciente)
+                filtro2 = list(set(pedidos_vendedor).intersection(pedidos_paciente))
+                pedidos_filtrados= list(set(filtro1).intersection(filtro2))
+
+                return render (request, "usuarios/ver_pedidosV2.html",{
+                    "fecha_desde": request.POST["desde"],
+                    "fecha_hasta": request.POST["hasta"],
+                    "filtro_estado": request.POST["filtro_est"],
+                    "filtro_vendedor": request.POST["filtro_vend"],
+                    "filtro_paciente": request.POST["filtro_pac"],
+                    "vendedores": User.objects.filter(groups__name='Ventas'),
+                    "pacientes": Paciente.objects.all(),
+                    "pedidos": Pedido.objects.all(),
+                    "productos": Producto.objects.all(),
+                    "pedidos_filtrados": pedidos_filtrados,
+                    "pedidos_serializ": serializers.serialize('json', pedidos_filtrados)
                 })
 
 
-            return render(request, "usuarios/ver_pedidos.html",{
-                "hoy": time.strftime('%Y-%m-%d'),
+            return render(request, "usuarios/ver_pedidosV2.html",{
+                "fecha_desde": time.strftime('%Y-%m-%d'),
+                "fecha_hasta": time.strftime('%Y-%m-%d'),
+                "filtro_estado": "Todos",
+                "filtro_vendedor": "Todos",
+                "filtro_paciente": "Todos",
                 "vendedores": User.objects.filter(groups__name='Ventas'),
                 "pacientes": Paciente.objects.all(),
                 "pedidos": Pedido.objects.all(),
                 "productos": Producto.objects.all(),
-                "pedidos_serializ": serializers.serialize("json", Pedido.objects.all()),
-                "productos_serializ": serializers.serialize("json", Producto.objects.all()),
-                "vendedores_serializ": serializers.serialize("json", User.objects.filter(groups__name='Ventas')),
-                "pacientes_serializ": serializers.serialize("json", Paciente.objects.all()),
+                "pedidos_filtrados": Pedido.objects.filter(fecha_hora__range=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1)]),
+                "pedidos_serializ": serializers.serialize('json', Pedido.objects.filter(fecha_hora__range=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1)]))
             })
 
 def gerencia_view(request):
