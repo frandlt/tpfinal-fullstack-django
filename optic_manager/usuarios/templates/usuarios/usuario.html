@@ -27,9 +27,24 @@
     </ul>
 
     {% if grupo == "Ventas" %}
-        <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
-        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
-        </br>
+        <!-- <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
+        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a> -->
+
+        <h4 class="mb-3">Funciones habilitadas</h4>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Manejo de Pedidos de Pacientes</h5>
+                        <p class="card-text">Para generar pedidos, o visualizar los mismos.</p>
+                        <a href="{% url 'generar_pedido' %}" class="btn btn-primary">Generar pedido para paciente</a>
+                        <a href="{% url 'ver_pedidos' %}" class="btn btn-secondary">Ver pedidos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
 
@@ -63,24 +78,71 @@
     {% endif %}
 
     {% if grupo == "Profesional medico" %}
-        <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a><br>
+        <!-- <a href="{% url 'turnos_med' %}">Ver turnos y pacientes</a><br>
         <a href="{% url 'diagnosticar' %}">Diagnosticar</a><br>
-        <a href="{% url 'pacientes_med' %}">Historial paciente</a>
-        </br>
+        <a href="{% url 'pacientes_med' %}">Historial paciente</a> -->
+
+        <h4 class="mb-3">Funciones habilitadas</h4>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Manejo de Turnos y Diagnósticos de Pacientes</h5>
+                        <p class="card-text">Para generar diagnósticos, o ver info de turnos y pacientes.</p>
+                        <a href="{% url 'diagnosticar' %}" class="btn btn-primary">Diagnosticar</a>
+                        <a href="{% url 'turnos_med' %}" class="btn btn-secondary">Ver turnos y pacientes</a>
+                        <a href="{% url 'pacientes_med' %}" class="btn btn-info">Historial paciente</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
     {% if grupo == "Gerencia" %}
-        <a href="{% url 'gerencia' %}">Acceder a reportes</a><br>
-        </br>
+        <!-- <a href="{% url 'gerencia' %}">Acceder a reportes</a><br>
+        </br> -->
+
+        <h4 class="mb-3">Funciones habilitadas</h4>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Reportes de Gestión</h5>
+                        <p class="card-text">Para acceder a los reportes de gestión.</p>
+                        <a href="{% url 'gerencia' %}" class="btn btn-primary">Acceder a reportes</a
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     {% endif %}
 
     {% if grupo == "Taller" %}
-        <a href="{% url 'taller' %}">Ver pedidos</a><br>
-        </br>
+        <!-- <a href="{% url 'taller' %}">Ver pedidos</a><br>
+        </br> -->
+
+        <h4 class="mb-3">Funciones habilitadas</h4>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Pedidos</h5>
+                        <p class="card-text">Para visualizar los pedidos a preparar.</p>
+                        <a href="{% url 'taller' %}" class="btn btn-primary">Ver pedidos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     {% endif %}
 
 {% endif %}
 
-<a href="{% url 'logout' %}" class="btn btn-danger mt-4">Desconectarse</a>
+<a href="{% url 'logout' %}" class="btn btn-danger mt-4 inline-block"><i class="fal fa-sign-out"></i> Desconectarse</a>
 
 {% endblock %}
