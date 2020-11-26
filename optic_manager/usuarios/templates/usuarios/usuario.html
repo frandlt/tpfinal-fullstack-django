@@ -14,7 +14,7 @@
     <h1>Bienvenido, SUPERUSER</h1>
     <p style="font-size: 22px">Para acceder a sus funciones, cambie la url a "/admin"</p>
     </br>
-{% else %}
+{% endif %}
 
 <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
 
@@ -112,7 +112,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Reportes de Gestión</h5>
                         <p class="card-text">Para acceder a los reportes de gestión.</p>
-                        <a href="{% url 'gerencia' %}" class="btn btn-primary">Acceder a reportes</a
+                        <a href="{% url 'gerencia' %}" class="btn btn-primary">Acceder a reportes</a>
                     </div>
                 </div>
             </div>
@@ -141,7 +141,7 @@
 
     {% endif %}
 
-{% endif %}
+
 
 <a href="{% url 'logout' %}" class="btn btn-danger mt-4 inline-block"><i class="fal fa-sign-out"></i> Desconectarse</a>
 
