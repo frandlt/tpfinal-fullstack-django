@@ -1,0 +1,99 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h1>Historial de pacientes</h1>
+<p>Pacientes de médico: {{medico.last_name}}, {{medico.first_name}}</p>
+<h2>Seleccione un paciente para acceder a su historial</h2>
+
+<h3>Buscar por DNI</h3>
+<form method="POST">
+    {% csrf_token %}
+    <input type="number" name="dni1" id="inputDni" placeholder="DNI"></input>
+    <input type="submit" name="submit" id="buscar" value="BUSCAR"></input><br>
+</form>
+<h3>Lista</h3>
+<form method="POST">
+    {% csrf_token %}
+    {% for paciente in pacientes %}
+        <input id="input_{{paciente.id}}" type="radio" name="dni2" value="{{paciente.dni}}"></input>
+        <label for="input_{{paciente.id}}">{{paciente.apellido}} , {{paciente.nombre}} ({{paciente.dni}}).</label><br>
+    {% endfor %}
+    <input type="submit" name="submit" id="seleccionar" value="SELECCIONAR"></input>
+</form>
+
+
+<div id="historial" style="display: none" class="historial">
+    <h2>Historial médico de: {{paciente_elegido.apellido}}, {{paciente_elegido.nombre}} (DNI: {{paciente_elegido.dni}}).</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="filtro_fecha" style="text-decoration: underline">Filtrar por fecha: </label>
+        <div id="filtro_fecha">
+        <input type="hidden" name="dni3" value={{paciente_elegido.dni}} readonly></input>
+        <label for="filtro_desde">Desde: </label>
+        <input type="date" name="desde" id="filtro_desde" class="select_fecha"></input>
+        <label for="filtro_hasta">Hasta: </label>
+        <input type="date" name="hasta" id="filtro_hasta" class="select_fecha"></input>
+        <input type="submit" name="submit" id="filtrar" value="FILTRAR"></input>
+        </div><br>
+    </form>
+    <table class="table">
+        <thead>
+            <tr> 
+                <th scope="col">ID Turno</th>
+                <th scope="col">Fecha y hora turno</th>
+                <th scope="col">Asistencia</th>
+                <th scope="col">Diagnostico</th>
+                <th scope="col">Observaciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in turnos %}
+                <tr>
+                    <th>{{turno.id}}</th>
+                    <td>{{turno.fecha}} ({{turno.horario}})</td>                        
+                    <td>{{turno.asistencia}}</td>
+                    <td>{{turno.diagnostico.diagnostico}}</td>
+                    <td>{{turno.diagnostico.observacion}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br>
+<a href="{% url 'index' %}">Volver atrás</a>
+
+<script type="text/javascript">
+var paciente = `{{paciente_elegido}}`;
+var dni = `{{paciente_elegido.dni}}`;
+var id = `{{id_paciente}}`
+var desde = `{{fecha_desde}}`
+var hasta = `{{fecha_hasta}}`
+
+console.log(paciente)
+console.log(dni)
+console.log(desde)
+console.log(hasta)
+
+document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById("inputDni").value = dni;
+    console.log(document.getElementById(`input_${id}`))
+    document.getElementById(`input_${id}`).checked = true;
+})
+
+document.addEventListener('DOMContentLoaded', function(){
+    if (paciente !== ``){
+        document.getElementById("historial").style.display = "block"
+    }
+    if (desde !== ``){
+        document.getElementById("filtro_desde").value = desde;
+    }
+    if (hasta !== ``){
+        document.getElementById("filtro_hasta").value = hasta;
+    }
+})
+
+</script>
+
+{% endblock %}

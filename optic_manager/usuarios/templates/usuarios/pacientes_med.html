@@ -75,7 +75,7 @@ for(i=0; i< pacientes.length; i++){
             th.innerHTML = `${i+1}`;
             tr.appendChild(th);
             var td_1 = document.createElement("td");
-            td_1.innerHTML = `${turnos[z]["fields"]["fecha"]} (${turnos[z]["fields"]["horarios"]})`;
+            td_1.innerHTML = `${turnos[z]["fields"]["fecha"]} (${turnos[z]["fields"]["horario"]})`;
             var td_2 = document.createElement("td");
             td_2.innerHTML = `${turnos[z]["fields"]["asistencia"]}`;
             var td_3 = document.createElement("td");

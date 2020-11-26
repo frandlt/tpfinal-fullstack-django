@@ -298,7 +298,7 @@ def diagnosticar_view(request):
             hoy = datetime.date.today()
             turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy)
             if request.method == "POST":
-                if Diagnostico.objects.get(turno=request.POST['id_turno']) in Diagnostico.objects.all():
+                if Diagnostico.objects.filter(turno_id=request.POST['id_turno']) in Diagnostico.objects.all():
                     return render(request, 'usuarios/diagnosticar.html', {
                         "medico": medico,
                         "hoy": hoy,
@@ -337,15 +337,48 @@ def pacientes_med_view(request):
             for turno in turnos_med:
                 if turno.paciente not in pacientes_med:
                     pacientes_med.append(turno.paciente)
-
-            return render(request, 'usuarios/pacientes_med.html',{
+            fecha_desde = ""
+            fecha_hasta = ""
+            
+            if request.method == "POST":
+                if request.POST["submit"] == "BUSCAR":
+                    dni = int(request.POST["dni1"])
+                    paciente_elegido = Paciente.objects.get(dni=dni)
+                    turnos = Turno.objects.filter(paciente=paciente_elegido.id)
+                elif request.POST["submit"] == "SELECCIONAR":
+                    dni = int(request.POST["dni2"])
+                    paciente_elegido = Paciente.objects.get(dni=dni)
+                    turnos= Turno.objects.filter(paciente=paciente_elegido.id)
+                #if paciente_elegido in pacientes_med:
+                if request.POST["submit"] == "FILTRAR":
+                    dni = int(request.POST["dni3"])
+                    paciente_elegido = Paciente.objects.get(dni=dni)
+                    fecha_desde= request.POST["desde"]
+                    fecha_hasta=request.POST["hasta"]
+                    fecha_desde_format = datetime.datetime.strptime(fecha_desde, '%Y-%m-%d')
+                    fecha_hasta_format = datetime.datetime.strptime(fecha_hasta, '%Y-%m-%d') 
+                    turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)])
+                    
+                return render (request, 'usuarios/pacientes_medV2.html',{
+                    "medico": medico,
+                    "pacientes": pacientes_med,
+                    "diagnosticos": Diagnostico.objects.all(),
+                    "turnos": turnos,
+                    "paciente_elegido": paciente_elegido,
+                    "id_paciente": paciente_elegido.id,
+                    "fecha_desde": fecha_desde,
+                    "fecha_hasta": fecha_hasta,
+                })
+                
+            return render(request, 'usuarios/pacientes_medV2.html',{
                 "medico": medico,
                 "pacientes": pacientes_med,
-                "pacientes_serializ": serializers.serialize("json", pacientes_med),
                 "diagnosticos": Diagnostico.objects.all(),
-                "diag_serializ": serializers.serialize("json", Diagnostico.objects.all()),
-                "turnos": Turno.objects.all(),
-                "turnos_serializ": serializers.serialize("json", Turno.objects.all()),
+                "turnos": "",
+                "paciente_elegido": "" ,
+                "id_paciente": "",
+                "fecha_desde": fecha_desde,
+                "fecha_hasta": fecha_hasta,
             })
 
 def ver_pedidos_view (request):
