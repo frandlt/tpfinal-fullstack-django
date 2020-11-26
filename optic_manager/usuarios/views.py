@@ -298,7 +298,7 @@ def diagnosticar_view(request):
             hoy = datetime.date.today()
             turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy)
             if request.method == "POST":
-                if Diagnostico.objects.filter(turno_id=request.POST['id_turno']) in Diagnostico.objects.all():
+                if Diagnostico.objects.filter(turno_id=request.POST['id_turno']).first() in Diagnostico.objects.all():
                     return render(request, 'usuarios/diagnosticar.html', {
                         "medico": medico,
                         "hoy": hoy,
