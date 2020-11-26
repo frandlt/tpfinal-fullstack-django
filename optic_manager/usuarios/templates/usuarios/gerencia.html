@@ -7,32 +7,32 @@
         <div class="sidebar-sticky pt-3">
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                 <span>Reportes</span>
-                <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
+                <!-- <a class="d-flex align-items-center text-muted" href="#" aria-label="Add a new report">
                     <span data-feather="plus-circle"></span>
-                </a>
+                </a> -->
             </h6>
-            <ul class="nav flex-column">
+            <ul class="nav flex-column reporte">
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">
-                        <span data-feather="home"></span>
+                    <a id="turnos_pacientes" class="nav-link active inline-block" href="#">
+                        <i id="icon-1" style="vertical-align: middle; text-align: center;" class="fal fa-user-clock feather" ></i>
                         Turnos de Pacientes <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="file"></span>
+                    <a id="pedidos_pacientes" class="nav-link inline-block" href="#">
+                    <i id="icon-2" style="vertical-align: middle; text-align: center;" class="fal fa-prescription feather" ></i>
                         Pedidos de Pacientes
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="shopping-cart"></span>
+                    <a id="productos_mas_vendidos" class="nav-link inline-block" href="#">
+                    <i id="icon-3" style="vertical-align: middle; text-align: center;" class="fal fa-file-invoice-dollar feather" ></i>
                         Productos más vendidos
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <span data-feather="users"></span>
+                    <a id="ventas_totales" class="nav-link inline-block" href="#">
+                    <i id="icon-4" style="vertical-align: middle; text-align: center;" class="fal fa-cash-register feather" ></i>
                         Ventas Totales por Vendedor
                     </a>
                 </li>
@@ -45,19 +45,21 @@
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Turnos de Pacientes</h1>
             <div class="btn-toolbar mb-2 mb-md-0 dropdown">
-                <label for="inputState">Filtro</label>
-                <select id="inputState" class="form-control" onchange="selection()">
+                <label for="inputPeriod">Filtro</label>
+                <select id="inputPeriod" class="form-control" onchange="selection()">
                     <option value="custom">Custom</option>
                     <option value="this-week" selected>Esta Semana</option>
                     <option value="past-week">Semana Anterior</option>
                     <option value="this-month">Este Mes</option>
                     <option value="past-month">Mes Anterior</option>
+                    <option value="this-year">Este Año</option>
+                    <option value="past-year">Año Pasado</option>
                 </select>
             </div>
 
 
             <div class="mb-2 mb-md-0">
-                <label for="inputState">Filtro</label>
+                <!-- <label for="inputStartDate">Filtro</label> -->
                 <label for="inputStartDate">Desde</label>
                 <input type="date" id="inputStartDate" class="form-control" onchange="seleccionaCustom()">
                 </input>
@@ -68,6 +70,22 @@
                 <label for="inputEndDate">Hasta</label>
                 <input type="date" id="inputEndDate" class="form-control" onchange="seleccionaCustom()">
                 </input>
+            </div>
+
+            <div>
+                <label for="inputAsistencia1">Asistencia?</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia1" value="asistieron" checked>
+                    <label class="form-check-label" for="inputAsistencia1">
+                        Asistieron
+                    </label>
+                    </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia2" value="no_asistieron">
+                    <label class="form-check-label" for="inputAsistencia2">
+                        No asistieron
+                    </label>
+                </div>
             </div>
 
             <div class="mb-2 mb-md-0">
