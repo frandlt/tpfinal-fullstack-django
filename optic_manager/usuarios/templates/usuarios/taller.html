@@ -1,0 +1,47 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+<h1>Pedidos pendientes taller</h1>
+
+<table class="table">
+    <thead>
+        <tr> 
+            <th scope="col">ID</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Cantidad</th>
+            <th scope="col">Fecha y hora encargue</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Vendedor</th>
+            <th scope="col">Estado</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        {% for pedido in pedidos %}
+            <tr class="row_body">
+                <th scope="row" class="num">{{pedido.id}}</th>
+                <td>{{pedido.producto.nombre}} ({{pedido.producto.descripcion}})</td>
+                <td>{{pedido.cantidad}}</td>
+                <td>{{pedido.fecha_hora}}</td>
+                <td>{{pedido.paciente.apellido}}, {{pedido.paciente.nombre}} ({{pedido.paciente.dni}}).</td>
+                <td>{{pedido.vendedor.last_name}}, {{pedido.vendedor.first_name}}.</td>
+                <td><form action="" method="POST">
+                    {% csrf_token %}
+                    <select name="estado_{{pedido.id}}">
+                        <option>Taller</option>
+                        <option>Finalizado</option>
+                    </select>
+                    <input type="hidden" name="id_{{pedido.id}}" value="{{pedido.id}}"/>         
+            </tr>
+        {% endfor %}
+        
+    </tbody>
+</table>
+
+<input type="submit" value="Guardar cambios"/>
+</form><br>
+
+{% endblock %}

@@ -482,7 +482,23 @@ def taller_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Taller':
             print("render taller.html")
-            return render(request, "usuarios/taller.html",{})
+            pedidos = Pedido.objects.filter(estado="Taller")
+            
+            if request.method == "POST":
+                for pedido in pedidos:
+                    pedido = Pedido.objects.get(id=request.POST["id_"+str(pedido.id)])
+                    pedido.estado = request.POST["estado_"+str(pedido.id)]
+                    pedido.save()
+
+                pedidos = Pedido.objects.filter(estado="Taller")
+                return render(request, "usuarios/taller.html",{
+                    "pedidos": pedidos
+                })
+
+           
+            return render(request, "usuarios/taller.html",{
+                "pedidos": pedidos
+            })
 
 # pylint: enable=E1101    
     
