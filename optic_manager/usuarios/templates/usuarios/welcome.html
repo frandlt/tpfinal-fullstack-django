@@ -1,8 +1,20 @@
-{% extends "./layout.html" %}
+{% extends "./layout_welcome.html" %}
 
 {% block body %}
 
-    <h1>Bienvenido a la clinica Trinitas!</h1>
-    <a href="{% url 'login' %}">Iniciar sesión</a>
+    <!--<h1>Bienvenido a la Clínica Trinitas!</h1>
+    <a href="{% url 'login' %}">Iniciar sesión</a> -->
+
+    <main role="main" class="container">
+      <h1 class="mt-5">El mejor cuidado para tus ojos</h1>
+      <p class="lead">En estos tiempos de home office, el cuidado de los ojos es primordial.</p>
+      <p class="lead">Para lo que necesites, podes contar con nuestros médicos profesionales.</p>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted"><i class="far fa-copyright"></i> Clínicas Trinitas 2015-2020 - Todos los derechos reservados.</span>
+      </div>
+    </footer>
 
 {% endblock %}
