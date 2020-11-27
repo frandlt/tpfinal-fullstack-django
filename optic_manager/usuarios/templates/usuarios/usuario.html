@@ -10,11 +10,11 @@
 
     
 
-{% if request.user.is_superuser %}
+<!--{% if request.user.is_superuser %}
     <h1>Bienvenido, SUPERUSER</h1>
     <p style="font-size: 22px">Para acceder a sus funciones, cambie la url a "/admin"</p>
     </br>
-{% endif %}
+{% endif %}-->
 
 <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
 
@@ -101,8 +101,6 @@
     {% endif %}
 
     {% if grupo == "Gerencia" %}
-        <!-- <a href="{% url 'gerencia' %}">Acceder a reportes</a><br>
-        </br> -->
 
         <h4 class="mb-3">Funciones habilitadas</h4>
 
@@ -112,12 +110,15 @@
                     <div class="card-body">
                         <h5 class="card-title">Reportes de Gestión</h5>
                         <p class="card-text">Para acceder a los reportes de gestión.</p>
-                        <a href="{% url 'gerencia' %}" class="btn btn-primary">Acceder a reportes</a>
+                        <a href="{% url 'reporte_1' %}" class="btn btn-primary">Acceder a reportes</a>
                     </div>
                 </div>
             </div>
         </div>
 
+        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
+        <a href="{% url 'ver_productos' %}">Ver productos</a>
+        <a href="{% url 'pacientes_med' %}">Ver historial pacientes</a><br>
 
     {% endif %}
 

@@ -329,17 +329,22 @@ def pacientes_med_view(request):
     if 'grupo' in request.session:
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
-        if grupo == 'Profesional medico':
+        if grupo == 'Profesional medico' or 'Gerencia':
             print("render pacientes_med")
-            medico = User.objects.get(id=request.session['_auth_user_id'])
-            turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id'])
-            pacientes_med=[]
-            for turno in turnos_med:
-                if turno.paciente not in pacientes_med:
-                    pacientes_med.append(turno.paciente)
+            if grupo == 'Profesional medico':
+                medico = User.objects.get(id=request.session['_auth_user_id'])
+                turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id'])
+                pacientes_med=[]
+                for turno in turnos_med:
+                    if turno.paciente not in pacientes_med:
+                        pacientes_med.append(turno.paciente)
+            elif grupo == 'Gerencia':
+                medico = "gerente"
+                turnos_med = Turno.objects.all()
+                pacientes_med = Paciente.objects.all()
+            
             fecha_desde = ""
             fecha_hasta = ""
-            
             if request.method == "POST":
                 if request.POST["submit"] == "BUSCAR":
                     dni = int(request.POST["dni1"])
@@ -385,7 +390,7 @@ def ver_pedidos_view (request):
     if 'grupo' in request.session:
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
-        if grupo == 'Ventas':
+        if grupo == 'Ventas' or grupo == 'Gerencia':
             print("render ver_pedidos")
             if request.method == "POST":
                 fecha_desde = datetime.datetime.strptime(request.POST["desde"], '%Y-%m-%d')
@@ -450,7 +455,8 @@ def ver_pedidos_view (request):
                     "pedidos": Pedido.objects.all(),
                     "productos": Producto.objects.all(),
                     "pedidos_filtrados": pedidos_filtrados,
-                    "pedidos_serializ": serializers.serialize('json', pedidos_filtrados)
+                    "pedidos_serializ": serializers.serialize('json', pedidos_filtrados),
+                    "grupo": grupo,
                 })
 
 
@@ -465,16 +471,132 @@ def ver_pedidos_view (request):
                 "pedidos": Pedido.objects.all(),
                 "productos": Producto.objects.all(),
                 "pedidos_filtrados": Pedido.objects.filter(fecha_hora__range=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1)]),
-                "pedidos_serializ": serializers.serialize('json', Pedido.objects.filter(fecha_hora__range=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1)]))
+                "pedidos_serializ": serializers.serialize('json', Pedido.objects.filter(fecha_hora__range=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=1)])),
+                "grupo": grupo,
             })
 
-def gerencia_view(request):
+def reporte_1_view(request):
     if 'grupo' in request.session:
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
         if grupo == 'Gerencia':
-            print("render gerencia.html")
-            return render(request, "usuarios/gerencia.html",{})
+            print("render reporte_1.html")
+            if request.method == "POST":
+                fecha_desde = datetime.datetime.strptime(request.POST["inputStartDate"], '%Y-%m-%d')
+                fecha_hasta = datetime.datetime.strptime(request.POST["inputEndDate"], '%Y-%m-%d')
+                asistencia = request.POST["AsistenciaRadio"]
+
+                turnos = Turno.objects.filter(fecha__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)], asistencia=asistencia)
+                
+                return render(request, "usuarios/reporte_1.html",{
+                    "turnos": turnos,
+                    "asistencia": request.POST["AsistenciaRadio"],
+                    "periodo": request.POST["periodo"],
+                    "fecha_desde": request.POST["inputStartDate"],
+                    "fecha_hasta": request.POST["inputEndDate"],
+                    "primer_rep": False
+                })
+
+            return render(request, "usuarios/reporte_1.html",{
+                "periodo": "this-week",
+                "primer_rep": True
+            })
+
+def reporte_2_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render reporte_2.html")
+            if request.method == "POST":
+                fecha_desde = datetime.datetime.strptime(request.POST["inputStartDate"], '%Y-%m-%d')
+                fecha_hasta = datetime.datetime.strptime(request.POST["inputEndDate"], '%Y-%m-%d')
+
+                pedidos = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
+                
+                pacientes=[]
+                cant_ped = []
+                for pedido in pedidos:
+                    cant_ped.append(pedido.paciente)
+                    if pedido.paciente not in pacientes:
+                        pacientes.append(pedido.paciente)
+                print(pacientes)
+                print(cant_ped)
+                
+                ped_pac = {} #Este diccionario tiene como index el id del producto y como valor la caantidad de veces que se vendio
+                for pac in pacientes:
+                    id_pac = pac.id
+                    ped_pac[id_pac] = cant_ped.count(Paciente.objects.get(id=id_pac))
+                print(ped_pac)
+
+                return render(request, "usuarios/reporte_2.html",{
+                    "pedidos": pedidos,
+                    "periodo": request.POST["periodo"],
+                    "pacientes": pacientes,
+                    "pedidos_pac": ped_pac,
+                    "fecha_desde": request.POST["inputStartDate"],
+                    "fecha_hasta": request.POST["inputEndDate"],
+                    "primer_rep": False
+                })
+
+            return render(request, "usuarios/reporte_2.html",{
+                "periodo": "this-week",
+                "primer_rep": True,
+                "pedidos_pac": {},
+            })
+
+def reporte_3_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render reporte_3.html")
+            if request.method == "POST":
+                fecha_desde = datetime.datetime.strptime(request.POST["inputStartDate"], '%Y-%m-%d')
+                fecha_hasta = datetime.datetime.strptime(request.POST["inputEndDate"], '%Y-%m-%d')
+
+                pedidos = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
+                
+                productos=[]
+                cant_prod = []
+                for pedido in pedidos:
+                    for i in range(pedido.cantidad):
+                        cant_prod.append(pedido.producto)
+                        i+=1
+                    if pedido.producto not in productos:
+                        productos.append(pedido.producto)
+                print(productos)
+                print(cant_prod)
+                
+                ventas_producto = {} #Este diccionario tiene como index el id del producto y como valor la caantidad de veces que se vendio
+                for prod in productos:
+                    id_prod = prod.id
+                    print(id_prod)
+                    ventas_producto[id_prod] = cant_prod.count(Producto.objects.get(id=id_prod))
+                
+                return render(request, "usuarios/reporte_3.html",{
+                    "pedidos": pedidos,
+                    "periodo": request.POST["periodo"],
+                    "productos": productos,
+                    "ventas_producto": ventas_producto,
+                    "fecha_desde": request.POST["inputStartDate"],
+                    "fecha_hasta": request.POST["inputEndDate"],
+                    "primer_rep": False
+                })
+
+            return render(request, "usuarios/reporte_3.html",{
+                "periodo": "this-month",
+                "primer_rep": True,
+                "ventas_producto": {}
+            })
+
+def reporte_4_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render reporte_4.html")
+            return render(request, "usuarios/reporte_4.html",{})
 
 def taller_view(request):
     if 'grupo' in request.session:
@@ -499,6 +621,14 @@ def taller_view(request):
             return render(request, "usuarios/taller.html",{
                 "pedidos": pedidos
             })
+
+def ver_productos_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia':
+            print("render ver_productos.html")
+            return render(request, "usuarios/ver_productos.html",{"productos": Producto.objects.all()})
 
 # pylint: enable=E1101    
     

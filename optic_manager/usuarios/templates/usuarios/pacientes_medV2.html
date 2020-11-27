@@ -4,7 +4,9 @@
 {% block body %}
 
 <h1>Historial de pacientes</h1>
-<p>Pacientes de médico: {{medico.last_name}}, {{medico.first_name}}</p>
+{% if medico != "gerente" %}
+    <p>Pacientes de médico: {{medico.last_name}}, {{medico.first_name}}</p>
+{% endif %}
 <h2>Seleccione un paciente para acceder a su historial</h2>
 
 <h3>Buscar por DNI</h3>

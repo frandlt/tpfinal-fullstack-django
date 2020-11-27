@@ -1,0 +1,31 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+<h1>Listado de productos</h1>
+
+<table class="table">
+    <thead>
+        <tr> 
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Precio actual</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for producto in productos %}
+            <tr class="row_body">
+                <th scope="row" class="num">{{producto.id}}</th>
+                <td>{{producto.nombre}}</td>
+                <td>{{producto.descripcion}}</td>
+                <td>{{producto.precio_actual}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+{% endblock %}
