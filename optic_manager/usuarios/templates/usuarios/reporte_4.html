@@ -1,18 +1,20 @@
 {% extends "./layout_gerencia.html" %}
+{% load mathfilters %}
 
 {% block body %}
 
-<!--<div class="row">
+<div class="row">
     <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="sidebar-sticky pt-3">
             <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                 <span>Reportes</span>
+
             </h6>
             <ul class="nav flex-column reporte">
                 <li class="nav-item">
-                    <a id="turnos_pacientes" class="nav-link active inline-block" href="{% url 'reporte_1' %}">
+                    <a id="turnos_pacientes" class="nav-link inline-block" href="{% url 'reporte_1' %}">
                         <i id="icon-1" style="vertical-align: middle; text-align: center;" class="fal fa-user-clock feather" ></i>
-                        Turnos de Pacientes
+                        Turnos de Pacientes 
                     </a>
                 </li>
                 <li class="nav-item">
@@ -22,22 +24,178 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a id="productos_mas_vendidos" class="nav-link inline-block" href="{% url 'reporte_3' %}">
+                    <a id="productos_mas_vendidos" class="nav-link inline-block" href="#">
                     <i id="icon-3" style="vertical-align: middle; text-align: center;" class="fal fa-file-invoice-dollar feather" ></i>
-                        Productos más vendidos
+                        Productos más vendidos <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a id="ventas_totales" class="nav-link inline-block" href="#">
+                    <a id="ventas_totales" class="nav-link active inline-block" href="{% url 'reporte_4' %}">
                     <i id="icon-4" style="vertical-align: middle; text-align: center;" class="fal fa-cash-register feather" ></i>
-                        Ventas Totales por Vendedor <span class="sr-only">(current)</span>
+                        Ventas Totales por Vendedor
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
-</div>-->
+</div>
 
-<h1>Ventas Totales por Vendedor </h1>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Ventas totales por vendedor</h1>
+            
+        <form action="" method="POST">
+            {% csrf_token %}
+            
+            <div class="btn-toolbar mb-2 mb-md-0 dropdown">
+                <label for="inputPeriod">Filtro</label>
+                <select id="inputPeriod" name="periodo" class="form-control" onchange="selection()">
+                    <option value="custom">Custom</option>
+                    <option value="this-week">Esta Semana</option>
+                    <option value="past-week">Semana Anterior</option>
+                    <option value="this-month" selected>Este Mes</option>
+                    <option value="past-month">Mes Anterior</option>
+                    <option value="this-year">Este Año</option>
+                    <option value="past-year">Año Pasado</option>
+                </select>
+            </div>
+
+            <div class="mb-2 mb-md-0">
+                <label for="inputStartDate">Desde</label>
+                <input type="date" name="inputStartDate" id="inputStartDate" class="form-control" onchange="seleccionaCustom()">
+                </input>
+            </div>
+
+            <div class="mb-2 mb-md-0">
+                <label for="inputEndDate">Hasta</label>
+                <input type="date" name="inputEndDate" id="inputEndDate" class="form-control" onchange="seleccionaCustom()">
+                </input>
+            </div>
+
+            <div class="mb-2 mb-md-0">
+                <label for="select_vendedor">Vendedor</label>
+                <select name="select_vendedor" id="select_vendedor">
+                    {% for vendedor in vendedores_todos %}
+                        <option value="{{vendedor.id}}">{{vendedor.last_name}}, {{vendedor.first_name}}</option> 
+                    {% endfor %}
+            </select>
+            </div>
+
+            <div class="mb-2 mb-md-0">
+                <button type="submit" id="button_generar_reporte" name="submit" class="btn btn-primary">Generar Reporte</button>
+            </div>
+        </form>
+    </div> 
+    <h4>Ventas totales en el período</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm" id="tbl">
+            <thead>
+                <tr>
+                    <th>ID Vendedor</th>
+                    <th>Apellido</th>
+                    <th>Nombre</th>
+                    <th>Cantidad de ventas</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                {% for vendedor in vendedores %}
+                <tr class="row_body" id="tr_{{vendedor.id}}">
+                    <th scope="row">{{vendedor.id}}</th>
+                    <td>{{vendedor.last_name}}</td>
+                    <td>{{vendedor.first_name}}</td>
+                </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+    </div>
+    <h4>Detalle ventas por vendedor</h4>
+    <h5>Vendedor: {{vendedor_elegido.last_name}}, {{vendedor_elegido.first_name}}</h5>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>ID pedido</th>
+                    <th>Paciente</th>
+                    <th>Producto</th>
+                    <th>Fecha y hora</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pedido in pedidos_vendedor %}
+                <tr class="row_body">
+                    <th scope="row">{{pedido.id}}</th>
+                    <td>{{pedido.paciente.apellido}}, {{pedido.paciente.nombre}} ({{pedido.paciente.dni}})</td>
+                    <td>{{pedido.producto.nombre}} ({{pedido.producto.descripcion}})</td>
+                    <td>{{pedido.fecha_hora}}</td>
+                    <td>{{pedido.cantidad}}</td>
+                    <td>{{pedido.cantidad|mul:pedido.precio}}</td>
+                    <td>{{pedido.estado}}</td>  
+                </tr>
+                {% endfor %}
+                    
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script type="text/javascript">
+var periodo = `{{periodo}}`
+console.log(periodo)
+var ventas = `{{ventas}}`
+console.log(ventas)
+
+function sortTable(){
+    var tbl = document.getElementById("tbl").tBodies[0];
+    var store = [];
+    for(var i=0, len=tbl.rows.length; i<len; i++){
+        var row = tbl.rows[i];
+        var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
+        console.log(row.cells[3].innerText)
+        if(!isNaN(sortnr)) store.push([sortnr, row]);
+    }
+    store.sort(function(x,y){
+        return x[0] - y[0];
+    });
+    for(var i=1, len=store.length; i<=len; i++){
+        tbl.appendChild(store[len-i][1]);
+    }
+    store = null;
+    console.log("Tabla ordenada")
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    document.getElementById("inputPeriod").value = periodo;
+    console.log(document.getElementById("button_generar_reporte"))
+    if (`{{primer_rep}}`=="True"){
+        document.getElementById("button_generar_reporte").click();
+    }else{
+        var desde = `{{fecha_desde}}`
+        console.log(desde)
+        var hasta = `{{fecha_hasta}}`
+        console.log(hasta)
+        document.getElementById("inputStartDate").value = desde;
+        document.getElementById("inputEndDate").value = hasta;
+        document.getElementById("select_vendedor").value = `{{vendedor_elegido.id}}`;
+    }
+    var trs = document.querySelectorAll(".row_body")
+    for(var id in {{ventas}}){
+        tr = document.getElementById(`tr_${id}`)
+        console.log(tr)
+        console.log(id)
+        var cant = {{ventas}}[id]
+        console.log(cant)
+        td = document.createElement("td")
+        td.innerHTML = cant;
+        tr.appendChild(td)
+    }
+    sortTable();
+})
+
+</script>
 
 {% endblock %}

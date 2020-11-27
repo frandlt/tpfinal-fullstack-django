@@ -596,7 +596,52 @@ def reporte_4_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Gerencia':
             print("render reporte_4.html")
-            return render(request, "usuarios/reporte_4.html",{})
+            if request.method == "POST":
+                fecha_desde = datetime.datetime.strptime(request.POST["inputStartDate"], '%Y-%m-%d')
+                fecha_hasta = datetime.datetime.strptime(request.POST["inputEndDate"], '%Y-%m-%d')
+
+                pedidos = Pedido.objects.filter(estado="Finalizado",fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
+                
+                vendedores=[]
+                cant_vend = []
+                for pedido in pedidos:
+                    for i in range(pedido.cantidad):
+                        cant_vend.append(pedido.vendedor)
+                        i+=1
+                    if pedido.vendedor not in vendedores:
+                        vendedores.append(pedido.vendedor)
+                print(vendedores)
+                print(cant_vend)
+                print(request.POST["select_vendedor"])
+                vendedor_elegido = User.objects.get(id=request.POST["select_vendedor"])
+                print(vendedor_elegido)
+                pedidos_vendedor= pedidos.filter(vendedor=vendedor_elegido)
+                
+                ventas = {} #Este diccionario tiene como index el id del vendedor y como valor la caantidad de ventas
+                for vendedor in vendedores:
+                    id_vend = vendedor.id
+                    print(id_vend)
+                    ventas [id_vend] = cant_vend.count(User.objects.get(id=id_vend))
+
+                return render(request, "usuarios/reporte_4.html",{
+                    "pedidos": pedidos,
+                    "periodo": request.POST["periodo"],
+                    "vendedores": vendedores,
+                    "ventas": ventas,
+                    "fecha_desde": request.POST["inputStartDate"],
+                    "fecha_hasta": request.POST["inputEndDate"],
+                    "primer_rep": False, 
+                    "pedidos_vendedor": pedidos_vendedor,
+                    "vendedor_elegido": vendedor_elegido,
+                    "vendedores_todos": User.objects.filter(groups__name='Ventas')
+                })
+
+            return render(request, "usuarios/reporte_4.html",{
+                "periodo": "this-month",
+                "primer_rep": True,
+                "ventas": {},
+                "vendedores_todos": User.objects.filter(groups__name='Ventas')
+            })
 
 def taller_view(request):
     if 'grupo' in request.session:
