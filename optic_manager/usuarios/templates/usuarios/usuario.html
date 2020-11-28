@@ -130,10 +130,32 @@
             </div>
         </div>
 
-        <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
-        <a href="{% url 'ver_productos' %}">Ver productos</a>
-        <a href="{% url 'pacientes_med' %}">Ver historial pacientes</a><br>
-        <a href="{% url 'ver_pacientes' %}">Datos personales de pacientes</a><br>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Datos de pacientes</h5>
+                        <p class="card-text">Para acceder a información de pacientes</p>
+                        <a href="{% url 'ver_pacientes' %}" class="btn btn-primary">Datos personales</a>
+                        <a href="{% url 'pacientes_med' %}" class="btn btn-secondary">Historiales médicos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Otros datos</h5>
+                        <p class="card-text">Para acceder a información de los pedidos y productos</p>
+                        <a href="{% url 'ver_pedidos' %}" class="btn btn-primary">Pedidos</a>
+                        <a href="{% url 'ver_productos' %}" class="btn btn-secondary">Productos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
     {% endif %}
 
