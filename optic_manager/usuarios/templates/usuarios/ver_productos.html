@@ -6,6 +6,8 @@
 
 <h1>Listado de productos</h1>
 
+<p style="color: green; font-size: 20px">{{exito}}</p>
+
 <table class="table">
     <thead>
         <tr> 
@@ -13,6 +15,9 @@
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Precio actual</th>
+            {% if grupo == "Ventas" %}
+                <th scope="col"></th>
+            {% endif %}
         </tr>
     </thead>
     <tbody>
@@ -21,11 +26,26 @@
                 <th scope="row" class="num">{{producto.id}}</th>
                 <td>{{producto.nombre}}</td>
                 <td>{{producto.descripcion}}</td>
-                <td>{{producto.precio_actual}}</td>
+                {% if grupo == "Gerencia" %}
+                    <td>${{producto.precio_actual}}</td>
+                {% elif grupo == "Ventas" %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <td>
+                            <input name="id" value="{{producto.id}}" hidden></input>
+                            <label for="precio">$</label>
+                            <input type="decimal" id="precio" name="precio" value={{producto.precio_actual}}></input>
+                        </td>
+                        <td>
+                            <button type="submit">Actualizar</button>
+                        </td>
+                    </form> 
+                {% endif %}
             </tr>
         {% endfor %}
     </tbody>
 </table>
 
+<a href="{% url 'index' %}">Volver atrás</a>
 
 {% endblock %}

@@ -1,0 +1,31 @@
+{% extends "./layout.html" %}
+{% load static %}
+
+{% block body %}
+<h1>Agregar nuevo producto<h1>
+<p style="color: green; font-size: 14px">{{mensaje_exito}}</p>
+<p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
+{% if ver %}
+    <a style="font-size: 14px" href="{% url 'ver_productos' %}">Ver productos existentes</a>
+{% endif %}
+
+<h2>Ingrese su información</h2>
+<form action="" method="POST">
+    {% csrf_token %}
+    <label for="nombre">Nombre</label><br>
+    <input type="text" id="nombre" name="nombre" required/>
+    <br>
+    <label for="descripcion">Descripción</label><br>
+    <textarea rows=5 cols=50 id="descripcion" name="descripcion"></textarea>
+    <br>
+    <label for="precio">Precio</label><br>
+    <input type="decimal" id="precio" name="precio" required/>
+    <br>
+    <br>
+    <input type="submit" value="CREAR"/>
+
+</form>
+
+<h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2>
+
+{% endblock %}

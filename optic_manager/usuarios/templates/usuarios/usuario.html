@@ -36,10 +36,23 @@
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Manejo de Pedidos de Pacientes</h5>
+                        <h5 class="card-title">Gestión de Pedidos de Pacientes</h5>
                         <p class="card-text">Para generar pedidos, o visualizar los mismos.</p>
                         <a href="{% url 'generar_pedido' %}" class="btn btn-primary">Generar pedido para paciente</a>
                         <a href="{% url 'ver_pedidos' %}" class="btn btn-secondary">Ver pedidos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Gestión de Productos</h5>
+                        <p class="card-text">Para visualizar los mismos, actualizar su precio o agregar nuevos.</p>
+                        <a href="{% url 'nuevo_producto' %}" class="btn btn-primary">Agregar nuevo</a>
+                        <a href="{% url 'ver_productos' %}" class="btn btn-secondary">Ver/Editar existentes</a>
                     </div>
                 </div>
             </div>
@@ -67,9 +80,10 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Gestión de Pacientes</h5>
-                        <p class="card-text">Para agregar nuevos pacientes, o editar existentes.</p>
-                        <a href="{% url 'agregar_paciente' %}"  class="btn btn-primary">Agregar nuevo paciente</a>
-                        <a href="{% url 'editar_paciente' %}"  class="btn btn-secondary">Editar paciente existente</a>
+                        <p class="card-text">Para agregar nuevos pacientes, visualizar o editar existentes.</p>
+                        <a href="{% url 'ver_pacientes' %}"  class="btn btn-primary">Datos pacientes</a>
+                        <a href="{% url 'editar_paciente' %}"  class="btn btn-secondary">Editar paciente</a>
+                        <a href="{% url 'agregar_paciente' %}"  class="btn btn-info">Agregar nuevo</a>
                     </div>
                 </div>
             </div>
@@ -119,6 +133,7 @@
         <a href="{% url 'ver_pedidos' %}">Ver pedidos</a>
         <a href="{% url 'ver_productos' %}">Ver productos</a>
         <a href="{% url 'pacientes_med' %}">Ver historial pacientes</a><br>
+        <a href="{% url 'ver_pacientes' %}">Datos personales de pacientes</a><br>
 
     {% endif %}
 

@@ -671,9 +671,60 @@ def ver_productos_view(request):
     if 'grupo' in request.session:
         grupo = request.session['grupo']
         print("GRUPO = " + grupo)
-        if grupo == 'Gerencia':
+        if grupo == 'Gerencia' or 'Ventas':
             print("render ver_productos.html")
-            return render(request, "usuarios/ver_productos.html",{"productos": Producto.objects.all()})
+            if request.method == "POST":
+                producto = Producto.objects.get(id=request.POST["id"])
+                producto.precio_actual = request.POST["precio"]
+                producto.save()
+                return render(request, "usuarios/ver_productos.html",{
+                "productos": Producto.objects.all(), 
+                "grupo":grupo,
+                "exito": "Precio actulizado con exito!"
+                })
+
+            return render(request, "usuarios/ver_productos.html",{
+                "productos": Producto.objects.all(), 
+                "grupo":grupo
+            })
+
+def ver_pacientes_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Gerencia' or 'Secretaria': 
+            print("render ver_pacientes.html")
+            return render(request, "usuarios/ver_pacientes.html",{
+                "pacientes": Paciente.objects.all(),
+                "grupo":grupo
+            })
+
+def nuevo_producto_view(request):
+    if 'grupo' in request.session:
+        grupo = request.session['grupo']
+        print("GRUPO = " + grupo)
+        if grupo == 'Ventas': 
+            print("render nuevo_producto.html")
+            if request.method == "POST":
+                if not Producto.objects.filter(nombre=request.POST["nombre"], descripcion=request.POST["descripcion"]):
+                    producto = Producto(
+                        nombre= request.POST["nombre"],
+                        descripcion= request.POST["descripcion"],
+                        precio_actual= request.POST["precio"]
+                    )
+                    producto.save()
+                    return render(request, "usuarios/nuevo_producto.html",{
+                        "mensaje_exito": "Nuevo producto creado con exito",
+                        "ver": False
+                    })
+                else:
+                    return render(request, "usuarios/nuevo_producto.html",{
+                        "mensaje_existe": "Ya existe un producto de estas características.",
+                        "ver": True
+                    })
+                
+            return render(request, "usuarios/nuevo_producto.html")
+
 
 # pylint: enable=E1101    
     
