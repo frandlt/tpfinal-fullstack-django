@@ -8,12 +8,12 @@
 <h1>Editar Turno</h1>
 <h2>Seleccionar turno a editar</h2>
 
-<button id="btn1" data-busqueda="busq_1" class="boton_busq">Buscar por paciente</button><br>
+<button id="btn1"  data-busqueda="busq_1" class="boton_busq btn btn-info" >Buscar por paciente</button><br>
 <div id="busq_1" class="div1">
 <form>
   {% csrf_token %}
   <input type="number" id="dni" placeholder="DNI"></input>
-  <button type="button" value="Buscar" id="buscar-1">BUSCAR</button><br>
+  <button type="button" value="Buscar" id="buscar-1" class="btn btn-dark">BUSCAR</button><br>
 </form><br>
 <div id="lista_turnos_pac">
     <h4 id="nombre_paciente"></h4>
@@ -25,7 +25,7 @@
 </div>
 </div><br>
 
-<button id="btn3" data-busqueda="busq_3" class="boton_busq">Ver turnos en un período</button><br>
+<button id="btn3" data-busqueda="busq_3" class="boton_busq btn btn-info">Ver turnos en un período</button><br>
 <div id="busq_3" class="div1">
     <div id="periodo_turnos">
     <form>
@@ -35,7 +35,7 @@
         <label for="mes">Próximos 30 días</label><br> 
         <input type="radio" name="periodo" class ="radio" value="ano">
         <label for="ano">Próximo año</label><br>
-        <button type="button" id="buscar_periodo" value="buscar" >BUSCAR</button> 
+        <button type="button" id="buscar_periodo" value="buscar" class="btn btn-dark">BUSCAR</button> 
     </form>
     </div>
 
@@ -46,7 +46,7 @@
     <input type="radio" name="turnos_sem" class ="radio-sem" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3" value="seleccionar" id="selec-sem">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-sem">Seleccionar</button>
     </form>
     </div>
 
@@ -57,7 +57,7 @@
     <input type="radio" name="turnos_mes" class ="radio-mes" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3" value="seleccionar" id="selec-mes">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-mes">Seleccionar</button>
     </form>
     </div>
 
@@ -68,7 +68,7 @@
     <input type="radio" name="turnos_ano" class ="radio-ano" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3" value="seleccionar" id="selec-ano">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-ano">Seleccionar</button>
     </form>
     </div>
 
@@ -82,7 +82,7 @@
     <h4 class="mb-3 heading" id="turno_a_editar">Actualización de datos de turno que se seleccione</h4>
     <label for="id_turno_elegido">ID TURNO ELEGIDO</label>
     <input type="number" id="id_turno_elegido" name="id_turno" readonly></input>
-    <button type="submit" id="eliminar" name="submit" value="ELIMINAR TURNO">ELIMINAR TURNO</button>
+    <button type="submit" class="btn btn-danger" id="eliminar" name="submit" value="ELIMINAR TURNO">ELIMINAR TURNO</button>
 
     <div class="form-group col-md-4">
       <div class="form-check">
@@ -218,6 +218,7 @@ document.getElementById("btn1").addEventListener("click", function(){
                 buscar_button.setAttribute("type", "button");
                 buscar_button.setAttribute("id", "selec-turno-1");
                 buscar_button.setAttribute("value", "seleccionar");
+                buscar_button.setAttribute("class", "btn btn-success");
                 buscar_button.innerHTML = "Seleccionar";
                 form.appendChild(buscar_button);
         
