@@ -12,12 +12,12 @@
 <div id="busq_1" class="div1">
 <form>
   {% csrf_token %}
-  <input type="number" id="dni" placeholder="DNI"></input>
+  <input type="number" id="dni" placeholder="DNI" class="form-control col-md-2 mt-3 mb-3"></input>
   <button type="button" value="Buscar" id="buscar-1" class="btn btn-dark">BUSCAR</button><br>
 </form><br>
 <div id="lista_turnos_pac">
     <h4 id="nombre_paciente"></h4>
-    <form id="form-1">
+    <form class="mt-3" id="form-1">
         {% csrf_token %}
         <!--ACA TRNDRIA QUE AGREGARSE UN RADIO DE CLASS radio-1 POR TURNO ENCONTRADO-->
     </form>
@@ -28,47 +28,47 @@
 <button id="btn3" data-busqueda="busq_3" class="boton_busq btn btn-info">Ver turnos en un período</button><br>
 <div id="busq_3" class="div1">
     <div id="periodo_turnos">
-    <form>
+    <form class="mt-3">
         <input type="radio" name="periodo" class ="radio" value="sem">
         <label for="sem">Próximos 7 días</label><br> 
         <input type="radio" name="periodo" class ="radio" value="mes">
         <label for="mes">Próximos 30 días</label><br> 
         <input type="radio" name="periodo" class ="radio" value="ano">
         <label for="ano">Próximo año</label><br>
-        <button type="button" id="buscar_periodo" value="buscar" class="btn btn-dark">BUSCAR</button> 
+        <button type="button" id="buscar_periodo" value="buscar" class="btn btn-dark mt-3">BUSCAR</button> 
     </form>
     </div>
 
     <div id="turnos_sem" class="div2">
-    <form>
+    <form class="mt-3">
     {% csrf_token %}
     {% for turno in turnos_futuros_sem %}
     <input type="radio" name="turnos_sem" class ="radio-sem" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-sem">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success mt-3" value="seleccionar" id="selec-sem">Seleccionar</button>
     </form>
     </div>
 
     <div id="turnos_mes" class="div2">
-    <form>
+    <form class="mt-3">
     {% csrf_token %}
     {% for turno in turnos_futuros_mes %}
     <input type="radio" name="turnos_mes" class ="radio-mes" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-mes">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success mt-3" value="seleccionar" id="selec-mes">Seleccionar</button>
     </form>
     </div>
 
     <div id="turnos_ano" class="div2">
-    <form>
+    <form class="mt-3">
     {% csrf_token %}
     {% for turno in turnos_futuros_ano %}
     <input type="radio" name="turnos_ano" class ="radio-ano" value="{{turno.id}}">
     <label for="{{turno.id}}">Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}}) - Fecha: {{turno.fecha}} ({{turno.horario}}) - Médico: {{turno.medico.last_name}}, {{turno.medico.first_name}}</label><br>
     {% endfor %}
-    <button type="button" class="selec-3 btn btn-success" value="seleccionar" id="selec-ano">Seleccionar</button>
+    <button type="button" class="selec-3 btn btn-success mt-3" value="seleccionar" id="selec-ano">Seleccionar</button>
     </form>
     </div>
 
@@ -80,9 +80,13 @@
   {% csrf_token %}
 
     <h4 class="mb-3 heading" id="turno_a_editar">Actualización de datos de turno que se seleccione</h4>
-    <label for="id_turno_elegido">ID TURNO ELEGIDO</label>
-    <input type="number" id="id_turno_elegido" name="id_turno" readonly></input>
-    <button type="submit" class="btn btn-danger" id="eliminar" name="submit" value="ELIMINAR TURNO">ELIMINAR TURNO</button>
+    <div class="form-group">
+      <div class="row ml-1">
+      <label for="id_turno_elegido" class="mt-1">ID de Turno Elegido</label>
+      <input type="number" id="id_turno_elegido" name="id_turno" class="form-control col-md-2 ml-2" readonly></input>
+      <button type="submit" class="btn btn-danger ml-2" id="eliminar" name="submit" value="ELIMINAR TURNO">ELIMINAR TURNO</button>
+      </div>
+    </div>
 
     <div class="form-group col-md-4">
       <div class="form-check">
@@ -208,6 +212,7 @@ document.getElementById("btn1").addEventListener("click", function(){
                     input.setAttribute("class", "radio-1");
                     form.appendChild(input);
                     var label = document.createElement("label");
+                    label.setAttribute("class", "ml-1");
                     label.setAttribute("for", `${turno["pk"]}`);
                     label.innerHTML = `Fecha: ${turno["fields"]["fecha"]} (${turno["fields"]["horario"]}) - Médico: ${med["fields"]["last_name"]}, ${med["fields"]["first_name"]}`;
                     form.appendChild(label);
@@ -218,7 +223,7 @@ document.getElementById("btn1").addEventListener("click", function(){
                 buscar_button.setAttribute("type", "button");
                 buscar_button.setAttribute("id", "selec-turno-1");
                 buscar_button.setAttribute("value", "seleccionar");
-                buscar_button.setAttribute("class", "btn btn-success");
+                buscar_button.setAttribute("class", "btn btn-success mt-3");
                 buscar_button.innerHTML = "Seleccionar";
                 form.appendChild(buscar_button);
         

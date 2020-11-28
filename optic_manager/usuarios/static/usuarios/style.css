@@ -16,6 +16,12 @@ body {
   width:80%
 }
 
+@media screen and (min-width: 0px) and (max-width: 576px) { 
+  body {
+    margin-top: 12.5rem;
+  }
+}
+
 /*#login-form input {
   margin: 0rem 0.5rem 0.5rem 0rem;
 }*/

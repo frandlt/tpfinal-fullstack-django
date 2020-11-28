@@ -26,9 +26,9 @@
                 <td>{{turno.paciente.apellido}}</td>
                 <td>{{turno.horario}}</td>
                 <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
-                <td><form action="{% url 'turnos_hoy' %}" method="POST">
+                <td><form action="{% url 'turnos_hoy' %}" method="POST" >
                     {% csrf_token %}
-                    <select>
+                    <select class="form-control col-md-auto">
                         <option class="no" value="NO">NO</option>
                         <option class="si" value="SI">SI</option>
                     </select>
@@ -40,7 +40,7 @@
     </tbody>
 </table>
 
-<input type="submit" class="submit" value="Guardar cambios" onclick="guardar_cambios"></form><br>
+<input type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()"></form><br>
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
