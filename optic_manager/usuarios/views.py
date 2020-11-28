@@ -169,7 +169,7 @@ def turnos_med_view(request):
             print("render turnos_med")
             id_medico = request.session['_auth_user_id']
             medico = User.objects.get(id=id_medico)
-            turnos_med = Turno.objects.filter(medico=id_medico)
+            turnos_med = Turno.objects.filter(medico=id_medico).exclude(asistencia="XX")
             return render(request, 'usuarios/turnos_med.html', {
                 "medico": medico,
                 "turnos": turnos_med,
@@ -224,7 +224,7 @@ def turnos_hoy_view(request):
         print("GRUPO = " + grupo)
         if grupo == 'Secretaria':
             print("render turnos hoy")
-            turnos_hoy = Turno.objects.filter(fecha=datetime.date.today())
+            turnos_hoy = Turno.objects.filter(fecha=datetime.date.today()).exclude(asistencia="XX")
             #turnos_jane = Turno.objects.filter(paciente_id="2")
             #print("turnos_jane = " + str(turnos_jane))
             if request.method == "POST":
@@ -234,7 +234,7 @@ def turnos_hoy_view(request):
                     turno.asistencia = request.POST["asist-"+str(i)]
                     turno.save()
                     i+=1
-                turnos_hoy = Turno.objects.filter(fecha=datetime.date.today())
+                turnos_hoy = Turno.objects.filter(fecha=datetime.date.today()).exclude(asistencia="XX")
 
             return render(request, "usuarios/turnos_hoy.html", {
                 "turnos_hoy": turnos_hoy,
@@ -248,7 +248,7 @@ def editar_turnos_view(request):
         if grupo == 'Secretaria':
             print("editar turnos")
 
-            turnos = Turno.objects.all()
+            turnos = Turno.objects.all().exclude(asistencia="XX")
             hoy = datetime.date.today()
             semana = datetime.timedelta(days=7)
             mes = datetime.timedelta(days=30)
@@ -256,12 +256,17 @@ def editar_turnos_view(request):
             años = datetime.timedelta(days=3650)
 
             if request.method == "POST":
-                turno_a_editar = Turno.objects.get(id=request.POST["id_turno"])
-                turno_a_editar.medico = User.objects.get(id=request.POST["medico"])
-                turno_a_editar.fecha = request.POST["fecha"]
-                turno_a_editar.horario = request.POST["horario"]
-                turno_a_editar.asistencia = ""
-                turno_a_editar.save()
+                if request.POST["submit"] == "Editar":
+                    turno_a_editar = Turno.objects.get(id=request.POST["id_turno"])
+                    turno_a_editar.medico = User.objects.get(id=request.POST["medico"])
+                    turno_a_editar.fecha = request.POST["fecha"]
+                    turno_a_editar.horario = request.POST["horario"]
+                    turno_a_editar.asistencia = ""
+                    turno_a_editar.save()
+                elif request.POST["submit"] == "ELIMINAR TURNO":
+                    turno_a_editar = Turno.objects.get(id=request.POST["id_turno"])
+                    turno_a_editar.asistencia = "XX"
+                    turno_a_editar.save()
                 
                 return render(request, "usuarios/editar_turnos.html", {
                 "turnos": turnos,
@@ -296,7 +301,7 @@ def diagnosticar_view(request):
             id_medico = request.session['_auth_user_id']
             medico = User.objects.get(id=id_medico)
             hoy = datetime.date.today()
-            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy)
+            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy).exclude(asistencia="XX")
             if request.method == "POST":
                 if Diagnostico.objects.filter(turno_id=request.POST['id_turno']).first() in Diagnostico.objects.all():
                     return render(request, 'usuarios/diagnosticar.html', {
@@ -333,14 +338,14 @@ def pacientes_med_view(request):
             print("render pacientes_med")
             if grupo == 'Profesional medico':
                 medico = User.objects.get(id=request.session['_auth_user_id'])
-                turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id'])
+                turnos_med = Turno.objects.filter(medico=request.session['_auth_user_id']).exclude(asistencia="XX")
                 pacientes_med=[]
                 for turno in turnos_med:
                     if turno.paciente not in pacientes_med:
                         pacientes_med.append(turno.paciente)
             elif grupo == 'Gerencia':
                 medico = "gerente"
-                turnos_med = Turno.objects.all()
+                turnos_med = Turno.objects.all().exclude(asistencia="XX")
                 pacientes_med = Paciente.objects.all()
             
             fecha_desde = ""
@@ -349,11 +354,11 @@ def pacientes_med_view(request):
                 if request.POST["submit"] == "BUSCAR":
                     dni = int(request.POST["dni1"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
-                    turnos = Turno.objects.filter(paciente=paciente_elegido.id)
+                    turnos = Turno.objects.filter(paciente=paciente_elegido.id).exclude(asistencia="XX")
                 elif request.POST["submit"] == "SELECCIONAR":
                     dni = int(request.POST["dni2"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
-                    turnos= Turno.objects.filter(paciente=paciente_elegido.id)
+                    turnos= Turno.objects.filter(paciente=paciente_elegido.id).exclude(asistencia="XX")
                 #if paciente_elegido in pacientes_med:
                 elif request.POST["submit"] == "FILTRAR":
                     dni = int(request.POST["dni3"])
@@ -362,7 +367,7 @@ def pacientes_med_view(request):
                     fecha_hasta=request.POST["hasta"]
                     fecha_desde_format = datetime.datetime.strptime(fecha_desde, '%Y-%m-%d')
                     fecha_hasta_format = datetime.datetime.strptime(fecha_hasta, '%Y-%m-%d') 
-                    turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)])
+                    turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)]).exclude(asistencia="XX")
                 else:
                     diagnostico = Diagnostico.objects.get(turno=request.POST["id_turno"])
                     diagnostico.observacion = request.POST["observacion"]
@@ -375,9 +380,9 @@ def pacientes_med_view(request):
                     if fecha_desde != "" and fecha_hasta != "":
                         fecha_desde_format = datetime.datetime.strptime(fecha_desde, '%Y-%m-%d')
                         fecha_hasta_format = datetime.datetime.strptime(fecha_hasta, '%Y-%m-%d') 
-                        turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)])
+                        turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)]).exclude(asistencia="XX")
                     else:
-                        turnos = Turno.objects.filter(paciente=paciente_elegido.id)
+                        turnos = Turno.objects.filter(paciente=paciente_elegido.id).exclude(asistencia="XX")
                     print(turnos)
 
                 return render (request, 'usuarios/pacientes_medV2.html',{

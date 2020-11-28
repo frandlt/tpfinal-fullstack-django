@@ -87,6 +87,12 @@
                             No asistieron
                         </label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia3" value="XX">
+                        <label class="form-check-label" for="inputAsistencia3">
+                            Ver turnos cancelados
+                        </label>
+                    </div>
                 </div>
 
                 <div class="mb-2 mb-md-0">
@@ -128,9 +134,13 @@
                     
                 </tbody>
             </table>
-        </div>
+        </div><br>
+        <footer>
+            <a href="{% url 'index' %}">Volver a página principal</a>
+        </footer>
     </main>
 </div>
+
 
 <script type="text/javascript">
 var asistencia= `{{asistencia}}`
@@ -161,8 +171,10 @@ function sortTable(){
 document.addEventListener("DOMContentLoaded", function(){
     if (asistencia=="NO"){
         document.getElementById("inputAsistencia2").checked = true;
-    }else{
+    }else if(asistencia=="SI"){
         document.getElementById("inputAsistencia1").checked = true;
+    }else{
+        document.getElementById("inputAsistencia3").checked = true;
     }
     document.getElementById("inputPeriod").value = periodo;
 
