@@ -6,7 +6,7 @@
 
 <h1>Turnos de hoy</h1>
 <h2 id="today"></h2>
-<table class="table">
+<table class="table" id="tbl">
     <thead>
         <tr> 
             <th scope="col">#</th>
@@ -48,7 +48,26 @@
     var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
     console.log(turnos_hoy)
 
-    
+    function sortTable(){
+        var tbl = document.getElementById("tbl").tBodies[0];
+        var store = [];
+        for(var i=0, len=tbl.rows.length; i<len; i++){
+            var row = tbl.rows[i];
+            var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
+            console.log(row.cells[3].innerText)
+            if(!isNaN(sortnr)) store.push([sortnr, row]);
+        }
+        store.sort(function(x,y){
+            return x[0] - y[0];
+        });
+        for(var i=0, len=store.length; i<len; i++){
+            tbl.appendChild(store[i][1]);
+        }
+        store = null;
+        console.log("Tabla ordenada")
+    }
+
+
     document.addEventListener("DOMContentLoaded", function(){
         //location.reload();
         var tbody = document.querySelector('tbody');
@@ -72,6 +91,7 @@
                 }
             }
         };
+        sortTable()
     })
     
 

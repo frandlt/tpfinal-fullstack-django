@@ -355,7 +355,7 @@ def pacientes_med_view(request):
                     paciente_elegido = Paciente.objects.get(dni=dni)
                     turnos= Turno.objects.filter(paciente=paciente_elegido.id)
                 #if paciente_elegido in pacientes_med:
-                if request.POST["submit"] == "FILTRAR":
+                elif request.POST["submit"] == "FILTRAR":
                     dni = int(request.POST["dni3"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
                     fecha_desde= request.POST["desde"]
@@ -363,7 +363,23 @@ def pacientes_med_view(request):
                     fecha_desde_format = datetime.datetime.strptime(fecha_desde, '%Y-%m-%d')
                     fecha_hasta_format = datetime.datetime.strptime(fecha_hasta, '%Y-%m-%d') 
                     turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)])
-                    
+                else:
+                    diagnostico = Diagnostico.objects.get(turno=request.POST["id_turno"])
+                    diagnostico.observacion = request.POST["observacion"]
+                    diagnostico.save()
+
+                    paciente_elegido = Paciente.objects.get(id=request.POST["id_pcte"])
+                    fecha_desde= request.POST["desde"]
+                    fecha_hasta=request.POST["hasta"]
+
+                    if fecha_desde != "" and fecha_hasta != "":
+                        fecha_desde_format = datetime.datetime.strptime(fecha_desde, '%Y-%m-%d')
+                        fecha_hasta_format = datetime.datetime.strptime(fecha_hasta, '%Y-%m-%d') 
+                        turnos = Turno.objects.filter(paciente=paciente_elegido.id, fecha__range=[fecha_desde_format, fecha_hasta_format + datetime.timedelta(days=1)])
+                    else:
+                        turnos = Turno.objects.filter(paciente=paciente_elegido.id)
+                    print(turnos)
+
                 return render (request, 'usuarios/pacientes_medV2.html',{
                     "medico": medico,
                     "pacientes": pacientes_med,

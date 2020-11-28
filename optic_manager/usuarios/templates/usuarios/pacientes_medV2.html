@@ -34,18 +34,19 @@
         <div id="filtro_fecha">
         <input type="hidden" name="dni3" value={{paciente_elegido.dni}} readonly></input>
         <label for="filtro_desde">Desde: </label>
-        <input type="date" name="desde" id="filtro_desde" class="select_fecha"></input>
+        <input type="date" name="desde" id="filtro_desde" class="select_fecha" required></input>
         <label for="filtro_hasta">Hasta: </label>
-        <input type="date" name="hasta" id="filtro_hasta" class="select_fecha"></input>
+        <input type="date" name="hasta" id="filtro_hasta" class="select_fecha" required></input>
         <input type="submit" name="submit" id="filtrar" value="FILTRAR"></input>
         </div><br>
     </form>
-    <table class="table">
+    <table class="table" id="tbl">
         <thead>
             <tr> 
                 <th scope="col">ID Turno</th>
                 <th scope="col">Fecha y hora turno</th>
                 <th scope="col">Asistencia</th>
+                <th scope="col">Médico</th>
                 <th scope="col">Diagnostico</th>
                 <th scope="col">Observaciones</th>
             </tr>
@@ -56,8 +57,22 @@
                     <th>{{turno.id}}</th>
                     <td>{{turno.fecha}} ({{turno.horario}})</td>                        
                     <td>{{turno.asistencia}}</td>
+                    <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
                     <td>{{turno.diagnostico.diagnostico}}</td>
-                    <td>{{turno.diagnostico.observacion}}</td>
+                    {% if medico != "gerente" %}
+                        <td><form action="" method="POST">
+                            {% csrf_token %}
+                                <textarea name="observacion" rows=2 cols=30>{{turno.diagnostico.observacion}}</textarea>
+                                <input name="id_turno"  value="{{turno.id}}" hidden></input>
+                                <input name="id_pcte" value="{{turno.paciente.id}}" hidden></input>
+                                <input name="desde" class="desde_hidden" hidden></input>
+                                <input name="hasta" class="hasta_hidden" hidden></input>
+                                
+                                <button type="submit" name="submit">Actualizar</button>
+                        </form></td>
+                    {% else %}
+                        <td>{{turno.diagnostico.observacion}}</td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </tbody>
@@ -78,6 +93,26 @@ console.log(dni)
 console.log(desde)
 console.log(hasta)
 
+function sortTable(){
+    var tbl = document.getElementById("tbl").tBodies[0];
+    var store = [];
+    for(var i=0, len=tbl.rows.length; i<len; i++){
+        var row = tbl.rows[i];
+        var sortnr = parseFloat(row.cells[1].textContent || row.cells[3].innerText);
+        console.log(row.cells[3].innerText)
+        if(!isNaN(sortnr)) store.push([sortnr, row]);
+    }
+    store.sort(function(x,y){
+        return x[0] - y[0];
+    });
+    for(var i=1, len=store.length; i<=len; i++){
+        tbl.appendChild(store[len-i][1]);
+    }
+    store = null;
+    console.log("Tabla ordenada")
+}
+
+
 document.addEventListener('DOMContentLoaded', function(){
     document.getElementById("inputDni").value = dni;
     console.log(document.getElementById(`input_${id}`))
@@ -90,10 +125,17 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     if (desde !== ``){
         document.getElementById("filtro_desde").value = desde;
+        document.querySelectorAll(".desde_hidden").forEach(input => {
+            input.value = desde;
+        })
     }
     if (hasta !== ``){
         document.getElementById("filtro_hasta").value = hasta;
+        document.querySelectorAll(".hasta_hidden").forEach(input => {
+            input.value = hasta;
+        })
     }
+    sortTable()
 })
 
 </script>
