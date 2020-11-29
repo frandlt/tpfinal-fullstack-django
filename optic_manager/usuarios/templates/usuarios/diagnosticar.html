@@ -15,30 +15,60 @@
         <input type="radio" name="lista_turnos" class ="radio" value="{{turno.id}}">
         <label id="label-{{turno.id}}" for="{{turno.id}}">Hora: {{turno.horario}} - Paciente: {{turno.paciente.apellido}}, {{turno.paciente.nombre}} (DNI: {{turno.paciente.dni}})</label><br>
     {% endfor %}
-    <button type="button" value="seleccionar" id="boton-select">Seleccionar</button>
+    <button type="button" value="seleccionar" id="boton-select" class="btn btn-primary mt-2 mb-2">Seleccionar</button>
 </form>
 </div>
 
 <div id="form-diag" style="display: none">
 <h2>Ingrese datos</h2>
 <p id="datos_paciente"></p>
-<button type="button" id="boton-cambiar">Cambiar turno</button><br><br>
+<button type="button" id="boton-cambiar"class="btn btn-secondary">Cambiar turno</button><br><br>
 
 <form action="" method="POST">
     {% csrf_token %}
-    <label for="id_turno">ID turno: </label>
-    <input id="id_turno" name="id_turno" readonly></input><br><br> 
-    <label for="inputDiag">Diagnostico:</label><br>
-    <textarea rows="10" cols="40" name="diagnostico" id="inputDiag" required></textarea><br><br>
-    <label for="inputObs">Observaciones:</label><br>
-    <textarea id="inputObs" rows="10" cols="40" name="observaciones"></textarea><br><br>
-    <input type="submit" value="CREAR"/>
+    <!-- <label for="id_turno">ID turno: </label>
+    <input id="id_turno" name="id_turno" class="form-control" readonly></input><br><br> -->
+
+    <!-- <label for="inputDiag">Diagnostico:</label><br>
+    <textarea rows="10" cols="40" name="diagnostico" id="inputDiag" class="form-control" required></textarea><br><br> -->
+
+    <!-- <label for="inputObs">Observaciones:</label><br>
+    <textarea id="inputObs" rows="10" cols="40" name="observaciones" class="form-control"></textarea><br><br> -->
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="id_turno" class="mb-2">ID Turno</label>
+        <input id="id_turno" name="id_turno" class="form-control" readonly></input>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="inputDiag" class="mb-2">Diagnóstico</label>
+        <textarea rows="10" cols="40" name="diagnostico" id="inputDiag" class="form-control" required></textarea>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="observaciones" class="mb-2">Observaciones</label>
+        <textarea id="inputObs" rows="10" cols="40" name="observaciones" class="form-control"></textarea>
+      </div>
+    </div>
+
+    <!-- <input type="submit" value="CREAR"/> -->
+    <button type="submit" class="btn btn-primary mb-2" value="CREAR">Agregar diagnóstico de paciente</button>
 
 </form>
 </div>
 
 
-<h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2>
+<!-- <h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2> -->
+
+<a href="{% url 'index' %}" class="mt-5">Volver atrás</a>
+</br>
+</br>
+</br>
 
 
 <script type="text/javascript" src="{%  static 'usuarios/diagnosticar.js' %}"></script>

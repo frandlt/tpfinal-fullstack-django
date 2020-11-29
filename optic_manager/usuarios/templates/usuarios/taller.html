@@ -30,7 +30,7 @@
                 <td>{{pedido.vendedor.last_name}}, {{pedido.vendedor.first_name}}.</td>
                 <td><form action="" method="POST">
                     {% csrf_token %}
-                    <select name="estado_{{pedido.id}}">
+                    <select name="estado_{{pedido.id}}" class="form-control">
                         <option>Taller</option>
                         <option>Finalizado</option>
                     </select>
@@ -41,9 +41,12 @@
     </tbody>
 </table>
 
-<input type="submit" value="Guardar cambios"/>
+<input type="submit" value="Guardar cambios" class="btn btn-primary mt-3 mb-3"/>
 </form><br>
 
 <a href="{% url 'index' %}">Volver atrás</a>
+<br>
+<br>
+<br>
 
 {% endblock %}

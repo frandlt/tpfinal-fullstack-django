@@ -7,32 +7,32 @@
 <!--<h4 class="mb-3 heading">Turnos del Profesional Médico para el día de hoy (<span id="today"></span>)</h4>-->
 <h4 class="mb-3 heading">Ver Turnos</h4>
 <h5 class="mb-5">Profesional Médico: <span id="nombreMedico">{{medico.last_name}}, {{medico.first_name}}.</span></h5>
-<button type="button" id="boton_hoy">VER PACIENTES DE HOY</button>
+<button type="button" id="boton_hoy" class="btn btn-info mb-4">Ver pacientes de hoy</button>
 <h6 id="periodo">Filtrar pacientes por:</h6>
 <div id="filtros">
 
     <form id="periodo">
-        <select id="opciones_filtros">
-            <option value="dia">Día</option>
+        <select id="opciones_filtros" class="form-control col-md-5 col-lg-4">
+            <option value="dia" selected>Día</option>
             <option value="mes">Mes</option>
             <option value="ano">Año</option>
         </select>
-        <button type="button" id="boton_select">Seleccionar</button>
+        <button type="button" id="boton_select" class="btn btn-primary mt-2 mb-2">Seleccionar</button>
     </form>
     <br>
     <form id="dia" style="display: none" class="fecha">
-        <input type="date" id="dia_buscado"></input>
-        <button type="button" class="buscar" id="buscar_dia">BUSCAR</button>
+        <input type="date" id="dia_buscado" class="form-control  col-md-5 col-lg-4"></input>
+        <button type="button" class="buscar btn btn-dark mt-2 mb-2" id="buscar_dia">BUSCAR</button>
     </form>
-    <br>
+    <!-- <br> -->
     <form id="mes" style="display: none" class="fecha">
-        <input type="month" id="mes_buscado"></input>
-        <button type="button" class="buscar" id="buscar_mes">BUSCAR</button>
+        <input type="month" id="mes_buscado" class="form-control  col-md-5 col-lg-4"></input>
+        <button type="button" class="buscar btn btn-dark mt-2 mb-2" id="buscar_mes">BUSCAR</button>
     </form>
-    <br>
+    <!-- <br> -->
     <form id="ano" style="display: none" class="fecha">
-        <input type="number" id="ano_buscado"></input>
-        <button type="button" class="buscar" id="buscar_ano">BUSCAR</button>
+        <input type="number" id="ano_buscado" class="form-control  col-md-5 col-lg-4"></input>
+        <button type="button" class="buscar btn btn-dark mt-2 mb-2" id="buscar_ano">BUSCAR</button>
     </form>
 
 </div>

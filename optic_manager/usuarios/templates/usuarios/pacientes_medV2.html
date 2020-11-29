@@ -12,8 +12,10 @@
 <h3>Buscar por DNI</h3>
 <form method="POST">
     {% csrf_token %}
-    <input type="number" name="dni1" id="inputDni" placeholder="DNI"></input>
-    <input type="submit" name="submit" id="buscar" value="BUSCAR"></input><br>
+    <div class="row">
+        <input type="number" name="dni1" id="inputDni" placeholder="DNI" class="form-control col-lg-4 col-md-5 col-sm-5 col-5 mt-2 mb-2 ml-3"></input>
+        <input type="submit" name="submit" id="buscar" value="Buscar" class="btn btn-dark col-auto mt-2 mb-2 ml-2"></input>
+    </div>
 </form>
 <h3>Lista</h3>
 <form method="POST">
@@ -22,7 +24,7 @@
         <input id="input_{{paciente.id}}" type="radio" name="dni2" value="{{paciente.dni}}"></input>
         <label for="input_{{paciente.id}}">{{paciente.apellido}} , {{paciente.nombre}} ({{paciente.dni}}).</label><br>
     {% endfor %}
-    <input type="submit" name="submit" id="seleccionar" value="SELECCIONAR"></input>
+    <input type="submit" class="btn btn-primary col-auto mt-2 mb-2"" name="submit" id="seleccionar" value="Seleccionar"></input>
 </form>
 
 

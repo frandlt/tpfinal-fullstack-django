@@ -7,19 +7,59 @@
 <p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
 
 <h2>Ingrese sus datos</h2>
-<form action="" method="POST" class="form-group col-md-5 col-sm-6 col-8">
+<form action="" method="POST">
     {% csrf_token %}
-    <input type="text" class="form-control" name="nombre" placeholder="Nombre" required/>
-    <input type="text" class="form-control" name="apellido" placeholder="Apellido" required/>
-    <input type="number" class="form-control" name="dni" placeholder="D.N.I." required/>
-    <input type="date" class="form-control" name="fec_nac" placeholder="Fecha de nacimiento" required/>
-    <input type="email" class="form-control" name="mail" placeholder="Correo electronico" required/>
-    <input type="text" class="form-control" name="telefono" placeholder="Numero de telefono" required/>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="nombre" class="mb-2">Nombre</label>
+        <input type="text" class="form-control" name="nombre" placeholder="Nombre" required/>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="apellido" class="mb-2">Apellido</label>
+        <input type="text" class="form-control" name="apellido" placeholder="Apellido" required/>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="dni" class="mb-2">DNI</label>
+        <input type="number" class="form-control" name="dni" placeholder="D.N.I." required/>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="fec_nac" class="mb-2">Fecha de nacimiento</label>
+        <input type="date" class="form-control" name="fec_nac" placeholder="Fecha de nacimiento" required/>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="mail" class="mb-2">Correo electrónico</label>
+        <input type="email" class="form-control" name="mail" placeholder="ejemplo@gmail.com" required/>
+      </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+      <div class="form-check">
+        <label for="telefono" class="mb-2">Teléfono</label>
+        <input type="text" class="form-control" name="telefono" placeholder="Numero de telefono" required/>
+      </div>
+    </div>
+    
     <!-- <input type="submit" class="btn btn-primary" value="CREAR"/> -->
-    <button type="submit" class="btn btn-primary" value="CREAR">Crear Paciente</button>
+    <button type="submit" class="btn btn-primary mb-2" value="CREAR">Crear Paciente</button>
 
 </form>
 
-<a href="{% url 'index' %}">Volver atrás</a>
+<a href="{% url 'index' %}" class="mb-5">Volver atrás</a>
+</br>
+</br>
+</br>
 
 {% endblock %}

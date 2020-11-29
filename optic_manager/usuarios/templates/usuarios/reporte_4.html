@@ -74,7 +74,7 @@
 
             <div class="mb-2 mb-md-0">
                 <label for="select_vendedor">Vendedor</label>
-                <select name="select_vendedor" id="select_vendedor">
+                <select name="select_vendedor" id="select_vendedor" class="form-control">
                     {% for vendedor in vendedores_todos %}
                         <option value="{{vendedor.id}}">{{vendedor.last_name}}, {{vendedor.first_name}}</option> 
                     {% endfor %}
