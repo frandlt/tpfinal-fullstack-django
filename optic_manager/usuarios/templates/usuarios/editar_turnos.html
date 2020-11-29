@@ -6,13 +6,13 @@
 
 
 <h1>Editar Turno</h1>
-<h2>Seleccionar turno a editar</h2>
+<h2>Seleccione un turno a editar</h2>
 
 <button id="btn1"  data-busqueda="busq_1" class="boton_busq btn btn-info" >Buscar por paciente</button><br>
 <div id="busq_1" class="div1">
 <form>
   {% csrf_token %}
-  <input type="number" id="dni" placeholder="DNI" class="form-control col-md-2 mt-3 mb-3"></input>
+  <input type="number" id="dni" placeholder="DNI" class="form-control col-md-2 col-5 mt-3 mb-3"></input>
   <button type="button" value="Buscar" id="buscar-1" class="btn btn-dark">BUSCAR</button><br>
 </form><br>
 <div id="lista_turnos_pac">
@@ -79,16 +79,16 @@
 <form action="{% url 'editar_turnos' %}" method="post" id="editar-turno-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
-    <h4 class="mb-3 heading" id="turno_a_editar">Actualización de datos de turno que se seleccione</h4>
-    <div class="form-group">
+    <h4 class="mb-3 heading" id="turno_a_editar">Actualización de datos de turno seleccionado</h4>
+    <div class="form-group col-md-5 col-sm-6 col-8">
       <div class="row ml-1">
-      <label for="id_turno_elegido" class="mt-1">ID de Turno Elegido</label>
-      <input type="number" id="id_turno_elegido" name="id_turno" class="form-control col-md-2 ml-2" readonly></input>
+      <label for="id_turno_elegido" class="mt-1">ID Turno</label>
+      <input type="number" id="id_turno_elegido" name="id_turno" class="form-control col-md-2 col-sm-3 col-3 ml-2" readonly></input>
       <button type="submit" class="btn btn-danger ml-2" id="eliminar" name="submit" value="ELIMINAR TURNO">ELIMINAR TURNO</button>
       </div>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-5 col-sm-6 col-8">
       <div class="form-check">
         <label for="inputMedico" class="mb-2">Médico</label>
         <select class="form-control" id="inputMedico" name="medico">
@@ -99,7 +99,7 @@
       </div>
     </div>
 
-      <div class="form-group col-md-4">
+      <div class="form-group col-md-5 col-sm-6 col-8">
       <div class="form-check">
         <label class="form-check-label mb-2" for="inputDate">
           Fecha
@@ -111,7 +111,7 @@
       </div>
     </div>
 
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-5 col-sm-6 col-8">
       <div class="form-check">
         <label class="form-check-label mb-2" for="inputHour">
           Horario

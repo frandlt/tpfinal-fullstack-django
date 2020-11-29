@@ -8,14 +8,14 @@
 
 <div id="filtro">
     <label for="dni">Buscar por DNI: </label>
-    <input type="number" id="dni"></input>
-    <button id="buscar">BUSCAR</button>
+    <input type="number" id="dni" class"form-control col-md-2 col-5"></input>
+    <button id="buscar" class="btn btn-dark">BUSCAR</button>
     <p id="p_msj" style="color: red"></p><br>
     <button id="ver_todos" style="display: none">VER TODOS</button>
 </div>
 
 {% if grupo == "Secretaria" %}
-    <br><a href="{% url 'editar_paciente' %}">Editar información de algún paciente</a><br>
+    <br><a href="{% url 'editar_paciente' %}" class="btn btn-info mb-4">Editar información de algún paciente</a><br>
 {% endif %}
 
 <table class="table" id="tbl">

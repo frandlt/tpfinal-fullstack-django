@@ -30,4 +30,8 @@ body {
   #span-clinica-trinitas {
     display: none;
   }
+
+  #navbar {
+    justify-content: space-between;
+  }
 }

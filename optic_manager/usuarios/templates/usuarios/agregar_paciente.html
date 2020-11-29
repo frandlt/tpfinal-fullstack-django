@@ -7,18 +7,19 @@
 <p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
 
 <h2>Ingrese sus datos</h2>
-<form action="" method="POST">
+<form action="" method="POST" class="form-group col-md-5 col-sm-6 col-8">
     {% csrf_token %}
-    <input type="text" name="nombre" placeholder="Nombre" required/>
-    <input type="text" name="apellido" placeholder="Apellido" required/>
-    <input type="number" name="dni" placeholder="D.N.I." required/>
-    <input type="date" name="fec_nac" placeholder="Fecha de nacimiento" required/>
-    <input type="email" name="mail" placeholder="Correo electronico" required/>
-    <input type="text" name="telefono" placeholder="Numero de telefono" required/>
-    <input type="submit" value="CREAR"/>
+    <input type="text" class="form-control" name="nombre" placeholder="Nombre" required/>
+    <input type="text" class="form-control" name="apellido" placeholder="Apellido" required/>
+    <input type="number" class="form-control" name="dni" placeholder="D.N.I." required/>
+    <input type="date" class="form-control" name="fec_nac" placeholder="Fecha de nacimiento" required/>
+    <input type="email" class="form-control" name="mail" placeholder="Correo electronico" required/>
+    <input type="text" class="form-control" name="telefono" placeholder="Numero de telefono" required/>
+    <!-- <input type="submit" class="btn btn-primary" value="CREAR"/> -->
+    <button type="submit" class="btn btn-primary" value="CREAR">Crear Paciente</button>
 
 </form>
 
-<h2>Volver a <a href="{% url 'index' %}">página principal</a>.</h2>
+<a href="{% url 'index' %}">Volver atrás</a>
 
 {% endblock %}
