@@ -6,6 +6,8 @@
 
 <h1>Turnos de hoy</h1>
 <h2 id="today"></h2>
+<form action="{% url 'turnos_hoy' %}" method="POST" >
+{% csrf_token %}
 <table class="table" id="tbl">
     <thead>
         <tr> 
@@ -26,9 +28,7 @@
                 <td>{{turno.paciente.apellido}}</td>
                 <td>{{turno.horario}}</td>
                 <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
-                <td><form action="{% url 'turnos_hoy' %}" method="POST" >
-                    {% csrf_token %}
-                    <select class="form-control col-md-auto">
+                <td><select class="form-control col-md-auto" name="asist-{{turno.id}}">
                         <option class="no" value="NO">NO</option>
                         <option class="si" value="SI">SI</option>
                     </select>
@@ -40,49 +40,45 @@
     </tbody>
 </table>
 
-<input type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()"></form><br>
+<input type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()"></input></form><br>
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
 <script type="text/javascript">
-    var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
-    console.log(turnos_hoy)
+var turnos_hoy = JSON.parse('{{turnos_serializados | safe}}');
+console.log(turnos_hoy)
+var tbl = document.getElementById("tbl").tBodies[0];
 
-    function sortTable(){
-        var tbl = document.getElementById("tbl").tBodies[0];
-        var store = [];
-        for(var i=0, len=tbl.rows.length; i<len; i++){
-            var row = tbl.rows[i];
-            var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
-            console.log(row.cells[3].innerText)
-            if(!isNaN(sortnr)) store.push([sortnr, row]);
-        }
-        store.sort(function(x,y){
-            return x[0] - y[0];
-        });
-        for(var i=0, len=store.length; i<len; i++){
-            tbl.appendChild(store[i][1]);
-        }
-        store = null;
-        console.log("Tabla ordenada")
+function sortTable(){
+    var store = [];
+    for(var i=0, len=tbl.rows.length; i<len; i++){
+        var row = tbl.rows[i];
+        var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
+        if(!isNaN(sortnr)) store.push([sortnr, row]);
     }
+    store.sort(function(x,y){
+        return x[0] - y[0];
+    });
+    for(var i=0, len=store.length; i<len; i++){
+        tbl.appendChild(store[i][1]);
+    }
+    store = null;
+    //console.log("Tabla ordenada")
+}
 
 
     document.addEventListener("DOMContentLoaded", function(){
-        //location.reload();
+        console.log(tbl)
         var tbody = document.querySelector('tbody');
         var trs = tbody.getElementsByTagName('tr');
         var x = 0;
         for (tr of trs){
             var select = tr.querySelector("select");
-            console.log(select);
-            var id_turno = tr.getElementsByClassName("id-turno").value;
-            //var id_turno = tr.getElementsByClassName("id-turno").value;
-            console.log(id_turno);
+            //console.log(select);
             var turno = turnos_hoy[x];
             x++;
-            console.log(turno);
-            console.log(turno["fields"]["asistencia"]);
+            //console.log(turno);
+            //console.log(turno["fields"]["asistencia"]);
             if (turno["fields"]["asistencia"]){
                 if (turno["fields"]["asistencia"]=== "SI"){
                     select.querySelector('.si').selected = 'selected';
@@ -90,18 +86,16 @@
                     select.querySelector('.no').selected = 'selected';
                 }
             }
-        };
-        sortTable()
+        }
+        sortTable();
+        console.log(tbl)
     })
     
-
-    //Lo que esto hace es directamente leer los cambios, para que no sale alerta por el DOMContentLoaded.
     
-    function guardar_cambios(){
-        location.reload();
+function guardar_cambios(){
+    location.reload();
         
-    }
-
+}
 </script>
 
 <script type="text/javascript" src="{%  static 'usuarios/turnos_hoy.js' %}"></script>

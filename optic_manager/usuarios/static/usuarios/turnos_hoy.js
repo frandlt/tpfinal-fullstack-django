@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(){
 })
 
 document.addEventListener("DOMContentLoaded", function(){
-    var tbody = document.querySelector('tbody');
+    var tbody = document.getElementById("tbl").tBodies[0];
     console.log(tbody);
     var trs = tbody.getElementsByTagName('tr');
     console.log(trs);
