@@ -24,7 +24,7 @@
         <input id="input_{{paciente.id}}" type="radio" name="dni2" value="{{paciente.dni}}"></input>
         <label for="input_{{paciente.id}}">{{paciente.apellido}} , {{paciente.nombre}} ({{paciente.dni}}).</label><br>
     {% endfor %}
-    <input type="submit" class="btn btn-primary col-auto mt-2 mb-2"" name="submit" id="seleccionar" value="Seleccionar"></input>
+    <input type="submit" class="btn btn-primary col-auto mt-2 mb-2" name="submit" id="seleccionar" value="Seleccionar"></input>
 </form>
 
 
@@ -39,7 +39,7 @@
         <input type="date" name="desde" id="filtro_desde" class="select_fecha" required></input>
         <label for="filtro_hasta">Hasta: </label>
         <input type="date" name="hasta" id="filtro_hasta" class="select_fecha" required></input>
-        <input type="submit" name="submit" id="filtrar" value="FILTRAR"></input>
+        <input type="submit" name="submit" id="filtrar" value="Filtrar"></input>
         </div><br>
     </form>
     <table class="table" id="tbl">
@@ -60,7 +60,11 @@
                     <td>{{turno.fecha}} ({{turno.horario}})</td>                        
                     <td>{{turno.asistencia}}</td>
                     <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
-                    <td>{{turno.diagnostico.diagnostico}}</td>
+                    {% if turno.asistencia == "SI" %}
+                        <td>{{turno.diagnostico.diagnostico}}</td>
+                    {% else %}
+                        <td>No existe.</td>
+                    {% endif %}
                     {% if medico != "gerente" %}
                         <td><form action="" method="POST">
                             {% csrf_token %}
@@ -100,8 +104,8 @@ function sortTable(){
     var store = [];
     for(var i=0, len=tbl.rows.length; i<len; i++){
         var row = tbl.rows[i];
-        var sortnr = parseFloat(row.cells[1].textContent || row.cells[3].innerText);
-        console.log(row.cells[3].innerText)
+        var sortnr = parseFloat(row.cells[0].textContent || row.cells[0].innerText);
+        console.log(row.cells[0].innerText)
         if(!isNaN(sortnr)) store.push([sortnr, row]);
     }
     store.sort(function(x,y){

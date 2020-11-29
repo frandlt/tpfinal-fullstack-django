@@ -348,16 +348,16 @@ def pacientes_med_view(request):
             fecha_desde = ""
             fecha_hasta = ""
             if request.method == "POST":
-                if request.POST["submit"] == "BUSCAR":
+                if request.POST["submit"] == "Buscar":
                     dni = int(request.POST["dni1"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
                     turnos = Turno.objects.filter(paciente=paciente_elegido.id).exclude(asistencia="XX")
-                elif request.POST["submit"] == "SELECCIONAR":
+                elif request.POST["submit"] == "Seleccionar":
                     dni = int(request.POST["dni2"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
                     turnos= Turno.objects.filter(paciente=paciente_elegido.id).exclude(asistencia="XX")
                 #if paciente_elegido in pacientes_med:
-                elif request.POST["submit"] == "FILTRAR":
+                elif request.POST["submit"] == "Filtrar":
                     dni = int(request.POST["dni3"])
                     paciente_elegido = Paciente.objects.get(dni=dni)
                     fecha_desde= request.POST["desde"]
