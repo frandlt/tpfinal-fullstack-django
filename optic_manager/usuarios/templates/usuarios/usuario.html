@@ -18,19 +18,18 @@
 
 <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
 
-    <ul>
-        <li>Usuario: {{ request.user.username }}</li>
-        <li>Email: {{ request.user.email }}</li>
-        <li>Grupo: {{ grupo }}</li>
+    <ul class="fa-ul">
+        <li><span class="fa-li"><i class="fal fa-user"></i></span> {{ request.user.username }}</li>
+        <li><span class="fa-li"><i class="fal fa-envelope"></i></span> {{ request.user.email }}</li>
+        <li><span class="fa-li"><i class="fal fa-users"></i></span> {{ grupo }}</li>
         <!-- <li>Grupo:  request.user.groups.values_list('name', flat=True) </li> -->
-
     </ul>
 
     {% if grupo == "Ventas" %}
         <!-- <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
         <a href="{% url 'ver_pedidos' %}">Ver pedidos</a> -->
 
-        <h4 class="mb-3">Funciones habilitadas</h4>
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6 mb-3">
@@ -59,7 +58,7 @@
 
 
     {% if grupo == "Secretaria" %}
-        <h4 class="mb-3">Funciones habilitadas</h4>
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6 mb-3">
@@ -93,7 +92,7 @@
         <a href="{% url 'diagnosticar' %}">Diagnosticar</a><br>
         <a href="{% url 'pacientes_med' %}">Historial paciente</a> -->
 
-        <h4 class="mb-3">Funciones habilitadas</h4>
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6 mb-3">
@@ -113,7 +112,7 @@
 
     {% if grupo == "Gerencia" %}
 
-        <h4 class="mb-3">Funciones habilitadas</h4>
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6 mb-3">
@@ -157,7 +156,7 @@
         <!-- <a href="{% url 'taller' %}">Ver pedidos</a><br>
         </br> -->
 
-        <h4 class="mb-3">Funciones habilitadas</h4>
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
 
         <div class="row">
             <div class="col-sm-6 mb-3">
