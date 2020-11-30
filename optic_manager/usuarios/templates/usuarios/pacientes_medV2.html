@@ -5,7 +5,7 @@
 
 <h1>Historial de pacientes</h1>
 {% if medico != "gerente" %}
-    <p>Pacientes de médico: {{medico.last_name}}, {{medico.first_name}}</p>
+<p>Pacientes de médico: {{medico.last_name}}, {{medico.first_name}}</p>
 {% endif %}
 <h2>Seleccione un paciente para acceder a su historial</h2>
 
@@ -13,38 +13,55 @@
 <form method="POST">
     {% csrf_token %}
     <div class="row">
-        <input type="number" name="dni1" id="inputDni" placeholder="DNI" class="form-control col-lg-4 col-md-5 col-sm-5 col-5 mt-2 mb-2 ml-3"></input>
-        <input type="submit" name="submit" id="buscar" value="Buscar" class="btn btn-dark col-auto mt-2 mb-2 ml-2"></input>
+        <input type="number" name="dni1" id="inputDni" placeholder="DNI"
+            class="form-control col-lg-4 col-md-5 col-sm-5 col-5 mt-2 mb-2 ml-3"></input>
+        <button type="submit" name="submit" id="buscar" value="Buscar" class="btn btn-dark col-auto mt-2 mb-2 ml-2"><i
+                class="fal fa-search"></i> Buscar</button>
     </div>
 </form>
 <h3>Lista</h3>
 <form method="POST">
     {% csrf_token %}
     {% for paciente in pacientes %}
-        <input id="input_{{paciente.id}}" type="radio" name="dni2" value="{{paciente.dni}}"></input>
-        <label for="input_{{paciente.id}}">{{paciente.apellido}} , {{paciente.nombre}} ({{paciente.dni}}).</label><br>
+    <input id="input_{{paciente.id}}" type="radio" name="dni2" value="{{paciente.dni}}"></input>
+    <label for="input_{{paciente.id}}">{{paciente.apellido}} , {{paciente.nombre}} ({{paciente.dni}}).</label><br>
     {% endfor %}
-    <input type="submit" class="btn btn-primary col-auto mt-2 mb-2" name="submit" id="seleccionar" value="Seleccionar"></input>
+    <button type="submit" class="btn btn-secondary col-auto mt-2 mb-2" name="submit" id="seleccionar"
+        value="Seleccionar"><i class="fal fa-arrow-right"></i> Seleccionar</button>
 </form>
 
 
 <div id="historial" style="display: none" class="historial">
-    <h2>Historial médico de: {{paciente_elegido.apellido}}, {{paciente_elegido.nombre}} (DNI: {{paciente_elegido.dni}}).</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label for="filtro_fecha" style="text-decoration: underline">Filtrar por fecha: </label>
-        <div id="filtro_fecha">
-        <input type="hidden" name="dni3" value={{paciente_elegido.dni}} readonly></input>
-        <label for="filtro_desde">Desde: </label>
-        <input type="date" name="desde" id="filtro_desde" class="select_fecha" required></input>
-        <label for="filtro_hasta">Hasta: </label>
-        <input type="date" name="hasta" id="filtro_hasta" class="select_fecha" required></input>
-        <input type="submit" name="submit" id="filtrar" value="Filtrar"></input>
-        </div><br>
+    <h4>Historial médico de: {{paciente_elegido.apellido}}, {{paciente_elegido.nombre}} (DNI: {{paciente_elegido.dni}}).
+    </h4>
+    </br>
+    <form method="POST" class="form-group">
+        <p style="text-decoration: underline">Filtrar por fecha: </p>
+        <div class="row">
+
+            {% csrf_token %}
+            <div class="col-lg-4 col-md-5 col-sm-5 col-6">
+                <input type="hidden" class="form-control" name="dni3" value={{paciente_elegido.dni}}
+                    readonly>
+                <!-- <div id="filtro_fecha"> -->
+                    <label for="filtro_desde">Desde: </label>
+                    <input type="date" class="form-control" name="desde" id="filtro_desde"
+                        class="select_fecha" required>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-5 col-6">
+                    <label for="filtro_hasta">Hasta: </label>
+                    <input type="date" class="form-control" name="hasta" id="filtro_hasta"
+                        class="select_fecha" required>
+                </div>
+            </div>
+            <div class="row ml-1 mt-2">
+            <button type="submit" class="btn btn-dark" name="submit" id="filtrar" value="Filtrar"><i class="fal fa-filter"></i> Filtrar</button>
+            </div>
+        </div></br>
     </form>
     <table class="table" id="tbl">
         <thead>
-            <tr> 
+            <tr>
                 <th scope="col">ID Turno</th>
                 <th scope="col">Fecha y hora turno</th>
                 <th scope="col">Asistencia</th>
@@ -55,95 +72,99 @@
         </thead>
         <tbody>
             {% for turno in turnos %}
-                <tr>
-                    <th>{{turno.id}}</th>
-                    <td>{{turno.fecha}} ({{turno.horario}})</td>                        
-                    <td>{{turno.asistencia}}</td>
-                    <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
-                    {% if turno.asistencia == "SI" %}
-                        <td>{{turno.diagnostico.diagnostico}}</td>
-                    {% else %}
-                        <td>No existe.</td>
-                    {% endif %}
-                    {% if medico != "gerente" %}
-                        <td><form action="" method="POST">
-                            {% csrf_token %}
-                                <textarea name="observacion" rows=2 cols=30>{{turno.diagnostico.observacion}}</textarea>
-                                <input name="id_turno"  value="{{turno.id}}" hidden></input>
-                                <input name="id_pcte" value="{{turno.paciente.id}}" hidden></input>
-                                <input name="desde" class="desde_hidden" hidden></input>
-                                <input name="hasta" class="hasta_hidden" hidden></input>
-                                
-                                <button type="submit" name="submit">Actualizar</button>
-                        </form></td>
-                    {% else %}
-                        <td>{{turno.diagnostico.observacion}}</td>
-                    {% endif %}
-                </tr>
+            <tr>
+                <th>{{turno.id}}</th>
+                <td>{{turno.fecha}} ({{turno.horario}})</td>
+                <td>{{turno.asistencia}}</td>
+                <td>{{turno.medico.last_name}}, {{turno.medico.first_name}}.</td>
+                {% if turno.asistencia == "SI" %}
+                <td>{{turno.diagnostico.diagnostico}}</td>
+                {% else %}
+                <td>No existe.</td>
+                {% endif %}
+                {% if medico != "gerente" %}
+                <td>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <textarea name="observacion" class="form-control" rows=2 cols=30>{{turno.diagnostico.observacion}}</textarea>
+                        <input name="id_turno" value="{{turno.id}}" hidden></input>
+                        <input name="id_pcte" value="{{turno.paciente.id}}" hidden></input>
+                        <input name="desde" class="desde_hidden" hidden></input>
+                        <input name="hasta" class="hasta_hidden" hidden></input>
+
+                        <button type="submit" name="submit" class="btn btn-secondary mt-2"><i class="fal fa-file-edit"></i> Actualizar</button>
+                    </form>
+                </td>
+                {% else %}
+                <td>{{turno.diagnostico.observacion}}</td>
+                {% endif %}
+            </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 <br>
 <a href="{% url 'index' %}">Volver atrás</a>
+</br>
+</br>
+</br>
 
 <script type="text/javascript">
-var paciente = `{{paciente_elegido}}`;
-var dni = `{{paciente_elegido.dni}}`;
-var id = `{{id_paciente}}`
-var desde = `{{fecha_desde}}`
-var hasta = `{{fecha_hasta}}`
+    var paciente = `{{paciente_elegido}}`;
+    var dni = `{{paciente_elegido.dni}}`;
+    var id = `{{id_paciente}}`
+    var desde = `{{fecha_desde}}`
+    var hasta = `{{fecha_hasta}}`
 
-console.log(paciente)
-console.log(dni)
-console.log(desde)
-console.log(hasta)
+    console.log(paciente)
+    console.log(dni)
+    console.log(desde)
+    console.log(hasta)
 
-function sortTable(){
-    var tbl = document.getElementById("tbl").tBodies[0];
-    var store = [];
-    for(var i=0, len=tbl.rows.length; i<len; i++){
-        var row = tbl.rows[i];
-        var sortnr = parseFloat(row.cells[0].textContent || row.cells[0].innerText);
-        console.log(row.cells[0].innerText)
-        if(!isNaN(sortnr)) store.push([sortnr, row]);
+    function sortTable() {
+        var tbl = document.getElementById("tbl").tBodies[0];
+        var store = [];
+        for (var i = 0, len = tbl.rows.length; i < len; i++) {
+            var row = tbl.rows[i];
+            var sortnr = parseFloat(row.cells[0].textContent || row.cells[0].innerText);
+            console.log(row.cells[0].innerText)
+            if (!isNaN(sortnr)) store.push([sortnr, row]);
+        }
+        store.sort(function (x, y) {
+            return x[0] - y[0];
+        });
+        for (var i = 1, len = store.length; i <= len; i++) {
+            tbl.appendChild(store[len - i][1]);
+        }
+        store = null;
+        console.log("Tabla ordenada")
     }
-    store.sort(function(x,y){
-        return x[0] - y[0];
-    });
-    for(var i=1, len=store.length; i<=len; i++){
-        tbl.appendChild(store[len-i][1]);
-    }
-    store = null;
-    console.log("Tabla ordenada")
-}
 
 
-document.addEventListener('DOMContentLoaded', function(){
-    document.getElementById("inputDni").value = dni;
-    console.log(document.getElementById(`input_${id}`))
-    document.getElementById(`input_${id}`).checked = true;
-})
+    document.addEventListener('DOMContentLoaded', function () {
+        document.getElementById("inputDni").value = dni;
+        console.log(document.getElementById(`input_${id}`))
+        document.getElementById(`input_${id}`).checked = true;
+    })
 
-document.addEventListener('DOMContentLoaded', function(){
-    if (paciente !== ``){
-        document.getElementById("historial").style.display = "block"
-    }
-    if (desde !== ``){
-        document.getElementById("filtro_desde").value = desde;
-        document.querySelectorAll(".desde_hidden").forEach(input => {
-            input.value = desde;
-        })
-    }
-    if (hasta !== ``){
-        document.getElementById("filtro_hasta").value = hasta;
-        document.querySelectorAll(".hasta_hidden").forEach(input => {
-            input.value = hasta;
-        })
-    }
-    sortTable()
-})
-
+    document.addEventListener('DOMContentLoaded', function () {
+        if (paciente !== ``) {
+            document.getElementById("historial").style.display = "block"
+        }
+        if (desde !== ``) {
+            document.getElementById("filtro_desde").value = desde;
+            document.querySelectorAll(".desde_hidden").forEach(input => {
+                input.value = desde;
+            })
+        }
+        if (hasta !== ``) {
+            document.getElementById("filtro_hasta").value = hasta;
+            document.querySelectorAll(".hasta_hidden").forEach(input => {
+                input.value = hasta;
+            })
+        }
+        sortTable()
+    })
 </script>
 
 {% endblock %}

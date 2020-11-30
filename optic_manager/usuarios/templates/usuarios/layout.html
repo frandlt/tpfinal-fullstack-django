@@ -17,6 +17,7 @@
     <script src="{%  static 'usuarios/jquery/jquery-3.5.1.js' %}"></script>
     <script src="{%  static 'usuarios/bootstrap-4.5.3-dist/js/bootstrap.bundle.js' %}"></script>
     <script src="{%  static 'usuarios/fontawesome-pro-5.15.1-web/js/all.js' %}"></script>
+    <script src="{%  static 'usuarios/generar_turno.js' %}"></script>
     <!-- <script src=" static 'jquery-2.1.3.min.js' "></script> -->
 
 
@@ -25,14 +26,14 @@
 
 <body class="container">
         <!-- NAV HEADER -->
-    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top"
+    <div class="d-flex flex-row flex-md-row align-items-center p-3 justify-content-between px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top"
         id="navbar">
         <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand text-dark inline-block" href="{% url 'index' %}">
                 <i class="fal fa-laptop-medical" style="vertical-align: middle; text-align: center;"></i>
                 Optic Manager <span id="span-clinica-trinitas" class="text-muted">| Clínica Trinitas</span>
             </a></h5>
         <nav class="my-2 my-md-0">
-            <a href="{% url 'logout' %}" class="btn btn-danger inline-block"><i class="fal fa-sign-out"></i> Desconectarse</a>
+            <a href="{% url 'logout' %}" class="btn btn-danger inline-block"><i class="fal fa-sign-out"></i><span id="span-cerrar-sesion"> Desconectarse</span></a>
         </nav>
     </div>
 

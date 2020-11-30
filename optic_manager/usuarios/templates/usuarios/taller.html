@@ -4,7 +4,8 @@
 {% block body %}
 
 
-<h1>Pedidos pendientes taller</h1>
+<h1>Pedidos pendientes en taller</h1>
+<h2 class="mb-4">Actualizar estado de cada uno al finalizar el pedido</h2>
 
 <table class="table">
     <thead>
@@ -41,7 +42,7 @@
     </tbody>
 </table>
 
-<input type="submit" value="Guardar cambios" class="btn btn-primary mt-3 mb-3"/>
+<button type="submit" value="Guardar cambios" class="btn btn-primary mt-3 mb-3"><i class="fal fa-edit"></i> Guardar cambios</button>
 </form><br>
 
 <a href="{% url 'index' %}">Volver atrás</a>

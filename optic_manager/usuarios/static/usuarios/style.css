@@ -14,12 +14,17 @@ body {
 
 @media screen and (min-width: 0px) and (max-width:576px) { 
   body {
-    margin-top: 10.5rem;
+    margin-top: 9.5rem;
   }
 
   #span-clinica-trinitas {
     display: none;
   }
+
+  #span-cerrar-sesion {
+    display: none;
+  }
+
 }
 
 @media screen and (min-width: 577px) and (max-width:768px) { 

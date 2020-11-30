@@ -8,43 +8,38 @@
 <h1>Editar paciente</h1>
 <h2>Seleccionar paciente a editar</h2>
 
-<div class="row ml-1">
-  <button id="btn1" data-busqueda="busq_1" class="boton_busq btn btn-info ml-2 mb-2"><i class="fal fa-file-user"></i> Buscar por nombre y apellido</button>
-  <button id="btn2" data-busqueda="busq_2" class="boton_busq btn btn-info ml-2 mb-2"><i class="fal fa-address-card"></i> Buscar por DNI</button>
-  <button id="btn3" data-busqueda="busq_3" class="boton_busq btn btn-info ml-2 mb-2"><i class="fal fa-book-user"></i> Buscar en lista de todos los
-    pacientes</button>
-</div>
-
-<div id="busq_1" class="div1 ml-4 mb-4">
+<button id="btn1" data-busqueda="busq_1" class="boton_busq btn btn-info"><i class="fal fa-file-user"></i> Buscar por nombre y apellido</button><br>
+<div id="busq_1" class="div1">
   <form>
     {% csrf_token %}
     <input type="text" id="nombre" placeholder="Nombre" class="form-control col-md-4 col-sm-6 col-8 mt-2 mb-2"></input>
     <input type="text" id="apellido" placeholder="Apellido"
       class="form-control col-md-4 col-sm-6 col-8 mt-2 mb-2"></input>
-    <button type="button" value="Buscar" id="buscar-1" class="btn btn-dark mt-2"><i class="fal fa-search"></i> Buscar</button>
+    <button type="button" value="Buscar" id="buscar-1" class="btn btn-dark"><i class="fal fa-search"></i> Buscar</button>
   </form>
-</div>
+</div><br>
 
-
-<div id="busq_2" class="div1 ml-4 mb-4">
+<button id="btn2" data-busqueda="busq_2" class="boton_busq btn btn-info"><i class="fal fa-address-card"></i> Buscar por DNI</button><br>
+<div id="busq_2" class="div1">
   <form>
     {% csrf_token %}
     <input type="text" id="dni" placeholder="DNI" class="form-control col-md-4 col-sm-6 col-8 mt-2 mb-2"></input>
-    <button type="button" value="Buscar" id="buscar-2" class="btn btn-dark mt-2"><i class="fal fa-search"></i> Buscar</button>
+    <button type="button" value="Buscar" id="buscar-2" class="btn btn-dark"><i class="fal fa-search"></i> Buscar</button>
   </form>
-</div>
+</div><br>
 
-
-<div id="busq_3" class="div1 ml-4 mb-4">
+<button id="btn3" data-busqueda="busq_3" class="boton_busq btn btn-info"><i class="fal fa-book-user"></i> Buscar en lista de todos los
+  pacientes</button><br>
+<div id="busq_3" class="div1 mt-2 mb-2">
   <form>
     {% csrf_token %}
     {% for paciente in pacientes %}
     <input type="radio" name="list_pac" class="radio" value="{{paciente.id}}">
     <label for="{{paciente.id}}">{{paciente.apellido}}, {{paciente.nombre}} (DNI: {{paciente.dni}})</label><br>
     {% endfor %}
-    <button type="button" value="Buscar" id="buscar-3" class="btn btn-dark mt-2"><i class="fal fa-search"></i> Buscar</button>
+    <button type="button" value="Buscar" id="buscar-3" class="btn btn-dark"><i class="fal fa-search"></i> Buscar</button>
   </form>
-</div>
+</div><br>
 
 
 <h4 class="mb-3 heading" id="paciente_a_editar">Actualización de datos de paciente que se seleccione</h4>
@@ -64,9 +59,6 @@
     <div class="form-check">
       <label for="inputName">Nombre</label>
       <input type="text" id="inputName" name="nuevo_nombre" class="form-control" required>
-      <div class="invalid-feedback">
-        Por favor, inserte un nombre válido.
-      </div>
     </div>
   </div>
 
@@ -74,9 +66,6 @@
     <div class="form-check">
       <label for="inputLastName">Apellido</label>
       <input type="text" id="inputLastName" name="nuevo_apellido" class="form-control" required>
-      <div class="invalid-feedback">
-        Por favor, inserte un apellido válido.
-      </div>
     </div>
   </div>
 
@@ -85,9 +74,6 @@
       <label for="inputDni" class="mb-2">DNI</label>
       <input type="number" class="form-control" id="inputDni" name="nuevo_dni"
         required>
-      <div class="invalid-feedback">
-        Por favor, inserte un número de DNI válido.
-      </div>
     </div>
   </div>
 
@@ -96,9 +82,6 @@
       <label for="inputEmail">Dirección de correo electrónico</label>
       <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" name="nuevo_mail" required>
       <small id="emailHelp" class="form-text text-muted">Se debe aclarar que el mismo no se compartirá a terceros.</small>
-      <div class="invalid-feedback">
-        Por favor, inserte una dirección de mail válida.
-      </div>
     </div>
   </div>
 
@@ -106,9 +89,6 @@
     <div class="form-check">
       <label for="inputPhone">Número de Teléfono</label>
       <input type="text" class="form-control" id="inputPhone" name="nuevo_telefono" required>
-      <div class="invalid-feedback">
-        Por favor, inserte un número de teléfono válido.
-      </div>
     </div>
   </div>
 
@@ -123,23 +103,17 @@
       </div>
     </div>
   </div>
-<!--
-    <div class="form-group col-md-4">
-      <div class="form-check">
-        <button type="submit" class="btn btn-primary" value="Registrar"><i class="fal fa-calendar-edit"></i> Registrar Turno</button>
-      </div>
-    </div> -->
 
-  <div class="form-group col-md-4">
+  <div class="form-group">
     <div class="form-check">
-      <button type="submit" class="btn btn-primary" value="Editar"><i class="fal fa-user-edit"></i> Actualizar datos</button>
+      <button type="submit" class="btn btn-primary" value="Editar">Actualizar datos</button>
     </div>
   </div>
 
 </form>
 
 
-<a href="{% url 'index' %}">Volver atrás</a>
+<a href="{% url 'ver_pacientes' %}">Volver atrás</a>
 </br>
 </br>
 </br>

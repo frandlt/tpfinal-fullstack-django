@@ -5,7 +5,7 @@
 {% block body %}
 
 <h1>Turnos de hoy</h1>
-<h2 id="today"></h2>
+<h2 id="today" class="mb-4"></h2>
 <form action="{% url 'turnos_hoy' %}" method="POST" >
 {% csrf_token %}
 <table class="table" id="tbl">
@@ -40,7 +40,16 @@
     </tbody>
 </table>
 
-<input type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()"></input></form><br>
+<!-- <input type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()">Guardar Cambios</input> -->
+<button id="boton-guardar-cambios" type="submit" class="submit btn btn-primary mt-2 mb-2" value="Guardar cambios" onclick="guardar_cambios()"><i class="fal fa-calendar-edit"></i> Guardar Cambios</button>
+
+<div id="div-cero-turnos" class="alert alert-warning col-md-6 col-sm-8" role="alert" style="display:none;">
+  <i class="fal fa-exclamation-triangle"></i><span id="cero-turnos"></span>
+</div>
+
+
+</form>
+<br>
 
 <a href="{% url 'index' %}">Volver atrás</a>
 
@@ -89,6 +98,12 @@ function sortTable(){
         }
         sortTable();
         console.log(tbl)
+        if(turnos_hoy.length == 0)
+        {
+            document.getElementById("boton-guardar-cambios").style.display = "none";
+            document.getElementById("div-cero-turnos").style.display = "block";
+            document.getElementById("cero-turnos").innerHTML = " No hay turnos para el día de hoy";
+        }
     })
     
     
