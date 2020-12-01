@@ -196,19 +196,11 @@
             document.getElementById("inputEndDate").value = hasta;
         }
         var trs = document.querySelectorAll(".row_body")
-        for (var id in {
-                {
-                    ventas_producto
-                }
-            }) {
+        for (var id in {{ventas_producto}}) {
             tr = document.getElementById(`tr_${id}`)
             console.log(tr)
             console.log(id)
-            var cant = {
-                {
-                    ventas_producto
-                }
-            } [id]
+            var cant = {{ventas_producto}} [id]
             console.log(cant)
             td = document.createElement("td")
             td.innerHTML = cant;

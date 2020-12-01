@@ -10,20 +10,61 @@
 
     
 
-{% if request.user.is_superuser %}
+{% if user.is_superuser %}
     <h1>Bienvenido, SUPERUSER</h1>
     <p style="font-size: 22px">Para acceder a sus funciones, cambie la url a "/admin"</p>
     </br>
-{% endif %}
-
-<h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
-
+{% else %}
+    <h1 class="heading">Bienvenido, {{ request.user.first_name }}</h1>
     <ul class="fa-ul">
         <li><span class="fa-li"><i class="fal fa-user"></i></span> {{ request.user.username }}</li>
         <li><span class="fa-li"><i class="fal fa-envelope"></i></span> {{ request.user.email }}</li>
         <li><span class="fa-li"><i class="fal fa-users"></i></span> {{ grupo }}</li>
         <!-- <li>Grupo:  request.user.groups.values_list('name', flat=True) </li> -->
     </ul>
+{% endif %}
+
+    {% if grupo == "Gerencia" %}
+        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
+
+        <div class="row">
+            <div class="col-sm-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Reportes de Gestión</h5>
+                        <p class="card-text">Para acceder a los reportes de gestión.</p>
+                        <a href="{% url 'reporte_1' %}" class="btn btn-primary m-2">Acceder a reportes</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Datos de pacientes</h5>
+                        <p class="card-text">Para acceder a información de pacientes</p>
+                        <a href="{% url 'ver_pacientes' %}" class="btn btn-primary m-2">Datos personales</a>
+                        <a href="{% url 'pacientes_med' %}" class="btn btn-secondary m-2">Historiales médicos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Otros datos</h5>
+                        <p class="card-text">Para acceder a información de los pedidos y productos</p>
+                        <a href="{% url 'ver_pedidos' %}" class="btn btn-primary m-2">Pedidos</a>
+                        <a href="{% url 'ver_productos' %}" class="btn btn-secondary m-2">Productos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    {% endif %}
+
 
     {% if grupo == "Ventas" %}
         <!-- <a href="{% url 'generar_pedido' %}">Generar pedido para paciente</a><br>
@@ -110,48 +151,7 @@
 
     {% endif %}
 
-    {% if grupo == "Gerencia" %}
-
-        <h4 class="mb-3"><i class="fal fa-toolbox"></i> Funciones habilitadas</h4>
-
-        <div class="row">
-            <div class="col-sm-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Reportes de Gestión</h5>
-                        <p class="card-text">Para acceder a los reportes de gestión.</p>
-                        <a href="{% url 'reporte_1' %}" class="btn btn-primary m-2">Acceder a reportes</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Datos de pacientes</h5>
-                        <p class="card-text">Para acceder a información de pacientes</p>
-                        <a href="{% url 'ver_pacientes' %}" class="btn btn-primary m-2">Datos personales</a>
-                        <a href="{% url 'pacientes_med' %}" class="btn btn-secondary m-2">Historiales médicos</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mb-3">
-            <div class="col-sm-6 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Otros datos</h5>
-                        <p class="card-text">Para acceder a información de los pedidos y productos</p>
-                        <a href="{% url 'ver_pedidos' %}" class="btn btn-primary m-2">Pedidos</a>
-                        <a href="{% url 'ver_productos' %}" class="btn btn-secondary m-2">Productos</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    {% endif %}
-
+    
     {% if grupo == "Taller" %}
         <!-- <a href="{% url 'taller' %}">Ver pedidos</a><br>
         </br> -->
