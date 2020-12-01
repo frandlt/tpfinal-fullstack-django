@@ -14,25 +14,29 @@
             <ul class="nav flex-column reporte">
                 <li class="nav-item">
                     <a id="turnos_pacientes" class="nav-link active inline-block" href="#">
-                        <i id="icon-1" style="vertical-align: middle; text-align: center;" class="fal fa-user-clock feather" ></i>
+                        <i id="icon-1" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-user-clock feather"></i>
                         Turnos de Pacientes <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="pedidos_pacientes" class="nav-link inline-block" href="{% url 'reporte_2' %}">
-                    <i id="icon-2" style="vertical-align: middle; text-align: center;" class="fal fa-prescription feather" ></i>
+                        <i id="icon-2" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-prescription feather"></i>
                         Pedidos de Pacientes
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="productos_mas_vendidos" class="nav-link inline-block" href="{% url 'reporte_3' %}">
-                    <i id="icon-3" style="vertical-align: middle; text-align: center;" class="fal fa-file-invoice-dollar feather" ></i>
+                        <i id="icon-3" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-file-invoice-dollar feather"></i>
                         Productos más vendidos
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="ventas_totales" class="nav-link inline-block" href="{% url 'reporte_4' %}">
-                    <i id="icon-4" style="vertical-align: middle; text-align: center;" class="fal fa-cash-register feather" ></i>
+                        <i id="icon-4" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-cash-register feather"></i>
                         Ventas Totales por Vendedor
                     </a>
                 </li>
@@ -44,62 +48,81 @@
         <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Turnos de Pacientes</h1>
-            
+
             <form action="" method="POST">
                 {% csrf_token %}
-            
-                <div class="btn-toolbar mb-2 mb-md-0 dropdown">
-                    <label for="inputPeriod">Filtro</label>
-                    <select id="inputPeriod" name="periodo" class="form-control" onchange="selection()">
-                        <option value="custom">Custom</option>
-                        <option value="this-week" selected>Esta Semana</option>
-                        <option value="past-week">Semana Anterior</option>
-                        <option value="this-month">Este Mes</option>
-                        <option value="past-month">Mes Anterior</option>
-                        <option value="this-year">Este Año</option>
-                        <option value="past-year">Año Pasado</option>
-                    </select>
-                </div>
 
-                <div class="mb-2 mb-md-0">
-                    <label for="inputStartDate">Desde</label>
-                    <input type="date" name="inputStartDate" id="inputStartDate" class="form-control" onchange="seleccionaCustom()">
-                    </input>
-                </div>
-
-                <div class="mb-2 mb-md-0">
-                    <label for="inputEndDate">Hasta</label>
-                    <input type="date" name="inputEndDate" id="inputEndDate" class="form-control" onchange="seleccionaCustom()">
-                    </input>
-                </div>
-
-                <div>
-                    <label for="inputAsistencia1">Asistencia?</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia1" value="SI" checked>
-                        <label class="form-check-label" for="inputAsistencia1">
-                            Asistieron
-                        </label>
+                <div class="row">
+                    <div class="col-auto">
+                        <div class="btn-toolbar mb-2 mb-md-0 dropdown">
+                            <label for="inputPeriod">Filtro</label>
+                            <select id="inputPeriod" name="periodo" class="form-control" onchange="selection()">
+                                <option value="custom">Custom</option>
+                                <option value="this-week" selected>Esta Semana</option>
+                                <option value="past-week">Semana Anterior</option>
+                                <option value="this-month">Este Mes</option>
+                                <option value="past-month">Mes Anterior</option>
+                                <option value="this-year">Este Año</option>
+                                <option value="past-year">Año Pasado</option>
+                            </select>
                         </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia2" value="NO">
-                        <label class="form-check-label" for="inputAsistencia2">
-                            No asistieron
-                        </label>
                     </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="AsistenciaRadio" id="inputAsistencia3" value="XX">
-                        <label class="form-check-label" for="inputAsistencia3">
-                            Ver turnos cancelados
-                        </label>
+
+                    <div class="col-auto">
+                        <div class="mb-2 mb-md-0">
+                            <label for="inputStartDate">Desde</label>
+                            <input type="date" name="inputStartDate" id="inputStartDate" class="form-control"
+                                onchange="seleccionaCustom()">
+                            </input>
+                        </div>
+                    </div>
+
+                    <div class="col-auto">
+                        <div class="mb-2 mb-md-0">
+                            <label for="inputEndDate">Hasta</label>
+                            <input type="date" name="inputEndDate" id="inputEndDate" class="form-control"
+                                onchange="seleccionaCustom()">
+                            </input>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div>
+                            <label for="inputAsistencia1">Asistencia?</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="AsistenciaRadio"
+                                    id="inputAsistencia1" value="SI" checked>
+                                <label class="form-check-label" for="inputAsistencia1">
+                                    Asistieron
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="AsistenciaRadio"
+                                    id="inputAsistencia2" value="NO">
+                                <label class="form-check-label" for="inputAsistencia2">
+                                    No asistieron
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="AsistenciaRadio"
+                                    id="inputAsistencia3" value="XX">
+                                <label class="form-check-label" for="inputAsistencia3">
+                                    Ver turnos cancelados
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="mb-2 mb-md-0">
-                    <button type="submit" id="button_generar_reporte" class="btn btn-primary">Generar Reporte</button>
+                <div class="row ml-1 mt-2 mb-2">
+                    <div class="mb-2 mb-md-0">
+                        <button type="submit" id="button_generar_reporte" class="btn btn-primary"><i
+                                class="fal fa-file-search"></i> Generar
+                            Reporte</button>
+                    </div>
                 </div>
             </form>
-        </div> 
+        </div>
 
         <h4>Resultado</h4>
         <div class="table-responsive">
@@ -112,8 +135,8 @@
                         <th>Fecha</th>
                         <th>Horario</th>
                         {% if asistencia == "SI" %}
-                            <th>Diagnostico</th>
-                            <th>Observacion</th>
+                        <th>Diagnostico</th>
+                        <th>Observacion</th>
                         {% endif %}
                     </tr>
                 </thead>
@@ -126,72 +149,74 @@
                         <td>{{turno.fecha}}</td>
                         <td>{{turno.horario}}</td>
                         {% if asistencia == "SI" %}
-                            <td>{{turno.diagnostico.diagnostico}}</td>
-                            <td>{{turno.diagnostico.observacion}}</td>
+                        <td>{{turno.diagnostico.diagnostico}}</td>
+                        <td>{{turno.diagnostico.observacion}}</td>
                         {% endif %}
                     </tr>
                     {% endfor %}
-                    
+
                 </tbody>
             </table>
         </div><br>
         <footer>
             <a href="{% url 'index' %}">Volver a página principal</a>
+            </br>
+            </br>
+            </br>
         </footer>
     </main>
 </div>
 
 
 <script type="text/javascript">
-var asistencia= `{{asistencia}}`
-console.log(asistencia)
-var periodo = `{{periodo}}`
-console.log(periodo)
+    var asistencia = `{{asistencia}}`
+    console.log(asistencia)
+    var periodo = `{{periodo}}`
+    console.log(periodo)
 
 
-function sortTable(){
-    var tbl = document.getElementById("tbl").tBodies[0];
-    var store = [];
-    for(var i=0, len=tbl.rows.length; i<len; i++){
-        var row = tbl.rows[i];
-        var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
-        console.log(row.cells[3].innerText)
-        if(!isNaN(sortnr)) store.push([sortnr, row]);
+    function sortTable() {
+        var tbl = document.getElementById("tbl").tBodies[0];
+        var store = [];
+        for (var i = 0, len = tbl.rows.length; i < len; i++) {
+            var row = tbl.rows[i];
+            var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
+            console.log(row.cells[3].innerText)
+            if (!isNaN(sortnr)) store.push([sortnr, row]);
+        }
+        store.sort(function (x, y) {
+            return x[0] - y[0];
+        });
+        for (var i = 0, len = store.length; i < len; i++) {
+            tbl.appendChild(store[i][1]);
+        }
+        store = null;
+        console.log("Tabla ordenada")
     }
-    store.sort(function(x,y){
-        return x[0] - y[0];
-    });
-    for(var i=0, len=store.length; i<len; i++){
-        tbl.appendChild(store[i][1]);
-    }
-    store = null;
-    console.log("Tabla ordenada")
-}
 
-document.addEventListener("DOMContentLoaded", function(){
-    if (asistencia=="NO"){
-        document.getElementById("inputAsistencia2").checked = true;
-    }else if(asistencia=="XX"){
-        document.getElementById("inputAsistencia3").checked = true;
-    }else{
-        document.getElementById("inputAsistencia1").checked = true;
-    }
-    document.getElementById("inputPeriod").value = periodo;
+    document.addEventListener("DOMContentLoaded", function () {
+        if (asistencia == "NO") {
+            document.getElementById("inputAsistencia2").checked = true;
+        } else if (asistencia == "XX") {
+            document.getElementById("inputAsistencia3").checked = true;
+        } else {
+            document.getElementById("inputAsistencia1").checked = true;
+        }
+        document.getElementById("inputPeriod").value = periodo;
 
-    if (`{{primer_rep}}`=="True"){
-        document.getElementById("button_generar_reporte").click();
-    }else{
-        var desde = `{{fecha_desde}}`
-        console.log(desde)
-        var hasta = `{{fecha_hasta}}`
-        console.log(hasta)
-        document.getElementById("inputStartDate").value = desde;
-        document.getElementById("inputEndDate").value = hasta;
-    }
-    sortTable();
-    //
-})
-
+        if (`{{primer_rep}}` == "True") {
+            document.getElementById("button_generar_reporte").click();
+        } else {
+            var desde = `{{fecha_desde}}`
+            console.log(desde)
+            var hasta = `{{fecha_hasta}}`
+            console.log(hasta)
+            document.getElementById("inputStartDate").value = desde;
+            document.getElementById("inputEndDate").value = hasta;
+        }
+        sortTable();
+        //
+    })
 </script>
 
 {% endblock %}
