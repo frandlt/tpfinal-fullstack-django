@@ -7,7 +7,7 @@
 <!--<h4 class="mb-3 heading">Pedido de venta a paciente</h4>-->
 <p style="color: red; font-size: 20px">{{mensaje_error}}<p>
 
-<form action="{% url 'generar_pedido' %}" method="post" id="login-form">
+<form action="{% url 'generar_pedido' %}" method="post" id="login-form" class="needs-validation" novalidate>
   {% csrf_token %}
 
   <!-- Selecciona Paciente y trae último id de pedido + 1 -->
@@ -69,17 +69,32 @@
     </div>
   </div>
 
-  <label for="id_producto">ID producto</label>
-  <input id="id_producto" name="id_producto" readonly></input>
+<!-- 
+  <div class="form-group">
+    <div class="row">
+      <div class="form-group col-md-12 col-12" >
+        <label for="id_producto" class="col-lg-2 col-md-2 col-sm-4 col-4 mr-2">ID producto</label>
+        <input id="id_producto" name="id_producto" class="form-control col-lg-2 col-md-3 col-sm-8 col-8" readonly></input>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="form-group">
+    <label for="id_producto" class="col-lg-2 col-md-2 col-sm-4 col-4 mr-2" style="padding-left: 0px;">ID producto</label>
+    <input id="id_producto" name="id_producto" class="form-control col-lg-2 col-md-3 col-sm-4 col-12" readonly></input>
+  </div>
 
   <!-- Campos de Cantidad, Precio, Subtotal y Medio de Pago. Precio viene del modelo de Productos, que se va a reconocer según el id de producto seleccionado anteriormente. -->
   <div class="form-group">
     <div class="row">
-      <div class="form-group col-md-2">
+      <div class="form-group col-lg-2 col-md-2 col-sm-4">
         <label for="inputCantidad">Cantidad</label>
         <input type="number" class="form-control" id="inputCantidad" name="cantidad" onchange="calculo_subtotal()" required>
+        <div class="invalid-feedback">
+          Por favor, inserte una cantidad válida.
+        </div>
       </div>
-      <div class="form-group col-md-2">
+      <div class="form-group col-lg-3 col-md-3 col-sm-4">
         <label for="inputPrecio">Precio</label>
         <div class="input-group">
           <div class="input-group-prepend">
@@ -88,7 +103,7 @@
           <input type="number" class="form-control" id="inputPrecio" name="precio" onchange="calculo_subtotal()" readonly/>
         </div>
       </div>
-      <div class="form-group col-md-2">
+      <div class="form-group col-lg-3 col-md-3 col-sm-4">
         <label for="inputSubtotal">Subtotal</label>
         <div class="input-group">
           <div class="input-group-prepend">
@@ -97,7 +112,7 @@
           <input type="text" class="form-control" id="inputSubtotal" name="subtotal" readonly value="0">
         </div>
       </div>
-      <div class="form-group col-md-4 offset-md-2">
+      <div class="form-group col-lg-4 col-md-4 col-sm-6">
         <label for="inputMedioDePago">Medio de Pago</label>
         <select class="form-control" id="inputMedioDePago" name="medio_pago">
           <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
@@ -114,7 +129,7 @@
 
   <div class="form-group">
     <div class="form mt-2">
-      <button type="submit" class="btn btn-primary" value="Registrar">Generar Pedido</button>
+      <button type="submit" class="btn btn-primary" value="Registrar"><i class="fal fa-file-alt"></i> Generar Pedido</button>
     </div>
   </div>
 

@@ -2,87 +2,102 @@
 {% load static %}
 
 {% block body %}
-<h1>Agregar paciente nuevo<h1>
+<h1>Agregar paciente nuevo</h1>
+
+{% if mensaje_exito %}
+<div class="alert alert-success col-lg-6 col-md-8 col-sm-12 col-12 inline-block" role="alert">
+  <i class="fal fa-check"></i>
+  <span>{{ mensaje_exito }}</span>
+</div>
+{% elif mensaje_existe %}
+<div class="alert alert-warning col-lg-6 col-md-8 col-sm-12 col-12 inline-block" role="alert">
+  <i class="fal fa-exclamation-triangle"></i>
+  <span>{{ mensaje_existe }}</span>
+</div>
+{% endif %}
+
+<!--
     <p style="color: green; font-size: 14px">{{mensaje_exito}}</p>
     <p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
+    -->
 
-    <h2>Ingrese sus datos</h2>
-    <form action="" method="POST" class="needs-validation" novalidate>
-      {% csrf_token %}
+<h2>Ingrese sus datos</h2>
+<form action="" method="POST" class="needs-validation" novalidate>
+  {% csrf_token %}
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="nombre" class="mb-2">Nombre</label>
-          <input type="text" class="form-control" name="nombre" required>
-          <div class="invalid-feedback">
-            Por favor, inserte un nombre válido.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="nombre" class="mb-2">Nombre</label>
+      <input type="text" class="form-control" name="nombre" required>
+      <div class="invalid-feedback">
+        Por favor, inserte un nombre válido.
       </div>
+    </div>
+  </div>
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="apellido" class="mb-2">Apellido</label>
-          <input type="text" class="form-control" name="apellido" required>
-          <div class="invalid-feedback">
-            Por favor, inserte un apellido válido.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="apellido" class="mb-2">Apellido</label>
+      <input type="text" class="form-control" name="apellido" required>
+      <div class="invalid-feedback">
+        Por favor, inserte un apellido válido.
       </div>
+    </div>
+  </div>
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="dni" class="mb-2">DNI</label>
-          <input type="number" class="form-control" name="dni" required>
-          <div class="invalid-feedback">
-            Por favor, inserte un número de DNI válido.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="dni" class="mb-2">DNI</label>
+      <input type="number" class="form-control" name="dni" required>
+      <div class="invalid-feedback">
+        Por favor, inserte un número de DNI válido.
       </div>
+    </div>
+  </div>
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="fec_nac" class="mb-2">Fecha de nacimiento</label>
-          <input type="date" class="form-control" name="fec_nac" required>
-          <div class="invalid-feedback">
-            Por favor, seleccione una fecha válida.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="fec_nac" class="mb-2">Fecha de nacimiento</label>
+      <input type="date" class="form-control" name="fec_nac" required>
+      <div class="invalid-feedback">
+        Por favor, seleccione una fecha válida.
       </div>
+    </div>
+  </div>
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="mail" class="mb-2">Correo electrónico</label>
-          <input type="email" class="form-control" name="mail" placeholder="ejemplo@gmail.com" required>
-          <div class="invalid-feedback">
-            Por favor, inserte una dirección de mail válida.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="mail" class="mb-2">Correo electrónico</label>
+      <input type="email" class="form-control" name="mail" placeholder="ejemplo@gmail.com" required>
+      <div class="invalid-feedback">
+        Por favor, inserte una dirección de mail válida.
       </div>
+    </div>
+  </div>
 
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <label for="telefono" class="mb-2">Teléfono</label>
-          <input type="text" class="form-control" name="telefono" required>
-          <div class="invalid-feedback">
-            Por favor, inserte un número de teléfono válido.
-          </div>
-        </div>
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <label for="telefono" class="mb-2">Teléfono</label>
+      <input type="text" class="form-control" name="telefono" required>
+      <div class="invalid-feedback">
+        Por favor, inserte un número de teléfono válido.
       </div>
+    </div>
+  </div>
 
-      <!-- <input type="submit" class="btn btn-primary" value="CREAR"/> -->
-      <div class="form-group col-md-5 col-lg-4">
-        <div class="form-check">
-          <button type="submit" class="btn btn-primary mb-2" value="CREAR"><i class="fal fa-user-plus"></i> Crear
-            Paciente</button>
-        </div>
-      </div>
+  <!-- <input type="submit" class="btn btn-primary" value="CREAR"/> -->
+  <div class="form-group col-md-5 col-lg-4">
+    <div class="form-check">
+      <button type="submit" class="btn btn-primary mb-2" value="CREAR"><i class="fal fa-user-plus"></i> Crear
+        Paciente</button>
+    </div>
+  </div>
 
-    </form>
+</form>
 
-    <a href="{% url 'index' %}" class="mb-5">Volver atrás</a>
-    </br>
-    </br>
-    </br>
+<a href="{% url 'index' %}" class="mb-5">Volver atrás</a>
+</br>
+</br>
+</br>
 
-    {% endblock %}
+{% endblock %}

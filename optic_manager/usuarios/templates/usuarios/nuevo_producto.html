@@ -2,30 +2,78 @@
 {% load static %}
 
 {% block body %}
-<h1>Agregar nuevo producto<h1>
-<p style="color: green; font-size: 14px">{{mensaje_exito}}</p>
-<p style="color: red; font-size: 14px">{{mensaje_existe}}</p>
-{% if ver %}
-    <a style="font-size: 14px" href="{% url 'ver_productos' %}">Ver productos existentes</a>
+
+<h1>Agregar nuevo producto</h1>
+
+{% if mensaje_exito %}
+<div class="alert alert-success col-lg-6 col-md-8 col-sm-12 col-12 inline-block" role="alert">
+    <i class="fal fa-check"></i>
+    <span>{{ mensaje_exito }}</span>
+</div>
+{% elif mensaje_existe %}
+<div class="alert alert-warning col-lg-6 col-md-8 col-sm-12 col-12 inline-block" role="alert">
+    <i class="fal fa-exclamation-triangle"></i>
+    <span>{{ mensaje_existe }}</span>
+</div>
 {% endif %}
 
-<h2>Ingrese su información</h2>
-<form action="" method="POST">
+<!-- <p style="color: green; font-size: 14px">{{mensaje_exito}}</p>
+        <p style="color: red; font-size: 14px">{{mensaje_existe}}</p> -->
+{% if ver %}
+<button type="button" class="btn btn-info mb-3" href="{% url 'ver_productos' %}"><i class="fal fa-tag"></i> Ver
+    productos existentes</button>
+{% endif %}
+
+<h2>Ingrese la información del producto</h2>
+<form action="" method="POST" class="needs-validation" novalidate>
     {% csrf_token %}
-    <label for="nombre">Nombre</label><br>
-    <input type="text" id="nombre" name="nombre" required/>
-    <br>
-    <label for="descripcion">Descripción</label><br>
-    <textarea rows=5 cols=50 id="descripcion" name="descripcion"></textarea>
-    <br>
-    <label for="precio">Precio</label><br>
-    <input type="decimal" id="precio" name="precio" required/>
-    <br>
-    <br>
-    <input type="submit" value="CREAR"/>
+    <div class="form-group col-md-5 col-lg-4">
+        <div class="form-check">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required />
+            <div class="invalid-feedback">
+                Por favor, complete el nombre.
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+        <div class="form-check">
+            <label for="descripcion">Descripción</label>
+            <textarea rows=5 cols=50 id="descripcion" class="form-control" name="descripcion"></textarea>
+        </div>
+    </div>
+
+    <div class="form-group col-md-5 col-lg-4">
+        <div class="form-check">
+            <label for="precio">Precio</label>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">$</span>
+                </div>
+                <input type="decimal" id="precio" class="form-control" name="precio" required />
+                <div class="invalid-feedback">
+                    Por favor, complete el precio a fijar del producto.
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-group col-md-5 col-lg-4">
+        <div class="form-check">
+            <button type="submit" class="btn btn-primary mb-3" value="CREAR"><i class="fal fa-plus"></i> Agregar
+                nuevo
+                producto</button>
+        </div>
+    </div>
 
 </form>
 
-<h2>Volver a <a href="{% url 'index' %}">pagina principal</a>.</h2>
+<a href="{% url 'index' %}">Volver atrás</a>
+</br>
+</br>
+</br>
 
 {% endblock %}

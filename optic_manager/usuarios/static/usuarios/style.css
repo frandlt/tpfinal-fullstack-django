@@ -14,7 +14,7 @@ body {
 
 @media screen and (min-width: 0px) and (max-width:576px) { 
   body {
-    margin-top: 9.5rem;
+    margin-top: 7.5rem;
   }
 
   #span-clinica-trinitas {
@@ -22,6 +22,10 @@ body {
   }
 
   #span-cerrar-sesion {
+    display: none;
+  }
+
+  #span-actualizar-precios {
     display: none;
   }
 
@@ -33,6 +37,10 @@ body {
   }
 
   #span-clinica-trinitas {
+    display: none;
+  }
+
+  #span-actualizar-precios {
     display: none;
   }
 

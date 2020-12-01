@@ -36,5 +36,9 @@ body>.container {
     #span-iniciar-sesion {
       display: none;
     }
+
+    #span-derechos-reservados {
+        display: none;
+    }
   
   }
