@@ -122,13 +122,14 @@
                     <th scope="row">{{paciente.dni}}</th>
                     <td>{{paciente.apellido}}</td>
                     <td>{{paciente.nombre}}</td>
+                    <!-- <td> </td> -->
                 </tr>
                 {% endfor %}
 
             </tbody>
         </table>
 
-        <h4>Listado de pedidos</h4>
+        <h4 class="mt-5">Listado de pedidos</h4>
         <div class="table-responsive">
             <table class="table table-striped table-sm">
                 <thead>
@@ -159,7 +160,6 @@
             </table>
         </div><br>
         <footer>
-            <a href="{% url 'index' %}">Volver a página principal</a>
             </br>
             </br>
             </br>

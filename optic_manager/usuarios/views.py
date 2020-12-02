@@ -694,6 +694,7 @@ def ver_productos_view(request):
             if request.method == "POST":
                 producto = Producto.objects.get(id=request.POST["id"])
                 producto.precio_actual = request.POST["precio"]
+                producto.precio_actual = producto.precio_actual.replace(",", ".")
                 producto.save()
                 return render(request, "usuarios/ver_productos.html",{
                 "productos": Producto.objects.all(), 
@@ -730,6 +731,7 @@ def nuevo_producto_view(request):
                         descripcion= request.POST["descripcion"],
                         precio_actual= request.POST["precio"]
                     )
+                    producto.precio_actual = producto.precio_actual.replace(",", ".")
                     producto.save()
                     return render(request, "usuarios/nuevo_producto.html",{
                         "mensaje_exito": "Nuevo producto creado con exito",

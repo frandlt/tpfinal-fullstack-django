@@ -25,15 +25,17 @@
 </head>
 
 <body class="container">
-        <!-- NAV HEADER -->
+    <!-- NAV HEADER -->
     <div class="d-flex flex-row flex-md-row align-items-center p-3 justify-content-between px-md-4 mb-3 bg-white border-bottom shadow-sm fixed-top"
         id="navbar">
-        <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand text-dark inline-block" href="{% url 'index' %}">
+        <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand text-dark inline-block"
+                href="{% url 'index' %}">
                 <i class="fal fa-laptop-medical" style="vertical-align: middle; text-align: center;"></i>
                 Optic Manager <span id="span-clinica-trinitas" class="text-muted">| Clínica Trinitas</span>
             </a></h5>
         <nav class="my-2 my-md-0">
-            <a href="{% url 'logout' %}" class="btn btn-danger inline-block"><i class="fal fa-sign-out"></i><span id="span-cerrar-sesion"> Desconectarse</span></a>
+            <a href="{% url 'logout' %}" class="btn btn-danger inline-block"><i class="fal fa-sign-out"></i><span
+                    id="span-cerrar-sesion"> Desconectarse</span></a>
         </nav>
     </div>
 

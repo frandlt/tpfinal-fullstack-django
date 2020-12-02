@@ -17,51 +17,56 @@
 
 <table class="table">
     <thead>
-        <tr> 
+        <tr>
             <th scope="col">ID</th>
             <th scope="col">Nombre</th>
             <th scope="col">Descripción</th>
             <th scope="col">Precio actual</th>
             {% if grupo == "Ventas" %}
-                <th scope="col"></th>
+            <th scope="col"></th>
             {% endif %}
         </tr>
     </thead>
     <tbody>
         {% for producto in productos %}
-            <tr class="row_body">
-                <th scope="row" class="num">{{producto.id}}</th>
-                <td>{{producto.nombre}}</td>
-                <td>{{producto.descripcion}}</td>
-                {% if grupo == "Gerencia" %}
-                    <td>${{producto.precio_actual}}</td>
-                {% elif grupo == "Ventas" %}
-                    <form method="POST">
-                        {% csrf_token %}
-                        <td>
-                            <!-- <input name="id" value="{{producto.id}}" hidden></input>
+        <tr class="row_body">
+            <th scope="row" class="num">{{producto.id}}</th>
+            <td>{{producto.nombre}}</td>
+            <td>{{producto.descripcion}}</td>
+            {% if grupo == "Gerencia" %}
+            <td>${{producto.precio_actual}}</td>
+            {% elif grupo == "Ventas" %}
+            <form method="POST">
+                {% csrf_token %}
+                <td>
+                    <!-- <input name="id" value="{{producto.id}}" hidden></input>
                             <label for="precio">$</label>
                             <input type="decimal" id="precio" name="precio" value={{producto.precio_actual}}></input>
                             -->
-                                    <div class="input-group col-auto col-6">
-                                        <input name="id" value="{{producto.id}}" hidden></input>
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input type="decimal" class="form-control" id="precio" name="precio" value={{producto.precio_actual}} />
-                                    </div>
-                        
-                        </td>
-                        <td>
-                            <button class="btn btn-primary" type="submit"><i class="fal fa-edit"></i><span id="span-actualizar-precios"> Actualizar</span></button>
-                        </td>
-                    </form> 
-                {% endif %}
-            </tr>
+                    <div class="input-group">
+                        <input name="id" value="{{producto.id}}" hidden></input>
+                        <div class="input-group-prepend" id="prepend-dinero">
+                            <span class="input-group-text">$</span>
+                        </div>
+                        <input type="decimal" class="form-control col-auto" id="precio" name="precio"
+                            value={{producto.precio_actual}} />
+                    </div>
+
+                </td>
+                <td>
+                    <button class="btn btn-primary col-auto" type="submit"><i class="fal fa-edit"></i><span
+                            id="span-actualizar-precios"> Actualizar</span></button>
+                </td>
+            </form>
+            {% endif %}
+        </tr>
         {% endfor %}
     </tbody>
 </table>
 
 <a href="{% url 'index' %}">Volver atrás</a>
+</br>
+</br>
+</br>
 
 {% endblock %}
