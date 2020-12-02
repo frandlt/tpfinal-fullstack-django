@@ -33,7 +33,7 @@
                 <i class="fal fa-laptop-medical" style="vertical-align: middle; text-align: center;"></i>
                 Optic Manager <span id="span-clinica-trinitas" class="text-muted">| Clínica Trinitas</span>
             </a></h5>
-        <nav class="my-2 my-md-0">
+        <nav id="top-nav" class="my-2 my-md-0">
             <a href="{% url 'logout' %}" class="btn btn-danger inline-block"><i class="fal fa-sign-out"></i><span
                     id="span-cerrar-sesion"> Desconectarse</span></a>
         </nav>
@@ -43,9 +43,7 @@
     {% block body %}
     {% endblock %}
 
-    <!-- <script src=" static 'usuarios/jquery/jquery-3.0.0.js' "></script>
-     block js   endblock -->
-
 </body>
+
 
 </html>
