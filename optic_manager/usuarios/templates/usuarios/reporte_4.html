@@ -13,25 +13,29 @@
             <ul class="nav flex-column reporte">
                 <li class="nav-item">
                     <a id="turnos_pacientes" class="nav-link inline-block" href="{% url 'reporte_1' %}">
-                        <i id="icon-1" style="vertical-align: middle; text-align: center;" class="fal fa-user-clock feather" ></i>
-                        Turnos de Pacientes 
+                        <i id="icon-1" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-user-clock feather"></i>
+                        Turnos de Pacientes
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="pedidos_pacientes" class="nav-link inline-block" href="{% url 'reporte_2' %}">
-                    <i id="icon-2" style="vertical-align: middle; text-align: center;" class="fal fa-prescription feather" ></i>
+                        <i id="icon-2" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-prescription feather"></i>
                         Pedidos de Pacientes
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="productos_mas_vendidos" class="nav-link inline-block" href="{% url 'reporte_3' %}">
-                    <i id="icon-3" style="vertical-align: middle; text-align: center;" class="fal fa-file-invoice-dollar feather" ></i>
+                        <i id="icon-3" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-file-invoice-dollar feather"></i>
                         Productos más vendidos <span class="sr-only">(current)</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a id="ventas_totales" class="nav-link active inline-block" href="#">
-                    <i id="icon-4" style="vertical-align: middle; text-align: center;" class="fal fa-cash-register feather" ></i>
+                        <i id="icon-4" style="vertical-align: middle; text-align: center;"
+                            class="fal fa-cash-register feather"></i>
                         Ventas Totales por Vendedor
                     </a>
                 </li>
@@ -41,12 +45,71 @@
 
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <div
+            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Ventas totales por vendedor</h1>
-                
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-secondary d-block d-sm-block d-md-none" data-toggle="modal"
+                data-target="#exampleModal"><i class="fal fa-file-spreadsheet"></i>
+                Ver Reportes
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Listado de Reportes</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <ul class="nav flex-column reporte">
+                                <li class="nav-item">
+                                    <a id="turnos_pacientes" class="nav-link inline-block"
+                                        href="{% url 'reporte_1' %}">
+                                        <i id="icon-1" style="vertical-align: middle; text-align: center;"
+                                            class="fal fa-user-clock feather"></i>
+                                        Turnos de Pacientes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="pedidos_pacientes" class="nav-link inline-block"
+                                        href="{% url 'reporte_2' %}">
+                                        <i id="icon-2" style="vertical-align: middle; text-align: center;"
+                                            class="fal fa-prescription feather"></i>
+                                        Pedidos de Pacientes
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="productos_mas_vendidos" class="nav-link inline-block" href="{% url 'reporte_3' %}">
+                                        <i id="icon-3" style="vertical-align: middle; text-align: center;"
+                                            class="fal fa-file-invoice-dollar feather"></i>
+                                        Productos más vendidos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a id="ventas_totales" class="nav-link active inline-block" href="#">
+                                        <i id="icon-4" style="vertical-align: middle; text-align: center;"
+                                            class="fal fa-cash-register feather"></i>
+                                        Ventas Totales por Vendedor <span class="sr-only">(current)</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar ventana</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <form action="" method="POST">
                 {% csrf_token %}
-                
+
                 <div class="row">
                     <div class="col-auto">
                         <div class="btn-toolbar mb-2 mb-md-0 dropdown">
@@ -66,7 +129,8 @@
                     <div class="col-auto">
                         <div class="mb-2 mb-md-0">
                             <label for="inputStartDate">Desde</label>
-                            <input type="date" name="inputStartDate" id="inputStartDate" class="form-control" onchange="seleccionaCustom()">
+                            <input type="date" name="inputStartDate" id="inputStartDate" class="form-control"
+                                onchange="seleccionaCustom()">
                             </input>
                         </div>
                     </div>
@@ -74,7 +138,8 @@
                     <div class="col-auto">
                         <div class="mb-2 mb-md-0">
                             <label for="inputEndDate">Hasta</label>
-                            <input type="date" name="inputEndDate" id="inputEndDate" class="form-control" onchange="seleccionaCustom()">
+                            <input type="date" name="inputEndDate" id="inputEndDate" class="form-control"
+                                onchange="seleccionaCustom()">
                             </input>
                         </div>
                     </div>
@@ -84,7 +149,7 @@
                             <label for="select_vendedor">Vendedor</label>
                             <select name="select_vendedor" id="select_vendedor" class="form-control">
                                 {% for vendedor in vendedores_todos %}
-                                    <option value="{{vendedor.id}}">{{vendedor.last_name}}, {{vendedor.first_name}}</option> 
+                                <option value="{{vendedor.id}}">{{vendedor.last_name}}, {{vendedor.first_name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -96,7 +161,7 @@
                         <button type="submit" id="button_generar_reporte" class="btn btn-primary"><i
                                 class="fal fa-file-search"></i> Generar
                             Reporte</button>
-                    </div> 
+                    </div>
                 </div>
             </form>
         </div>
@@ -120,7 +185,7 @@
                         <td>{{vendedor.first_name}}</td>
                     </tr>
                     {% endfor %}
-                        
+
                 </tbody>
             </table>
         </div>
@@ -147,10 +212,10 @@
                         <td>{{pedido.fecha_hora}}</td>
                         <td>{{pedido.cantidad}}</td>
                         <td>{{pedido.cantidad|mul:pedido.precio}}</td>
-                        <td>{{pedido.estado}}</td>  
+                        <td>{{pedido.estado}}</td>
                     </tr>
                     {% endfor %}
-                        
+
                 </tbody>
             </table>
         </div><br>
@@ -163,58 +228,65 @@
 </div>
 
 <script type="text/javascript">
-var periodo = `{{periodo}}`
-console.log(periodo)
-var ventas = `{{ventas}}`
-console.log(ventas)
+    var periodo = `{{periodo}}`
+    console.log(periodo)
+    var ventas = `{{ventas}}`
+    console.log(ventas)
 
-function sortTable(){
-    var tbl = document.getElementById("tbl").tBodies[0];
-    var store = [];
-    for(var i=0, len=tbl.rows.length; i<len; i++){
-        var row = tbl.rows[i];
-        var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
-        console.log(row.cells[3].innerText)
-        if(!isNaN(sortnr)) store.push([sortnr, row]);
+    function sortTable() {
+        var tbl = document.getElementById("tbl").tBodies[0];
+        var store = [];
+        for (var i = 0, len = tbl.rows.length; i < len; i++) {
+            var row = tbl.rows[i];
+            var sortnr = parseFloat(row.cells[3].textContent || row.cells[3].innerText);
+            console.log(row.cells[3].innerText)
+            if (!isNaN(sortnr)) store.push([sortnr, row]);
+        }
+        store.sort(function (x, y) {
+            return x[0] - y[0];
+        });
+        for (var i = 1, len = store.length; i <= len; i++) {
+            tbl.appendChild(store[len - i][1]);
+        }
+        store = null;
+        console.log("Tabla ordenada")
     }
-    store.sort(function(x,y){
-        return x[0] - y[0];
-    });
-    for(var i=1, len=store.length; i<=len; i++){
-        tbl.appendChild(store[len-i][1]);
-    }
-    store = null;
-    console.log("Tabla ordenada")
-}
 
-document.addEventListener("DOMContentLoaded", function(){
-    document.getElementById("inputPeriod").value = periodo;
-    console.log(document.getElementById("button_generar_reporte"))
-    if (`{{primer_rep}}`=="True"){
-        document.getElementById("button_generar_reporte").click();
-    }else{
-        var desde = `{{fecha_desde}}`
-        console.log(desde)
-        var hasta = `{{fecha_hasta}}`
-        console.log(hasta)
-        document.getElementById("inputStartDate").value = desde;
-        document.getElementById("inputEndDate").value = hasta;
-        document.getElementById("select_vendedor").value = `{{vendedor_elegido.id}}`;
-    }
-    var trs = document.querySelectorAll(".row_body")
-    for(var id in {{ventas}}){
-        tr = document.getElementById(`tr_${id}`)
-        console.log(tr)
-        console.log(id)
-        var cant = {{ventas}}[id]
-        console.log(cant)
-        td = document.createElement("td")
-        td.innerHTML = cant;
-        tr.appendChild(td)
-    }
-    sortTable();
-})
-
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("inputPeriod").value = periodo;
+        console.log(document.getElementById("button_generar_reporte"))
+        if (`{{primer_rep}}` == "True") {
+            document.getElementById("button_generar_reporte").click();
+        } else {
+            var desde = `{{fecha_desde}}`
+            console.log(desde)
+            var hasta = `{{fecha_hasta}}`
+            console.log(hasta)
+            document.getElementById("inputStartDate").value = desde;
+            document.getElementById("inputEndDate").value = hasta;
+            document.getElementById("select_vendedor").value = `{{vendedor_elegido.id}}`;
+        }
+        var trs = document.querySelectorAll(".row_body")
+        for (var id in {
+                {
+                    ventas
+                }
+            }) {
+            tr = document.getElementById(`tr_${id}`)
+            console.log(tr)
+            console.log(id)
+            var cant = {
+                {
+                    ventas
+                }
+            } [id]
+            console.log(cant)
+            td = document.createElement("td")
+            td.innerHTML = cant;
+            tr.appendChild(td)
+        }
+        sortTable();
+    })
 </script>
 
 {% endblock %}
