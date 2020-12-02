@@ -21,10 +21,17 @@
 <body class="container-fluid">
     <!-- NAV HEADER -->
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand bg-dark text-white inline-block ml-1 pl-3 pr-3" href="{% url 'index' %}">
+        <a class="navbar-brand bg-dark text-white inline-block ml-1 pl-2 pr-2" href="{% url 'index' %}">
             <i class="fal fa-laptop-medical" style="vertical-align: middle; text-align: center;"></i>
             Optic Manager <span id="span-clinica-trinitas" class="text-light">| Clínica Trinitas</span>
         </a></h5>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-secondary mr-5 px-auto" data-toggle="modal"
+            data-target="#exampleModal"><i class="fal fa-file-spreadsheet"></i><span id="span-ver-reportes">
+            Ver Reportes</span>
+        </button>
+
+        
         <ul class="navbar-nav bg-dark px-3">
             <li class="nav-item text-nowrap">
                     <a href="{% url 'logout' %}" class="btn btn-danger inline-block mr-2"><i
@@ -32,6 +39,57 @@
             </li>
         </ul>
     </nav>
+
+    <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Listado de Reportes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav flex-column reporte">
+                            <li class="nav-item">
+                                <a id="turnos_pacientes" class="nav-link inline-block"
+                                    href="{% url 'reporte_1' %}">
+                                    <i id="icon-1" style="vertical-align: middle; text-align: center;"
+                                        class="fal fa-user-clock feather"></i>
+                                    Turnos de Pacientes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="pedidos_pacientes" class="nav-link inline-block" href="{% url 'reporte_2' %}">
+                                    <i id="icon-2" style="vertical-align: middle; text-align: center;"
+                                        class="fal fa-prescription feather"></i>
+                                    Pedidos de Pacientes
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="productos_mas_vendidos" class="nav-link inline-block"
+                                    href="{% url 'reporte_3' %}">
+                                    <i id="icon-3" style="vertical-align: middle; text-align: center;"
+                                        class="fal fa-file-invoice-dollar feather"></i>
+                                    Productos más vendidos 
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="ventas_totales" class="nav-link inline-block" href="{% url 'reporte_4' %}">
+                                    <i id="icon-4" style="vertical-align: middle; text-align: center;"
+                                        class="fal fa-cash-register feather"></i>
+                                    Ventas Totales por Vendedor
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar ventana</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     {% block body %}
