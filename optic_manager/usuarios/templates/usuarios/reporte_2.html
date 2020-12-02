@@ -261,19 +261,11 @@
             document.getElementById("inputEndDate").value = hasta;
         }
         var trs = document.querySelectorAll(".row_body")
-        for (var id in {
-                {
-                    pedidos_pac
-                }
-            }) {
+        for (var id in {{pedidos_pac}}) {
             tr = document.getElementById(`tr_${id}`)
             console.log(tr)
             console.log(id)
-            var cant = {
-                {
-                    pedidos_pac
-                }
-            } [id]
+            var cant = {{pedidos_pac}} [id]
             console.log(cant)
             td = document.createElement("td")
             td.innerHTML = cant;

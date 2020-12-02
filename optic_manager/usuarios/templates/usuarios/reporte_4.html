@@ -267,19 +267,11 @@
             document.getElementById("select_vendedor").value = `{{vendedor_elegido.id}}`;
         }
         var trs = document.querySelectorAll(".row_body")
-        for (var id in {
-                {
-                    ventas
-                }
-            }) {
+        for (var id in {{ventas}}) {
             tr = document.getElementById(`tr_${id}`)
             console.log(tr)
             console.log(id)
-            var cant = {
-                {
-                    ventas
-                }
-            } [id]
+            var cant = {{ventas}} [id]
             console.log(cant)
             td = document.createElement("td")
             td.innerHTML = cant;
