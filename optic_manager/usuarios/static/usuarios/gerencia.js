@@ -1,9 +1,4 @@
 $(document).ready(function() {
-  $("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
-  });  
-
   $('ul.reporte a').click(function(){
     if(!$(this).hasClass("active")){
         $(".active").removeClass("active");                        
