@@ -573,7 +573,7 @@ def reporte_3_view(request):
                 fecha_desde = datetime.datetime.strptime(request.POST["inputStartDate"], '%Y-%m-%d')
                 fecha_hasta = datetime.datetime.strptime(request.POST["inputEndDate"], '%Y-%m-%d')
 
-                pedidos = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)], estado="Finalizado")
+                pedidos = Pedido.objects.filter(fecha_hora__range=[fecha_desde, fecha_hasta + datetime.timedelta(days=1)])
                 
                 productos=[]
                 cant_prod = []
