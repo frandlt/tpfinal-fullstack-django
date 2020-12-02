@@ -55,7 +55,7 @@ body {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
 }
 
-@media screen and (min-width: 0px) and (max-width:576px) {
+@media screen and (min-width: 0px) and (max-width:650px) {
 
   #span-clinica-trinitas {
       display: none;
@@ -64,6 +64,10 @@ body {
   #span-cerrar-sesion {
       display: none;
   }
+
+  #span-ver-reportes {
+    display: none;
+}
 
 }
 

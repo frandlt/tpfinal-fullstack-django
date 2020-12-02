@@ -21,17 +21,26 @@
 <body class="container-fluid">
     <!-- NAV HEADER -->
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand bg-dark text-white inline-block ml-1 pl-3 pr-3" href="{% url 'index' %}">
+        <a class="navbar-brand bg-dark text-white inline-block ml-1 pl-2 pr-2" href="{% url 'index' %}">
             <i class="fal fa-laptop-medical" style="vertical-align: middle; text-align: center;"></i>
             Optic Manager <span id="span-clinica-trinitas" class="text-light">| Clínica Trinitas</span>
         </a></h5>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-secondary d-block d-sm-block d-md-none" data-toggle="modal"
-            data-target="#exampleModal"><i class="fal fa-file-spreadsheet"></i>
-            Ver Reportes
+        <button type="button" class="btn btn-secondary mr-5 px-auto" data-toggle="modal"
+            data-target="#exampleModal"><i class="fal fa-file-spreadsheet"></i><span id="span-ver-reportes">
+            Ver Reportes</span>
         </button>
 
-        <!-- Modal -->
+        
+        <ul class="navbar-nav bg-dark px-3">
+            <li class="nav-item text-nowrap">
+                    <a href="{% url 'logout' %}" class="btn btn-danger inline-block mr-2"><i
+                            class="fal fa-sign-out"></i><span id="span-cerrar-sesion"> Desconectarse</span></a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Modal -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -81,13 +90,6 @@
                 </div>
             </div>
         </div>
-        <ul class="navbar-nav bg-dark px-3">
-            <li class="nav-item text-nowrap">
-                    <a href="{% url 'logout' %}" class="btn btn-danger inline-block mr-2"><i
-                            class="fal fa-sign-out"></i><span id="span-cerrar-sesion"> Desconectarse</span></a>
-            </li>
-        </ul>
-    </nav>
 
 
     {% block body %}
