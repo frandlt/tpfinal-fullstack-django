@@ -202,7 +202,7 @@ document.getElementById("btn1").addEventListener("click", function(){
                 console.log(z);
                 console.log(turnos_futuros[z]["fields"]["paciente"]);
                 if (turnos_futuros[z]["fields"]["paciente"] == id_pac){
-                    turnos_pac.push(turnos_futuros[z]);
+                  turnos_pac.push(turnos_futuros[z]);
                 }
             }
             console.log(turnos_pac);
@@ -216,18 +216,21 @@ document.getElementById("btn1").addEventListener("click", function(){
                 for (turno of turnos_pac){
                     var id_med = turno["fields"]["medico"];
                     var med = users [id_med - 2];
-                    var input = document.createElement("input");
-                    input.setAttribute("type", "radio");
-                    input.setAttribute("name", "lista_turnos");
-                    input.setAttribute("value", `${turno["pk"]}`);
-                    input.setAttribute("class", "radio-1");
-                    form.appendChild(input);
-                    var label = document.createElement("label");
-                    label.setAttribute("class", "ml-1");
-                    label.setAttribute("for", `${turno["pk"]}`);
-                    label.innerHTML = `Fecha: ${turno["fields"]["fecha"]} (${turno["fields"]["horario"]}) - Médico: ${med["fields"]["last_name"]}, ${med["fields"]["first_name"]}`;
-                    form.appendChild(label);
-                    form.appendChild(document.createElement("br"));
+                    if(!(`${turno["fields"]["asistencia"]}`==="XX")){
+                      console.log(turno)
+                      var input = document.createElement("input");
+                      input.setAttribute("type", "radio");
+                      input.setAttribute("name", "lista_turnos");
+                      input.setAttribute("value", `${turno["pk"]}`);
+                      input.setAttribute("class", "radio-1");
+                      form.appendChild(input);
+                      var label = document.createElement("label");
+                      label.setAttribute("class", "ml-1");
+                      label.setAttribute("for", `${turno["pk"]}`);
+                      label.innerHTML = `Fecha: ${turno["fields"]["fecha"]} (${turno["fields"]["horario"]}) - Médico: ${med["fields"]["last_name"]}, ${med["fields"]["first_name"]}`;
+                      form.appendChild(label);
+                      form.appendChild(document.createElement("br"));
+                }}
 
                 }
                 var buscar_button = document.createElement("button");
@@ -268,7 +271,7 @@ document.getElementById("btn1").addEventListener("click", function(){
         
     }
 
-}})
+})
 
 document.getElementById("btn3").addEventListener("click", function(){
     document.querySelectorAll('.div2').forEach(div=>{

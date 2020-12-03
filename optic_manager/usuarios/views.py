@@ -245,7 +245,7 @@ def editar_turnos_view(request):
         if grupo == 'Secretaria':
             print("editar turnos")
 
-            turnos = Turno.objects.all().exclude(asistencia="XX")
+            turnos = Turno.objects.all()
             hoy = datetime.date.today()
             semana = datetime.timedelta(days=7)
             mes = datetime.timedelta(days=30)
@@ -298,7 +298,7 @@ def diagnosticar_view(request):
             id_medico = request.session['_auth_user_id']
             medico = User.objects.get(id=id_medico)
             hoy = datetime.date.today()
-            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy).exclude(asistencia="XX")
+            turnos_med_hoy = Turno.objects.filter(medico=id_medico, fecha=hoy, asistencia="SI")
             if request.method == "POST":
                 if Diagnostico.objects.filter(turno_id=request.POST['id_turno']).first() in Diagnostico.objects.all():
                     return render(request, 'usuarios/diagnosticar.html', {
