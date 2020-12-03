@@ -5,7 +5,7 @@ Armado con Django, HTML, CSS, JS, jQuery, SQLite y Bootstrap.
 
 Los iconos usados provienen de FontAwesome Pro 5.
 
-Integrantes del grupo:
+### Integrantes del grupo:
 
 * Francisco de la Torre (DNI: 36.808.131)
 *
