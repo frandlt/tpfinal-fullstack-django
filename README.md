@@ -5,6 +5,11 @@ Armado con Django, HTML, CSS, JS, jQuery, SQLite y Bootstrap.
 
 Los iconos usados provienen de FontAwesome Pro 5.
 
+Integrantes del grupo:
+
+* Francisco de la Torre (DNI: 36.808.131)
+*
+
 ## Enunciado del Problema a Resolver
 Una clínica de Optometría necesita un sistema web en Django que le permita gestionar el diagnóstico de sus pacientes y la venta de los productos Ópticos para los mismos. Para ello se requiere:
 
