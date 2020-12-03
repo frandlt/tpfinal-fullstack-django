@@ -216,8 +216,9 @@ document.getElementById("btn1").addEventListener("click", function(){
                 for (turno of turnos_pac){
                     var id_med = turno["fields"]["medico"];
                     var med = users [id_med - 2];
-                    if(!(`${turno["fields"]["asistencia"]}`==="XX")){
-                      console.log(turno)
+                    //console.log(turno["fields"]["asistencia"])
+                    //if(`${turno["fields"]["asistencia"]}`!="XX"){
+                      //console.log(turno)
                       var input = document.createElement("input");
                       input.setAttribute("type", "radio");
                       input.setAttribute("name", "lista_turnos");
@@ -230,7 +231,7 @@ document.getElementById("btn1").addEventListener("click", function(){
                       label.innerHTML = `Fecha: ${turno["fields"]["fecha"]} (${turno["fields"]["horario"]}) - Médico: ${med["fields"]["last_name"]}, ${med["fields"]["first_name"]}`;
                       form.appendChild(label);
                       form.appendChild(document.createElement("br"));
-                }}
+                }
 
                 }
                 var buscar_button = document.createElement("button");
@@ -250,7 +251,12 @@ document.getElementById("btn1").addEventListener("click", function(){
                         checked_radio = radio;
                         }}
                     var id = checked_radio.value;
-                    var turno = turnos[id-1];
+                    var turno = []
+                    for (i=0;i<turnos.length;i++){
+                      if (turnos[i]["pk"] == id){
+                        turno.push(turnos[i])
+                      }
+                    }
                     var id_pac = turno["fields"]["paciente"];
                     var pac = pacientes[id_pac - 1];
                     var id_med = turno["fields"]["medico"];
@@ -306,18 +312,23 @@ document.getElementById("btn3").addEventListener("click", function(){
             }}
             var id = checked_radio2.value;
             console.log(id)
-            var turno = turnos[id-1];
+            var turno = []
+            for (i=0;i<turnos.length;i++){
+              if (turnos[i]["pk"] == id){
+                turno.push(turnos[i])
+              }
+            }
             console.log(turno)
-            var id_pac = turno["fields"]["paciente"]
+            var id_pac = turno[0]["fields"]["paciente"];
             var pac = pacientes[id_pac - 1]
-            var id_med = turno["fields"]["medico"]
+            var id_med = turno[0]["fields"]["medico"]
             var med = users [id_med - 2]
             console.log("se encontro turno")
             document.getElementById("id_turno_elegido").value = id;
             document.getElementById("turno_a_editar").innerHTML = `Editar turno de: ${pac["fields"]["apellido"]}, ${pac["fields"]["nombre"]}`; 
             document.getElementById(`opcion_${med["pk"]}`).selected = "selected";
-            document.getElementById("inputHour").value = turno["fields"]["horario"];
-            document.getElementById("inputDate").value = turno["fields"]["fecha"];
+            document.getElementById("inputHour").value = turno[0]["fields"]["horario"];
+            document.getElementById("inputDate").value = turno[0]["fields"]["fecha"];
         }
     }})
 

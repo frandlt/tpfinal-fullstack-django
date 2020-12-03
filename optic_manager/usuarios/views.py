@@ -245,7 +245,7 @@ def editar_turnos_view(request):
         if grupo == 'Secretaria':
             print("editar turnos")
 
-            turnos = Turno.objects.all()
+            turnos = Turno.objects.all().exclude(asistencia="XX")
             hoy = datetime.date.today()
             semana = datetime.timedelta(days=7)
             mes = datetime.timedelta(days=30)

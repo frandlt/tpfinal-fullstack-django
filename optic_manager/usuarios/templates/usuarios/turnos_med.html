@@ -67,7 +67,7 @@
     var users = JSON.parse('{{users | safe}}');
     console.log(users);
 
-    document.getElementById("boton_select").addEventListener("click", function(){
+document.getElementById("boton_select").addEventListener("click", function(){
         document.getElementById("tbody").innerHTML = "";
         var filtro = document.getElementById("opciones_filtros").value;
         document.querySelectorAll(".fecha").forEach(form =>{
@@ -112,7 +112,7 @@
             var x= 0;
             for (turno of turnos_mostrar){
                 var id_paciente = turno["fields"]["paciente"]
-                var paciente = pacientes[id_paciente]
+                var paciente = pacientes[id_paciente-1]
                 x++;
                 
                 var tr = document.createElement("tr");
@@ -137,48 +137,7 @@
             }
             
         })
-    })
-document.getElementById("boton_hoy").addEventListener("click", function(){
-    var tbody = document.getElementById("tbody");
-    tbody.innerHTML = "";
-    var date = new Date();
-    var fecha_hoy = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-    console.log(fecha_hoy);
-    var turnos_mostrar = [];
-    console.log(turnos.length);
-    for (i=0; i< turnos.length ;i++){
-        console.log(turnos[i]["fields"]["fecha"]);
-        if (turnos[i]["fields"]["fecha"] == fecha_hoy){
-            turnos_mostrar.push(turnos[i]);
-        }
-    }
-    console.log(turnos_mostrar);
-    var x= 0;
-    for (turno of turnos_mostrar){
-        var id_paciente = turno["fields"]["paciente"];
-        var paciente = pacientes[id_paciente];
-        x++;
-          
-        var tr = document.createElement("tr");
-        tbody.appendChild(tr);
-        var th = document.createElement("th");
-        th.innerHTML = `${x}`;
-        tr.appendChild(th);
-        var td_1 = document.createElement("td");
-        td_1.innerHTML = `${paciente["fields"]["nombre"]}`;
-        var td_2 = document.createElement("td");
-        td_2.innerHTML = `${paciente["fields"]["apellido"]}`;
-        var td_3 = document.createElement("td");
-        td_3.innerHTML = `${turno["fields"]["fecha"]}`;
-        var td_4 = document.createElement("td");
-        td_4.innerHTML = `${turno["fields"]["horario"]}`;
-        tr.appendChild(td_1);
-        tr.appendChild(td_2);
-        tr.appendChild(td_3);
-        tr.appendChild(td_4);
-
-
-    }
+        
 })
 
 </script>
