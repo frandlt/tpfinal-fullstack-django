@@ -1,0 +1,13 @@
+# Trabajo Práctico Final para PoloTIC Misiones (Curso 2020)
+Para el curso de Desarrollo Web Full Stack con Python y JavaScript.
+
+Armado con Django, HTML, CSS, JS, jQuery, SQLite y Bootstrap.
+
+Los iconos usados provienen de FontAwesome Pro 5.
+
+IMPORTANTE: para el correcto funcionamiento es necesario tener instalada la libreria de django mathfilters (pip install django-mathfilters)
+
+### Integrantes del grupo:
+
+* Francisco de la Torre (DNI: 36.808.131). Mail: frandelatorre92@gmail.com
+* Matilde Garelik (DNI: 43.426.677). Mail: matildegarelik@gmail.com
