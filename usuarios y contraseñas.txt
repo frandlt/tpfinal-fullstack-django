@@ -1,0 +1,8 @@
+administrador (superuser): 12345678
+secretaria.trinitas: 12345678
+gerencia.trinitas: 12345678
+msalgado.trinitas: 12345678
+ventas.trinitas: 12345678
+taller.trinitas: 12345678
+pgonzalez: p9101112
+ventas.trinitas3: p9101112
