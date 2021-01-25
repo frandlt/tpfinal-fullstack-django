@@ -12,9 +12,7 @@ IMPORTANTE: para el correcto funcionamiento es necesario tener instalada la libr
 * Francisco de la Torre (DNI: 36.808.131). Mail: frandelatorre92@gmail.com
 * Matilde Garelik (DNI: 43.426.677). Mail: matildegarelik@gmail.com
 
-### Link del video:
-
-https://youtu.be/FeVTgzbpUCg
+#### Link del video: https://youtu.be/FeVTgzbpUCg
 
 ## Enunciado del Problema a Resolver
 Una clínica de Optometría necesita un sistema web en Django que le permita gestionar el diagnóstico de sus pacientes y la venta de los productos Ópticos para los mismos. Para ello se requiere:
